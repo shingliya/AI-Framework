@@ -8,6 +8,7 @@
 #include "MatrixStack.h"
 #include "Light.h"
 #include "SpriteAnimation.h"
+#include "GameAsset\WorldOBJ.h"
 #include <vector>
 
 class SceneAI : public Scene
@@ -97,6 +98,9 @@ private:
 	bool bLightEnabled;
 
 	float fps;
+
+	//Game Asset
+	std::vector<CGameObject*> m_cGOList;
 };
 
 #endif

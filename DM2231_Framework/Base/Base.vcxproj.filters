@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Game Asset">
+      <UniqueIdentifier>{686289dd-4ab9-40ac-8315-1de010dce6ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -48,11 +51,26 @@
     <ClCompile Include="Source\LoadHmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameAsset\GameObject.cpp">
+      <Filter>Game Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameAsset\WorldOBJ.cpp">
+      <Filter>Game Asset</Filter>
+    </ClCompile>
     <ClCompile Include="Source\SpriteAnimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneAI.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\GameAsset\Customer.cpp">
+      <Filter>Game Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameAsset\Waitress.cpp">
+      <Filter>Game Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameAsset\Chef.cpp">
+      <Filter>Game Asset</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,11 +119,26 @@
     <ClInclude Include="Source\LoadHmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SceneAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameAsset\GameObject.h">
+      <Filter>Game Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameAsset\WorldOBJ.h">
+      <Filter>Game Asset</Filter>
+    </ClInclude>
     <ClInclude Include="Source\SpriteAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneAI.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\GameAsset\Customer.h">
+      <Filter>Game Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameAsset\Waitress.h">
+      <Filter>Game Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameAsset\Chef.h">
+      <Filter>Game Asset</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

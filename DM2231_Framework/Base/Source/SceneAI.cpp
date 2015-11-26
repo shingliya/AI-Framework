@@ -25,7 +25,7 @@ void SceneAI::Init()
 	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS); 
 	
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -119,6 +119,7 @@ void SceneAI::Init()
 	meshList[GEO_TEXT]->material.kAmbient.Set(1, 0, 0);
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
 	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("ground", Color(1,1,1), 100);
+	meshList[GEO_QUAD]->textureID = LoadTGA("Image//Diner//Floor.tga");
 
 	meshList[GEO_FIRE_SPRITE] = MeshBuilder::GenerateSpriteAnimation("fire", 2, 4); 
 	meshList[GEO_FIRE_SPRITE]->textureArray[0] = LoadTGA("Image//fire.tga"); 
@@ -134,6 +135,134 @@ void SceneAI::Init()
 	camera.Init(Vector3(50, 50, 50), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	bLightEnabled = true;
+
+	static float size = 100;
+	CWorldOBJ* newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setRotateAngle(-90);
+	newObj->setRotation(Vector3(1, 0, 0));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setRotateAngle(-90);
+	newObj->setRotation(Vector3(1, 0, 0));
+	newObj->setPos(Vector3(0, 0, size));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setRotateAngle(-90);
+	newObj->setRotation(Vector3(1, 0, 0));
+	newObj->setPos(Vector3(size, 0, size));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setRotateAngle(-90);
+	newObj->setRotation(Vector3(1, 0, 0));
+	newObj->setPos(Vector3(size, 0, 0));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setRotateAngle(-90);
+	newObj->setRotation(Vector3(1, 0, 0));
+	newObj->setPos(Vector3(0, 0, size * 2));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setRotateAngle(-90);
+	newObj->setRotation(Vector3(1, 0, 0));
+	newObj->setPos(Vector3(size, 0, size * 2));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setRotateAngle(-90);
+	newObj->setRotation(Vector3(1, 0, 0));
+	newObj->setPos(Vector3(-size, 0, size * 2));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setRotateAngle(-90);
+	newObj->setRotation(Vector3(1, 0, 0));
+	newObj->setPos(Vector3(-size, 0, size));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setRotateAngle(-90);
+	newObj->setRotation(Vector3(1, 0, 0));
+	newObj->setPos(Vector3(-size, 0, size / 100));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateOBJ("Diner Table", "OBJ//Diner//DinerTable.obj"));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//DinerTable.tga");
+	newObj->setPos(Vector3(size, 0, 0));
+	newObj->setScale(Vector3(size / 10, size / 10, size / 10));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateOBJ("Diner Table", "OBJ//Diner//DinerTable.obj"));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//DinerTable.tga");
+	newObj->setPos(Vector3(size, 0, size));
+	newObj->setScale(Vector3(size / 10, size / 10, size / 10));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateOBJ("Diner Table", "OBJ//Diner//DinerTable.obj"));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//DinerTable.tga");
+	newObj->setPos(Vector3(0, 0, size));
+	newObj->setScale(Vector3(size / 10, size / 10, size / 10));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateOBJ("Diner Table", "OBJ//Diner//DinerTable.obj"));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//DinerTable.tga");
+	newObj->setPos(Vector3(0, 0, 0));
+	newObj->setScale(Vector3(size / 10, size / 10, size / 10));
+	m_cGOList.push_back(newObj);
+
+	for (unsigned a = 0; a < 5; ++a)
+	{
+		newObj = new CWorldOBJ();
+		newObj->setMesh(MeshBuilder::GenerateOBJ("Barrier", "OBJ//Diner//Barrier.obj"));
+		newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Barrier.tga");
+		newObj->setPos(Vector3(-size - size / 3 + a * 35, 0, size * 2));
+		newObj->setScale(Vector3(size / 10, size / 10, size / 10));
+		m_cGOList.push_back(newObj);
+	}
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateOBJ("Barrier", "OBJ//Diner//Door.obj"));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//EnterDoor.tga");
+	newObj->setPos(Vector3(-size, 0.2, size * 2 + size / 2));
+	newObj->setScale(Vector3(size / 10 + 5, size / 10, size / 10 + 5));
+	newObj->setRotateAngle(180);
+	newObj->setRotation(Vector3(0, 1, 0));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateOBJ("Barrier", "OBJ//Diner//Door.obj"));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//ExitDoor.tga");
+	newObj->setPos(Vector3(size , 0.2, size * 2 + size / 2));
+	newObj->setScale(Vector3(size / 10 + 5, size / 10, size / 10 + 5));
+	newObj->setRotateAngle(180);
+	newObj->setRotation(Vector3(0, 1, 0));
+	m_cGOList.push_back(newObj);
 }
 
 void SceneAI::Update(double dt)
@@ -355,20 +484,37 @@ void SceneAI::Render()
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
+	/*modelStack.PushMatrix();
 	modelStack.Rotate(-90, 1, 0, 0);
 	RenderMesh(meshList[GEO_QUAD], false);
-	modelStack.PopMatrix();
+	modelStack.PopMatrix();*/
 
-	modelStack.PushMatrix();
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	{
+		//World Object
+		CWorldOBJ* worldObj = dynamic_cast<CWorldOBJ*>(*it);
+		if (worldObj != NULL)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(worldObj->getPos().x, worldObj->getPos().y, worldObj->getPos().z);
+			if(!worldObj->getRotation().IsZero())
+				modelStack.Rotate(worldObj->getRotateAngle(), worldObj->getRotation().x, worldObj->getRotation().y, worldObj->getRotation().z);
+			if(!worldObj->getScale().IsZero())
+				modelStack.Scale(worldObj->getScale().x, worldObj->getScale().y, worldObj->getScale().z);
+			RenderMesh(worldObj->getMesh(), false);
+			modelStack.PopMatrix();
+		}
+	}
+
+	/*modelStack.PushMatrix();
 	modelStack.Translate(0,10,0);
 	Vector3 pos = camera.position - camera.target;
 	pos.y = 0;
 	modelStack.Rotate(Vector3(0,0,1).GetAngle(pos), 0, 1, 0);
 	modelStack.Scale(35, 35, 35);
 	RenderMesh((meshList[GEO_FIRE_SPRITE]), false);
-	modelStack.PopMatrix();
-	
+	modelStack.PopMatrix();*/
+
 	//On screen text
 	std::ostringstream ss;
 	ss.precision(5);

@@ -14,6 +14,11 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
+    <ClCompile Include="Source\GameAsset\Chef.cpp" />
+    <ClCompile Include="Source\GameAsset\Customer.cpp" />
+    <ClCompile Include="Source\GameAsset\GameObject.cpp" />
+    <ClCompile Include="Source\GameAsset\Waitress.cpp" />
+    <ClCompile Include="Source\GameAsset\WorldOBJ.cpp" />
     <ClCompile Include="Source\LoadHmap.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
@@ -29,6 +34,11 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />
+    <ClInclude Include="Source\GameAsset\Chef.h" />
+    <ClInclude Include="Source\GameAsset\Customer.h" />
+    <ClInclude Include="Source\GameAsset\GameObject.h" />
+    <ClInclude Include="Source\GameAsset\Waitress.h" />
+    <ClInclude Include="Source\GameAsset\WorldOBJ.h" />
     <ClInclude Include="Source\Geometry.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadHmap.h" />
