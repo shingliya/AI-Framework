@@ -205,7 +205,7 @@ void SceneAI::Init()
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
 	newObj->setRotateAngle(-90);
 	newObj->setRotation(Vector3(1, 0, 0));
-	newObj->setPos(Vector3(-size, 0, size / 100));
+	newObj->setPos(Vector3(-size, 0, 0));
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
@@ -534,6 +534,13 @@ void SceneAI::Exit()
 	{
 		if(meshList[i])
 			delete meshList[i];
+	}
+
+	while(m_cGOList.size() > 0)
+	{
+		CGameObject* go = m_cGOList.back();
+		delete go;
+		m_cGOList.pop_back();
 	}
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);

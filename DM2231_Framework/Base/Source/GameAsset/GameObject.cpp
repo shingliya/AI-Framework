@@ -55,34 +55,11 @@ void CGameObject::setActive(bool active)
 	this->active = active;
 }
 
-void CGameObject::setType_PlayerBullet()
-{
-	this->type = PLAYERBULLET;
-}
-
-void CGameObject::setType_EnemyBullet()
-{
-	this->type = ENEMYBULLET;
-}
-
 float CGameObject::getRotateAngle()
 {
 	return rotateAngle;
 }
 
-bool CGameObject::isPlayer()
-{
-	if (type == PLAYER)
-		return true;
-	return false;
-}
-
-bool CGameObject::isEnemy()
-{
-	if (type == ENEMY)
-		return true;
-	return false;
-}
 
 bool CGameObject::isStaticOBJ()
 {
@@ -94,20 +71,6 @@ bool CGameObject::isStaticOBJ()
 bool CGameObject::isMovableObj()
 {
 	if (type == MOVABLE_OBJ)
-		return true;
-	return false;
-}
-
-bool CGameObject::isPlayerBullet()
-{
-	if (type == PLAYERBULLET)
-		return true;
-	return false;
-}
-
-bool CGameObject::isEnemyBullet()
-{
-	if (type == ENEMYBULLET)
 		return true;
 	return false;
 }

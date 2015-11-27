@@ -11,7 +11,8 @@ class Waitress : public CGameObject
 		s_PlaceOrder,
 		s_TakeFood,
 		s_DeliverFood,
-		s_CleanTable
+		s_CleanTable,
+		s_CleanFloor
 	};
 
 public:
