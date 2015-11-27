@@ -1,12 +1,34 @@
-﻿Build started 27/11/2015 12:56:54 AM.
-     1>Project "C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Base\Base.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         D:\VS 2013\VC\bin\CL.exe /c /I"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/Common/Source" /I"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glew/include" /I"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glfw/include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\SceneAI.cpp
+﻿Build started 11/27/2015 3:24:25 PM.
+     1>Project "C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Base\Base.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\Base.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/Common/Source" /I"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glew/include" /I"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glfw/include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Application.cpp Source\Camera.cpp Source\Camera3.cpp Source\GameAsset\Chef.cpp Source\GameAsset\Customer.cpp Source\GameAsset\GameObject.cpp Source\GameAsset\Waitress.cpp Source\GameAsset\WorldOBJ.cpp Source\LoadHmap.cpp Source\LoadOBJ.cpp Source\LoadTGA.cpp Source\main.cpp Source\Mesh.cpp Source\MeshBuilder.cpp Source\SceneAI.cpp Source\shader.cpp Source\SpriteAnimation.cpp Source\Utility.cpp
+         Utility.cpp
+         SpriteAnimation.cpp
+     1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\spriteanimation.cpp(25): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\spriteanimation.cpp(26): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+         shader.cpp
          SceneAI.cpp
-     1>c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(252): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(261): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(252): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(261): warning C4305: 'argument' : truncation from 'double' to 'float'
+         MeshBuilder.cpp
+         Mesh.cpp
+         main.cpp
+         LoadTGA.cpp
+         LoadOBJ.cpp
+         LoadHmap.cpp
+         WorldOBJ.cpp
+         Waitress.cpp
+         GameObject.cpp
+         Customer.cpp
+         Chef.cpp
+         Camera3.cpp
+         Camera.cpp
+         Application.cpp
+         Generating Code...
        Link:
-         D:\VS 2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug" /LIBPATH:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glfw/lib-msvc100" /LIBPATH:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glew/lib" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Base.lib" /MACHINE:X86 Debug\Application.obj
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug" /LIBPATH:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glfw/lib-msvc100" /LIBPATH:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glew/lib" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Base.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Base.lib" /MACHINE:X86 Debug\Application.obj
          Debug\Camera.obj
          Debug\Camera3.obj
          Debug\Chef.obj
@@ -24,11 +46,16 @@
          Debug\shader.obj
          Debug\SpriteAnimation.obj
          Debug\Utility.obj
-     1>Application.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
+     1>Application.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
      1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-         Base.vcxproj -> C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Base.exe
-     1>Done Building Project "C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Base\Base.vcxproj" (Build target(s)).
+         Base.vcxproj -> C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Base.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Base.exe;#1" /manifest Debug\Base.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\Base.unsuccessfulbuild".
+         Touching "Debug\Base.lastbuildstate".
+     1>Done Building Project "C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Base\Base.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.15
+Time Elapsed 00:00:09.48

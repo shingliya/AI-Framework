@@ -12,10 +12,9 @@ public:
 	{
 		STATIC_OBJ,
 		MOVABLE_OBJ,
-		PLAYER,
-		ENEMY,
-		PLAYERBULLET,
-		ENEMYBULLET
+		WAITRESS,
+		CUSTOMER,
+		CHEF
 	};
 	
 	CGameObject();
