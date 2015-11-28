@@ -55,6 +55,23 @@ void CGameObject::setActive(bool active)
 	this->active = active;
 }
 
+void CGameObject::setMesh(const char* textureDir)
+{
+	head = MeshBuilder::GenerateOBJ("Head", "OBJ//Character//Head.obj");
+	torso = MeshBuilder::GenerateOBJ("Torso", "OBJ//Character//Torso.obj");
+	leftArm = MeshBuilder::GenerateOBJ("Left Arm", "OBJ//Character//Left_Arm.obj");
+	rightArm = MeshBuilder::GenerateOBJ("Right Arm", "OBJ//Character//Right_Arm.obj");
+	leftLeg = MeshBuilder::GenerateOBJ("Left Arm", "OBJ//Character//Left_Leg.obj");
+	rightLeg = MeshBuilder::GenerateOBJ("Right Arm", "OBJ//Character//Right_Leg.obj");
+
+	head->textureArray[0] = LoadTGA(textureDir);
+	torso->textureArray[0] = head->textureArray[0];
+	leftArm->textureArray[0] = head->textureArray[0];
+	rightArm->textureArray[0] = head->textureArray[0];
+	leftLeg->textureArray[0] = head->textureArray[0];
+	rightLeg->textureArray[0] = head->textureArray[0];
+}
+
 float CGameObject::getRotateAngle()
 {
 	return rotateAngle;

@@ -7,10 +7,6 @@ public:
 	Customer();
 	~Customer();
 
-	void setMesh(Mesh* mesh);
-
-	Mesh* getMesh();
-private:
-	Mesh* mesh;
+	void setMesh2();
 };
 

@@ -4,6 +4,7 @@
 
 Waitress::Waitress()
 {
+	type = WAITRESS;
 	currentState = s_Idle;
 	previousState = s_Idle;
 }
@@ -11,16 +12,6 @@ Waitress::Waitress()
 
 Waitress::~Waitress()
 {
-}
-
-void Waitress::setMesh(Mesh* mesh)
-{
-	this->mesh = mesh;
-}
-
-Mesh* Waitress::getMesh()
-{
-	return mesh;
 }
 
 void Waitress::update(const double & dt)

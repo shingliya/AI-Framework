@@ -1,9 +1,7 @@
-﻿Build started 11/27/2015 3:24:21 PM.
-     1>Project "C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Common\Common.vcxproj" on node 2 (build target(s)).
-     1>InitializeBuildStatus:
-         Creating "Debug\Common.unsuccessfulbuild" because "AlwaysCreate" was specified.
-       ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\MathUtility.cpp Source\MatrixStack.cpp Source\Mtx44.cpp Source\timer.cpp Source\Vector2.cpp Source\Vector3.cpp
+﻿Build started 28/11/2015 9:47:56 AM.
+     1>Project "C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Common\Common.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         D:\VS 2013\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\MathUtility.cpp Source\MatrixStack.cpp Source\Mtx44.cpp Source\timer.cpp Source\Vector2.cpp Source\Vector3.cpp
          Vector3.cpp
          Vector2.cpp
          timer.cpp
@@ -11,19 +9,17 @@
          MatrixStack.cpp
          MathUtility.cpp
          Generating Code...
+     1>cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
        Lib:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Common.lib" /NOLOGO Debug\MathUtility.obj
+         D:\VS 2013\VC\bin\Lib.exe /OUT:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Common.lib" /NOLOGO Debug\MathUtility.obj
          Debug\MatrixStack.obj
          Debug\Mtx44.obj
          Debug\timer.obj
          Debug\Vector2.obj
          Debug\Vector3.obj
-         Common.vcxproj -> C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Common.lib
-       FinalizeBuildStatus:
-         Deleting file "Debug\Common.unsuccessfulbuild".
-         Touching "Debug\Common.lastbuildstate".
-     1>Done Building Project "C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Common\Common.vcxproj" (build target(s)).
+         Common.vcxproj -> C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Common.lib
+     1>Done Building Project "C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Common\Common.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.34
+Time Elapsed 00:00:01.68

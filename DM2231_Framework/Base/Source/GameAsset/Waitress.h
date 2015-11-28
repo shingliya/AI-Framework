@@ -19,10 +19,8 @@ public:
 	Waitress();
 	~Waitress();
 
-	void setMesh(Mesh* mesh);
 	void update(const double & dt);
 
-	Mesh* getMesh();
 private:
 	Mesh* mesh;
 	STATES currentState;

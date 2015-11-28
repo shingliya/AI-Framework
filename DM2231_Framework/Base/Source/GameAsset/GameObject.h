@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include "../Camera3.h"
 #include "../MeshBuilder.h"
+#include "../LoadTGA.h"
 #include <unordered_map>
 
 class CGameObject
@@ -28,17 +29,12 @@ public:
 	void setScale(Vector3 scale);
 	void setDirection(Vector3 direction);
 	void setActive(bool active);
-	void setType_PlayerBullet();
-	void setType_EnemyBullet();
+	void setMesh(const char* textureDir);
 
 	//Getter
 	float getRotateAngle();
-	bool isPlayer();
-	bool isEnemy();
 	bool isStaticOBJ();
 	bool isMovableObj();
-	bool isPlayerBullet();
-	bool isEnemyBullet();
 	bool getActive();
 	Vector3 getPos();
 	Vector3 getRotation();
@@ -47,6 +43,13 @@ public:
 	Vector3 getTarget();
 	Vector3 getDirection();
 	GO_TYPE getType();
+
+	Mesh* head;
+	Mesh* torso;
+	Mesh* leftArm;
+	Mesh* rightArm;
+	Mesh* leftLeg;
+	Mesh* rightLeg;
 protected:
 	//float
 	static float velSpeed;
@@ -63,6 +66,7 @@ protected:
 	Vector3 target;
 	Vector3 direction;
 	GO_TYPE type;
+
 
 	//Map
 	std::unordered_map<int, std::string> nodeList;
