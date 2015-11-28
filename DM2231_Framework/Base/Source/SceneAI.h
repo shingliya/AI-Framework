@@ -9,6 +9,9 @@
 #include "Light.h"
 #include "SpriteAnimation.h"
 #include "GameAsset\WorldOBJ.h"
+#include "GameAsset\Waitress.h"
+#include "GameAsset\Customer.h"
+#include "GameAsset\Chef.h"
 #include <vector>
 
 class SceneAI : public Scene
@@ -80,6 +83,8 @@ public:
 	void RenderSkybox();
 	void RenderSkyPlane();
 	void RenderTerrain();
+	void RenderWaitress(CGameObject* go);
+	void RenderCharacter(CGameObject* go);
 
 private:
 	unsigned m_vertexArrayID;

@@ -136,6 +136,19 @@ void SceneAI::Init()
 
 	bLightEnabled = true;
 
+	Waitress* waitress = new Waitress();
+	waitress->setMesh("Image//Character//Waitress.tga");
+	waitress->setPos(Vector3(0, 0, 60));
+	m_cGOList.push_back(waitress);
+
+	Customer* customer = new Customer();
+	customer->setPos(Vector3(30, 0, 60));
+	m_cGOList.push_back(customer);
+
+	Chef* chef = new Chef();
+	chef->setPos(Vector3(60, 0, 60));
+	m_cGOList.push_back(chef);
+
 	static float size = 100;
 	CWorldOBJ* newObj = new CWorldOBJ();
 	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
@@ -312,7 +325,7 @@ void SceneAI::RenderText(Mesh* mesh, std::string text, Color color)
 	for(unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 0.6f, 0, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 	
@@ -452,6 +465,87 @@ void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, float size, float x, 
 	projectionStack.PopMatrix();
 }
 
+void SceneAI::RenderWaitress(CGameObject* go)
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(go->getPos().x, go->getPos().y, go->getPos().z);
+	modelStack.Rotate(go->getRotateAngle(), 0, 1, 0);
+	modelStack.Scale(10, 10, 10);
+
+	//Head
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 2.4, 0);
+	RenderMesh(go->head, false);
+	modelStack.PopMatrix();
+
+	//Torso
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 1.81, 0);
+	RenderMesh(go->torso, false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(-0.4, 2.2, 0);
+	RenderMesh(go->leftArm, false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0.4, 2.2, 0);
+	RenderMesh(go->rightArm, false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 1.2, 0);
+	RenderMesh(go->leftLeg, false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 1.2, 0);
+	RenderMesh(go->rightLeg, false);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+}
+
+void SceneAI::RenderCharacter(CGameObject* go)
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(go->getPos().x, go->getPos().y, go->getPos().z);
+	modelStack.Scale(10, 10, 10);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 2.41, 0);
+	RenderMesh(go->head, false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 1.81, 0);
+	RenderMesh(go->torso, false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0.61, 1.81, 0);
+	RenderMesh(go->leftArm, false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(-0.61, 1.81, 0);
+	RenderMesh(go->rightArm, false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0.21, 0.6, 0);
+	RenderMesh(go->leftLeg, false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(-0.21, 0.6, 0);
+	RenderMesh(go->rightLeg, false);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+}
+
 void SceneAI::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -504,16 +598,28 @@ void SceneAI::Render()
 			RenderMesh(worldObj->getMesh(), false);
 			modelStack.PopMatrix();
 		}
-	}
 
-	/*modelStack.PushMatrix();
-	modelStack.Translate(0,10,0);
-	Vector3 pos = camera.position - camera.target;
-	pos.y = 0;
-	modelStack.Rotate(Vector3(0,0,1).GetAngle(pos), 0, 1, 0);
-	modelStack.Scale(35, 35, 35);
-	RenderMesh((meshList[GEO_FIRE_SPRITE]), false);
-	modelStack.PopMatrix();*/
+		//Waitress
+		Waitress * waitress = dynamic_cast<Waitress*>(*it);
+		if (waitress != NULL)
+		{
+			RenderWaitress(waitress);
+		}
+
+		//Customer
+		Customer* customer = dynamic_cast<Customer*>(*it);
+		if (customer != NULL)
+		{
+			RenderCharacter(customer);
+		}
+
+		//Chef
+		Chef* chef = dynamic_cast<Chef*>(*it);
+		if (chef != NULL)
+		{
+			RenderCharacter(chef);
+		}
+	}
 
 	//On screen text
 	std::ostringstream ss;
@@ -525,6 +631,50 @@ void SceneAI::Render()
 	ss1.precision(4);
 	ss1 << "Light(" << lights[0].position.x << ", " << lights[0].position.y << ", " << lights[0].position.z << ")";
 	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 1, 0), 3, 0, 3);
+
+
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	{
+		//Waitress
+		Waitress* waitress = dynamic_cast<Waitress*>(*it);
+		if (waitress != NULL)
+		{
+			Vector3 diff = camera.position - waitress->getPos();
+
+			modelStack.PushMatrix();
+			modelStack.Translate(waitress->getPos().x , 50, waitress->getPos().z);
+			modelStack.Rotate(Math::RadianToDegree(atan2(diff.x, diff.z)), 0, 1, 0);
+			modelStack.Scale(10, 10, 10);
+			RenderText(meshList[GEO_TEXT], "Waitress", Color(0.5, 0.5, 0.5));
+			modelStack.PopMatrix();
+		}
+
+		Customer* customer = dynamic_cast<Customer*>(*it);
+		if (customer != NULL)
+		{
+			Vector3 diff = camera.position - customer->getPos();
+
+			modelStack.PushMatrix();
+			modelStack.Translate(customer->getPos().x, 50, customer->getPos().z);
+			modelStack.Rotate(Math::RadianToDegree(atan2(diff.x, diff.z)), 0, 1, 0);
+			modelStack.Scale(10, 10, 10);
+			RenderText(meshList[GEO_TEXT], "Customer", Color(0.5, 0.5, 0.5));
+			modelStack.PopMatrix();
+		}
+
+		Chef* chef = dynamic_cast<Chef*>(*it);
+		if (chef != NULL)
+		{
+			Vector3 diff = camera.position - chef->getPos();
+
+			modelStack.PushMatrix();
+			modelStack.Translate(chef->getPos().x, 50, chef->getPos().z);
+			modelStack.Rotate(Math::RadianToDegree(atan2(diff.x, diff.z)), 0, 1, 0);
+			modelStack.Scale(10, 10, 10);
+			RenderText(meshList[GEO_TEXT], "Chef", Color(0.5, 0.5, 0.5));
+			modelStack.PopMatrix();
+		}
+	}
 }
 
 void SceneAI::Exit()

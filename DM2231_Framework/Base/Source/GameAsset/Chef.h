@@ -23,5 +23,6 @@ public:
 	int numOfOrder, numOfCookedFood;
 private:
 	Mesh* mesh;
+	void setMesh2();
 };
 

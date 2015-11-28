@@ -27,4 +27,5 @@ public:
 	float timmer;
 private:
 	Mesh* mesh;
+	void setMesh2();
 };
