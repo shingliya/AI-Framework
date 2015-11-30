@@ -7,6 +7,7 @@ Waitress::Waitress()
 	type = WAITRESS;
 	currentState = s_Idle;
 	previousState = s_Idle;
+	usheringCustomer = false;
 }
 
 

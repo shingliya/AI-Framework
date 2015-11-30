@@ -93,6 +93,8 @@ public:
 	void RenderCharacter(CGameObject* go);
 
 	Customer* fetchCustomer(bool getActive = true);
+	Waitress* fetchWaitress();
+	Chef* fetchChef();
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];

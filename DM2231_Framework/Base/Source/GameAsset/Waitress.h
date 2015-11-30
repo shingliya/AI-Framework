@@ -21,6 +21,7 @@ public:
 
 	void update(const double & dt);
 
+	bool usheringCustomer;
 private:
 	STATES currentState;
 	STATES previousState;

@@ -161,7 +161,8 @@ void SceneAI::Init()
 	{
 		Customer* customer = new Customer();
 		customer->setScale(Vector3(15, 15, 0));
-		customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(a / Math::RandFloatMinMax(10, 0), a / Math::RandFloatMinMax(-1, -10), a / Math::RandFloatMinMax(-20, 20)), 18, 36));
+		//customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(a / Math::RandFloatMinMax(10, 0), a / Math::RandFloatMinMax(-1, -10), a / Math::RandFloatMinMax(-20, 20)), 18, 36));
+		customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(0, 1, 0), 18, 36));
 		customer->setActive(false);
 		m_cGOList.push_back(customer);
 	}
@@ -205,25 +206,60 @@ void SceneAI::Init()
 
 Customer* SceneAI::fetchCustomer(bool getActive)
 {
-	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	if (getActive)
 	{
-		Customer* customer = dynamic_cast<Customer*>(*it);
-		if (customer != NULL)
+		for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
 		{
-			if (getActive)
+			Customer* customer = dynamic_cast<Customer*>(*it);
+			if (customer != NULL)
 			{
 				if (customer->getActive())
 				{
 					return customer;
 				}
 			}
-			else
+		}
+	}
+	else
+	{
+		for (std::vector<CGameObject*>::reverse_iterator it = m_cGOList.rbegin(); it != m_cGOList.rend(); ++it)
+		{
+			Customer* customer = dynamic_cast<Customer*>(*it);
+			if (customer != NULL)
 			{
 				if (!customer->getActive())
 				{
 					return customer;
 				}
 			}
+		}
+	}
+
+	return NULL;
+}
+
+Waitress* SceneAI::fetchWaitress()
+{
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	{
+		Waitress* waitress = dynamic_cast<Waitress*>(*it);
+		if (waitress != NULL)
+		{
+			return waitress;
+		}
+	}
+
+	return NULL;
+}
+
+Chef* SceneAI::fetchChef()
+{
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	{
+		Chef* chef = dynamic_cast<Chef*>(*it);
+		if (chef != NULL)
+		{
+			return chef;
 		}
 	}
 
@@ -264,7 +300,7 @@ void SceneAI::Update(double dt)
 		{
 			for (unsigned a = 0; a < 6; ++a)
 			{
-				if (queue[a].taken == false)
+				if (!queue[a].taken)
 				{
 					Customer* customer = fetchCustomer(false);
 					if (customer != NULL)
@@ -294,48 +330,68 @@ void SceneAI::Update(double dt)
 	{
 		if (Application::IsKeyPressed('E'))
 		{
-			for (unsigned a = 0; a < 6; ++a)
+			for (int a = 5; a >= 0; a--)
 			{
 				if (queue[a].taken)
 				{
 					Customer* customer = fetchCustomer();
 					if (customer != NULL)
 					{
-						if (customer->isQueing())
+						if (customer->getPos() == queue[a].pos)
 						{
 							queue[a].taken = false;
 							customer->setActive(false);
+							break;
 						}
 					}
-					break;
 				}
 			}
-
+			
 			time2 = 0.f;
 		}
 	}
-	/*for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+
+	for (unsigned a = 0; a < 6; ++a)
 	{
-		static bool usherCustomer = false;
-		Waitress* waitress = dynamic_cast<Waitress*>(*it);
-		if (waitress != NULL)
+		std::cout << queue[a].taken;
+	}
+	std::cout << std::endl;
+
+	Waitress* waitress = fetchWaitress();
+	if (waitress != NULL)
+	{
+		if (Application::IsKeyPressed('A') && waitress->getPos().x > 66)
 		{
-			if (Application::IsKeyPressed('A') && waitress->getPos().x > 66)
-			{
-				waitress->setPos(waitress->getPos() + Vector3(-1, 0, 0));
-			}
+			waitress->setPos(waitress->getPos() + Vector3(-1, 0, 0));
+		}
 
-			if (Application::IsKeyPressed('D'))
-			{
-				waitress->setPos(waitress->getPos() + Vector3(1, 0, 0));
-			}
+		if (Application::IsKeyPressed('D'))
+		{
+			waitress->setPos(waitress->getPos() + Vector3(1, 0, 0));
+		}
 
-			if (waitress->getPos().x == 66 && usherCustomer == false)
+		if (waitress->getPos().x == 66 && !waitress->usheringCustomer)
+		{
+			for (int a = 5; a >= 0; --a)
 			{
-
+				if (queue[a].taken)
+				{
+					Customer* customer = fetchCustomer();
+					if (customer != NULL)
+					{
+						if (customer->getPos() == queue[a].pos)
+						{
+							queue[a].taken = false;
+							customer->setPos(Vector3(customer->getPos().x, 170, 0));
+							waitress->usheringCustomer = true;
+							break;
+						}
+					}
+				}
 			}
 		}
-	}*/
+	}
+
 	SpriteAnimation *sa = dynamic_cast<SpriteAnimation *> (meshList[GEO_FIRE_SPRITE]);
 	
 	if(!sa->m_anim->ended)
