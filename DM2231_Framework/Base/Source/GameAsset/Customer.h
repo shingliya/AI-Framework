@@ -7,6 +7,7 @@ public:
 	enum STATES
 	{
 		s_Queing,
+		s_follow,
 		s_SitDown,
 		s_ReadyToOrder,
 		s_Ordering,
@@ -18,14 +19,23 @@ public:
 	Customer();
 	~Customer();
 
-	void setMesh(Mesh* mesh);
-
-	Mesh* getMesh();
 	void update(double dt/* waiter obj refrence */);
+
+	bool isQueing()
+	{
+		if (state == s_Queing)
+			return true;
+		return false;
+	}
+
+	bool isFollowing()
+	{
+		if (state == s_follow)
+			return true;
+		return false;
+	}
 
 	STATES state;
 	float timmer;
-private:
-	Mesh* mesh;
-	void setMesh2();
+	int num;
 };

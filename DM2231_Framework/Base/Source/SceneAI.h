@@ -67,6 +67,12 @@ class SceneAI : public Scene
 		NUM_GEOMETRY,
 	};
 
+	struct s_QUEUE
+	{
+		Vector3 pos;
+		bool taken;
+	};
+
 public:
 	SceneAI();
 	~SceneAI();
@@ -78,7 +84,7 @@ public:
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void RenderMeshIn2D(Mesh *mesh, bool enableLight, float size=1.0f, float x=0.0f, float y=0.0f);
+	void RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX = 1.0f, float sizeY = 1.f, float x=0.0f, float y=0.0f);
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox();
 	void RenderSkyPlane();
@@ -86,6 +92,7 @@ public:
 	void RenderWaitress(CGameObject* go);
 	void RenderCharacter(CGameObject* go);
 
+	Customer* fetchCustomer(bool getActive = true);
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -103,6 +110,9 @@ private:
 	bool bLightEnabled;
 
 	float fps;
+
+	//Accomdate 6 queue
+	s_QUEUE queue[6];
 
 	//Game Asset
 	std::vector<CGameObject*> m_cGOList;

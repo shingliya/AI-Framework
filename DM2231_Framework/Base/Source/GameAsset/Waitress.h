@@ -22,7 +22,6 @@ public:
 	void update(const double & dt);
 
 private:
-	Mesh* mesh;
 	STATES currentState;
 	STATES previousState;
 };

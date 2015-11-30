@@ -44,12 +44,8 @@ public:
 	Vector3 getDirection();
 	GO_TYPE getType();
 
-	Mesh* head;
-	Mesh* torso;
-	Mesh* leftArm;
-	Mesh* rightArm;
-	Mesh* leftLeg;
-	Mesh* rightLeg;
+	void setMesh(Mesh* mesh);
+	Mesh* getMesh();
 protected:
 	//float
 	static float velSpeed;
@@ -65,6 +61,7 @@ protected:
 	Vector3 scale;
 	Vector3 target;
 	Vector3 direction;
+	Mesh* mesh;
 	GO_TYPE type;
 
 

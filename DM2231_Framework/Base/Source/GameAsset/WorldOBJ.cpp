@@ -11,13 +11,3 @@ CWorldOBJ::CWorldOBJ()
 CWorldOBJ::~CWorldOBJ()
 {
 }
-
-void CWorldOBJ::setMesh(Mesh* mesh)
-{
-	this->mesh = mesh;
-}
-
-Mesh* CWorldOBJ::getMesh()
-{
-	return mesh;
-}

@@ -23,10 +23,10 @@ void SceneAI::Init()
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
-	glDepthFunc(GL_LESS); 
-	
-	//glEnable(GL_CULL_FACE);
-	
+	glDepthFunc(GL_LESS);
+
+	glEnable(GL_CULL_FACE);
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glEnable(GL_BLEND);
@@ -35,8 +35,8 @@ void SceneAI::Init()
 	glGenVertexArrays(1, &m_vertexArrayID);
 	glBindVertexArray(m_vertexArrayID);
 
-	m_programID = LoadShaders( "Shader//comg.vertexshader", "Shader//MultiTexture.fragmentshader" );
-	
+	m_programID = LoadShaders("Shader//comg.vertexshader", "Shader//MultiTexture.fragmentshader");
+
 	// Get a handle for our uniform
 	m_parameters[U_MVP] = glGetUniformLocation(m_programID, "MVP");
 	//m_parameters[U_MODEL] = glGetUniformLocation(m_programID, "M");
@@ -80,7 +80,7 @@ void SceneAI::Init()
 	// Get a handle for our "textColor" uniform
 	m_parameters[U_TEXT_ENABLED] = glGetUniformLocation(m_programID, "textEnabled");
 	m_parameters[U_TEXT_COLOR] = glGetUniformLocation(m_programID, "textColor");
-	
+
 	// Use our shader
 	glUseProgram(m_programID);
 
@@ -109,7 +109,7 @@ void SceneAI::Init()
 	glUniform1f(m_parameters[U_LIGHT0_COSINNER], lights[0].cosInner);
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], lights[0].exponent);
 
-	for(int i = 0; i < NUM_GEOMETRY; ++i)
+	for (int i = 0; i < NUM_GEOMETRY; ++i)
 	{
 		meshList[i] = NULL;
 	}
@@ -118,164 +118,116 @@ void SceneAI::Init()
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_TEXT]->material.kAmbient.Set(1, 0, 0);
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
-	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("ground", Color(1,1,1), 100);
+	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1), 100);
 	meshList[GEO_QUAD]->textureID = LoadTGA("Image//Diner//Floor.tga");
 
-	meshList[GEO_FIRE_SPRITE] = MeshBuilder::GenerateSpriteAnimation("fire", 2, 4); 
-	meshList[GEO_FIRE_SPRITE]->textureArray[0] = LoadTGA("Image//fire.tga"); 
+	meshList[GEO_FIRE_SPRITE] = MeshBuilder::GenerateSpriteAnimation("fire", 2, 4);
+	meshList[GEO_FIRE_SPRITE]->textureArray[0] = LoadTGA("Image//fire.tga");
 	SpriteAnimation *sa = dynamic_cast<SpriteAnimation *> (meshList[GEO_FIRE_SPRITE]);
 	sa->m_anim->Set(0, 7, 0, 1.f);
- 
+
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 1000 units
 	Mtx44 perspective;
 	perspective.SetToPerspective(75.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
 	//perspective.SetToOrtho(-80, 80, -60, 60, -1000, 1000);
 	projectionStack.LoadMatrix(perspective);
-	
+
 	camera.Init(Vector3(50, 50, 50), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	bLightEnabled = true;
 
-	Waitress* waitress = new Waitress();
-	waitress->setMesh("Image//Character//Waitress.tga");
-	waitress->setPos(Vector3(0, 0, 60));
-	m_cGOList.push_back(waitress);
 
-	Customer* customer = new Customer();
-	customer->setPos(Vector3(30, 0, 60));
-	m_cGOList.push_back(customer);
-
-	Chef* chef = new Chef();
-	chef->setPos(Vector3(60, 0, 60));
-	m_cGOList.push_back(chef);
-
-	static float size = 100;
-	CWorldOBJ* newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
-	newObj->setRotateAngle(-90);
-	newObj->setRotation(Vector3(1, 0, 0));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
-	newObj->setRotateAngle(-90);
-	newObj->setRotation(Vector3(1, 0, 0));
-	newObj->setPos(Vector3(0, 0, size));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
-	newObj->setRotateAngle(-90);
-	newObj->setRotation(Vector3(1, 0, 0));
-	newObj->setPos(Vector3(size, 0, size));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
-	newObj->setRotateAngle(-90);
-	newObj->setRotation(Vector3(1, 0, 0));
-	newObj->setPos(Vector3(size, 0, 0));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
-	newObj->setRotateAngle(-90);
-	newObj->setRotation(Vector3(1, 0, 0));
-	newObj->setPos(Vector3(0, 0, size * 2));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
-	newObj->setRotateAngle(-90);
-	newObj->setRotation(Vector3(1, 0, 0));
-	newObj->setPos(Vector3(size, 0, size * 2));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
-	newObj->setRotateAngle(-90);
-	newObj->setRotation(Vector3(1, 0, 0));
-	newObj->setPos(Vector3(-size, 0, size * 2));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
-	newObj->setRotateAngle(-90);
-	newObj->setRotation(Vector3(1, 0, 0));
-	newObj->setPos(Vector3(-size, 0, size));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1), size));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
-	newObj->setRotateAngle(-90);
-	newObj->setRotation(Vector3(1, 0, 0));
-	newObj->setPos(Vector3(-size, 0, 0));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateOBJ("Diner Table", "OBJ//Diner//DinerTable.obj"));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//DinerTable.tga");
-	newObj->setPos(Vector3(size, 0, 0));
-	newObj->setScale(Vector3(size / 10, size / 10, size / 10));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateOBJ("Diner Table", "OBJ//Diner//DinerTable.obj"));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//DinerTable.tga");
-	newObj->setPos(Vector3(size, 0, size));
-	newObj->setScale(Vector3(size / 10, size / 10, size / 10));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateOBJ("Diner Table", "OBJ//Diner//DinerTable.obj"));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//DinerTable.tga");
-	newObj->setPos(Vector3(0, 0, size));
-	newObj->setScale(Vector3(size / 10, size / 10, size / 10));
-	m_cGOList.push_back(newObj);
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateOBJ("Diner Table", "OBJ//Diner//DinerTable.obj"));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//DinerTable.tga");
-	newObj->setPos(Vector3(0, 0, 0));
-	newObj->setScale(Vector3(size / 10, size / 10, size / 10));
-	m_cGOList.push_back(newObj);
-
-	for (unsigned a = 0; a < 5; ++a)
+	for (unsigned a = 0; a < 6; ++a)
 	{
-		newObj = new CWorldOBJ();
-		newObj->setMesh(MeshBuilder::GenerateOBJ("Barrier", "OBJ//Diner//Barrier.obj"));
-		newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Barrier.tga");
-		newObj->setPos(Vector3(-size - size / 3 + a * 35, 0, size * 2));
-		newObj->setScale(Vector3(size / 10, size / 10, size / 10));
-		m_cGOList.push_back(newObj);
+		static int diff = 40;
+		queue[a].taken = false;
+		queue[a].pos.x = 25;
+		queue[a].pos.y = 210 + (a * diff);
 	}
 
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateOBJ("Barrier", "OBJ//Diner//Door.obj"));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//EnterDoor.tga");
-	newObj->setPos(Vector3(-size, 0.2, size * 2 + size / 2));
-	newObj->setScale(Vector3(size / 10 + 5, size / 10, size / 10 + 5));
-	newObj->setRotateAngle(180);
-	newObj->setRotation(Vector3(0, 1, 0));
+	Waitress* waitress = new Waitress();
+	waitress->setMesh(MeshBuilder::GenerateSphere("Waitress", Color(1, 0, 0), 18, 36));
+	waitress->setPos(Vector3(300, 170, 0));
+	waitress->setScale(Vector3(15, 15, 0));
+	m_cGOList.push_back(waitress);
+
+	/*Customer* customer = new Customer();
+	customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(0, 1, 0), 18, 36));
+	customer->setPos(Vector3(25, 210, 0));
+	customer->setScale(Vector3(15, 15, 0));
+	m_cGOList.push_back(customer);*/
+
+	for (unsigned a = 0; a < 6; ++a)
+	{
+		Customer* customer = new Customer();
+		customer->setScale(Vector3(15, 15, 0));
+		customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(a / Math::RandFloatMinMax(10, 0), a / Math::RandFloatMinMax(-1, -10), a / Math::RandFloatMinMax(-20, 20)), 18, 36));
+		customer->setActive(false);
+		m_cGOList.push_back(customer);
+	}
+
+	static float size = 10;
+	CWorldOBJ* newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Barrier.tga");
+	newObj->setPos(Vector3(65, 400, 0));
+	newObj->setScale(Vector3(30, 400, size));
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateOBJ("Barrier", "OBJ//Diner//Door.obj"));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//ExitDoor.tga");
-	newObj->setPos(Vector3(size , 0.2, size * 2 + size / 2));
-	newObj->setScale(Vector3(size / 10 + 5, size / 10, size / 10 + 5));
-	newObj->setRotateAngle(180);
-	newObj->setRotation(Vector3(0, 1, 0));
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setPos(Vector3(200, 150, 0));
+	newObj->setScale(Vector3(400, 300, size));
 	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setPos(Vector3(200, 450, 0));
+	newObj->setScale(Vector3(400, 300, size));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setPos(Vector3(600, 150, 0));
+	newObj->setScale(Vector3(400, 300, size));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
+	newObj->setPos(Vector3(600, 450, 0));
+	newObj->setScale(Vector3(400, 300, size));
+	m_cGOList.push_back(newObj);
+}
+
+Customer* SceneAI::fetchCustomer(bool getActive)
+{
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	{
+		Customer* customer = dynamic_cast<Customer*>(*it);
+		if (customer != NULL)
+		{
+			if (getActive)
+			{
+				if (customer->getActive())
+				{
+					return customer;
+				}
+			}
+			else
+			{
+				if (!customer->getActive())
+				{
+					return customer;
+				}
+			}
+		}
+	}
+
+	return NULL;
 }
 
 void SceneAI::Update(double dt)
@@ -297,8 +249,93 @@ void SceneAI::Update(double dt)
 	{
 		bLightEnabled = false;
 	}
-	camera.Update(dt);
 
+	//Spawn Customer
+	static float time = 0.f;
+	static float timeLimit = 0.5f;
+
+	if (time < timeLimit)
+	{
+		time += dt;
+	}
+	else
+	{
+		if (Application::IsKeyPressed('R'))
+		{
+			for (unsigned a = 0; a < 6; ++a)
+			{
+				if (queue[a].taken == false)
+				{
+					Customer* customer = fetchCustomer(false);
+					if (customer != NULL)
+					{
+						queue[a].taken = true;
+						customer->setActive(true);
+						customer->setPos(queue[a].pos);
+					}
+					break;
+				}
+			}
+
+			time = 0.f;
+		}
+	}
+
+
+	//Unspawn Customer
+	static float time2 = 0.f;
+	static float timeLimit2 = 0.5f;
+
+	if (time2 < timeLimit2)
+	{
+		time2 += dt;
+	}
+	else
+	{
+		if (Application::IsKeyPressed('E'))
+		{
+			for (unsigned a = 0; a < 6; ++a)
+			{
+				if (queue[a].taken)
+				{
+					Customer* customer = fetchCustomer();
+					if (customer != NULL)
+					{
+						if (customer->isQueing())
+						{
+							queue[a].taken = false;
+							customer->setActive(false);
+						}
+					}
+					break;
+				}
+			}
+
+			time2 = 0.f;
+		}
+	}
+	/*for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	{
+		static bool usherCustomer = false;
+		Waitress* waitress = dynamic_cast<Waitress*>(*it);
+		if (waitress != NULL)
+		{
+			if (Application::IsKeyPressed('A') && waitress->getPos().x > 66)
+			{
+				waitress->setPos(waitress->getPos() + Vector3(-1, 0, 0));
+			}
+
+			if (Application::IsKeyPressed('D'))
+			{
+				waitress->setPos(waitress->getPos() + Vector3(1, 0, 0));
+			}
+
+			if (waitress->getPos().x == 66 && usherCustomer == false)
+			{
+
+			}
+		}
+	}*/
 	SpriteAnimation *sa = dynamic_cast<SpriteAnimation *> (meshList[GEO_FIRE_SPRITE]);
 	
 	if(!sa->m_anim->ended)
@@ -424,127 +461,48 @@ void SceneAI::RenderMesh(Mesh *mesh, bool enableLight)
 	//}
 }
 
-void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, float size, float x, float y)
+void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX, float sizeY, float x, float y)
 {
 	Mtx44 ortho;
-	ortho.SetToOrtho(-80, 80, -60, 60, -10, 10);
+	ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
 	projectionStack.PushMatrix();
 	projectionStack.LoadMatrix(ortho);
 	viewStack.PushMatrix();
 	viewStack.LoadIdentity();
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity();
-	modelStack.Scale(size, size, size);
 	modelStack.Translate(x, y, 0);
+	modelStack.Scale(sizeX, sizeY, 0);
 
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
+
 	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
-	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE,
-		&MVP.a[0]);
-	if(mesh->textureID > 0)
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+	for (unsigned a = 0; a < 2; ++a)
 	{
-		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED],
-			1);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mesh->textureID);
-		glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
-	}
-	else
-	{
-		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED],
-			0);
+		if (mesh->textureArray[a] > 0)
+		{
+			if (mesh->textureArray[a] > 0)
+			{
+				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + a], 1);
+			}
+			else
+			{
+				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + a], 0);
+			}
+			glActiveTexture(GL_TEXTURE0 + a);
+			glBindTexture(GL_TEXTURE_2D, mesh->textureArray[a]);
+			glUniform1i(m_parameters[U_COLOR_TEXTURE + a], a);
+		}
 	}
 	mesh->Render();
-	if(mesh->textureID > 0)
-	{
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
 
 	modelStack.PopMatrix();
 	viewStack.PopMatrix();
 	projectionStack.PopMatrix();
 }
 
-void SceneAI::RenderWaitress(CGameObject* go)
-{
-	modelStack.PushMatrix();
-	modelStack.Translate(go->getPos().x, go->getPos().y, go->getPos().z);
-	modelStack.Rotate(go->getRotateAngle(), 0, 1, 0);
-	modelStack.Scale(10, 10, 10);
-
-	//Head
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 2.4, 0);
-	RenderMesh(go->head, false);
-	modelStack.PopMatrix();
-
-	//Torso
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 1.81, 0);
-	RenderMesh(go->torso, false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(-0.4, 2.2, 0);
-	RenderMesh(go->leftArm, false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0.4, 2.2, 0);
-	RenderMesh(go->rightArm, false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 1.2, 0);
-	RenderMesh(go->leftLeg, false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 1.2, 0);
-	RenderMesh(go->rightLeg, false);
-	modelStack.PopMatrix();
-
-	modelStack.PopMatrix();
-}
-
-void SceneAI::RenderCharacter(CGameObject* go)
-{
-	modelStack.PushMatrix();
-	modelStack.Translate(go->getPos().x, go->getPos().y, go->getPos().z);
-	modelStack.Scale(10, 10, 10);
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 2.41, 0);
-	RenderMesh(go->head, false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 1.81, 0);
-	RenderMesh(go->torso, false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0.61, 1.81, 0);
-	RenderMesh(go->leftArm, false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(-0.61, 1.81, 0);
-	RenderMesh(go->rightArm, false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0.21, 0.6, 0);
-	RenderMesh(go->leftLeg, false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(-0.21, 0.6, 0);
-	RenderMesh(go->rightLeg, false);
-	modelStack.PopMatrix();
-
-	modelStack.PopMatrix();
-}
 
 void SceneAI::Render()
 {
@@ -585,39 +543,32 @@ void SceneAI::Render()
 
 	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
 	{
-		//World Object
-		CWorldOBJ* worldObj = dynamic_cast<CWorldOBJ*>(*it);
-		if (worldObj != NULL)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(worldObj->getPos().x, worldObj->getPos().y, worldObj->getPos().z);
-			if(!worldObj->getRotation().IsZero())
-				modelStack.Rotate(worldObj->getRotateAngle(), worldObj->getRotation().x, worldObj->getRotation().y, worldObj->getRotation().z);
-			if(!worldObj->getScale().IsZero())
-				modelStack.Scale(worldObj->getScale().x, worldObj->getScale().y, worldObj->getScale().z);
-			RenderMesh(worldObj->getMesh(), false);
-			modelStack.PopMatrix();
-		}
-
 		//Waitress
-		Waitress * waitress = dynamic_cast<Waitress*>(*it);
+		Waitress* waitress = dynamic_cast<Waitress*>(*it);
 		if (waitress != NULL)
 		{
-			RenderWaitress(waitress);
+			modelStack.PushMatrix();
+			RenderMeshIn2D(waitress->getMesh(), true, waitress->getScale().x, waitress->getScale().y, waitress->getPos().x, waitress->getPos().y);
+			modelStack.PopMatrix();
 		}
 
 		//Customer
 		Customer* customer = dynamic_cast<Customer*>(*it);
 		if (customer != NULL)
 		{
-			RenderCharacter(customer);
+			if (customer->getActive())
+			{
+				RenderMeshIn2D(customer->getMesh(), true, customer->getScale().x, customer->getScale().y, customer->getPos().x, customer->getPos().y);
+			}
 		}
 
-		//Chef
-		Chef* chef = dynamic_cast<Chef*>(*it);
-		if (chef != NULL)
+		//World Object
+		CWorldOBJ* worldObj = dynamic_cast<CWorldOBJ*>(*it);
+		if (worldObj != NULL)
 		{
-			RenderCharacter(chef);
+			modelStack.PushMatrix();
+			RenderMeshIn2D(worldObj->getMesh(), true, worldObj->getScale().x, worldObj->getScale().y, worldObj->getPos().x, worldObj->getPos().y);
+			modelStack.PopMatrix();
 		}
 	}
 
@@ -631,50 +582,6 @@ void SceneAI::Render()
 	ss1.precision(4);
 	ss1 << "Light(" << lights[0].position.x << ", " << lights[0].position.y << ", " << lights[0].position.z << ")";
 	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 1, 0), 3, 0, 3);
-
-
-	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
-	{
-		//Waitress
-		Waitress* waitress = dynamic_cast<Waitress*>(*it);
-		if (waitress != NULL)
-		{
-			Vector3 diff = camera.position - waitress->getPos();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(waitress->getPos().x , 50, waitress->getPos().z);
-			modelStack.Rotate(Math::RadianToDegree(atan2(diff.x, diff.z)), 0, 1, 0);
-			modelStack.Scale(10, 10, 10);
-			RenderText(meshList[GEO_TEXT], "Waitress", Color(0.5, 0.5, 0.5));
-			modelStack.PopMatrix();
-		}
-
-		Customer* customer = dynamic_cast<Customer*>(*it);
-		if (customer != NULL)
-		{
-			Vector3 diff = camera.position - customer->getPos();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(customer->getPos().x, 50, customer->getPos().z);
-			modelStack.Rotate(Math::RadianToDegree(atan2(diff.x, diff.z)), 0, 1, 0);
-			modelStack.Scale(10, 10, 10);
-			RenderText(meshList[GEO_TEXT], "Customer", Color(0.5, 0.5, 0.5));
-			modelStack.PopMatrix();
-		}
-
-		Chef* chef = dynamic_cast<Chef*>(*it);
-		if (chef != NULL)
-		{
-			Vector3 diff = camera.position - chef->getPos();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(chef->getPos().x, 50, chef->getPos().z);
-			modelStack.Rotate(Math::RadianToDegree(atan2(diff.x, diff.z)), 0, 1, 0);
-			modelStack.Scale(10, 10, 10);
-			RenderText(meshList[GEO_TEXT], "Chef", Color(0.5, 0.5, 0.5));
-			modelStack.PopMatrix();
-		}
-	}
 }
 
 void SceneAI::Exit()
