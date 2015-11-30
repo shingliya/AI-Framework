@@ -1,4 +1,4 @@
-﻿Build started 30/11/2015 12:56:40 PM.
+﻿Build started 30/11/2015 1:13:37 PM.
      1>Project "C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Base\Base.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          D:\VS 2013\VC\bin\CL.exe /c /I"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/Common/Source" /I"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glew/include" /I"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glfw/include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Application.cpp Source\Camera.cpp Source\Camera3.cpp Source\GameAsset\Chef.cpp Source\GameAsset\Customer.cpp Source\GameAsset\GameObject.cpp Source\GameAsset\Waitress.cpp Source\GameAsset\WorldOBJ.cpp Source\LoadHmap.cpp Source\LoadOBJ.cpp Source\LoadTGA.cpp Source\main.cpp Source\Mesh.cpp Source\MeshBuilder.cpp Source\SceneAI.cpp Source\shader.cpp Source\SpriteAnimation.cpp Source\Utility.cpp
@@ -53,4 +53,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:07.94
+Time Elapsed 00:00:06.97
