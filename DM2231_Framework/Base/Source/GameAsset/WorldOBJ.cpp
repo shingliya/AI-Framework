@@ -5,6 +5,7 @@
 CWorldOBJ::CWorldOBJ()
 {
 	type = STATIC_OBJ;
+	id = -1;
 }
 
 

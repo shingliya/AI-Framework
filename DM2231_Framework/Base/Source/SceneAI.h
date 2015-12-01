@@ -14,6 +14,8 @@
 #include "GameAsset\Chef.h"
 #include <vector>
 
+#define DEBUGGING true;
+
 class SceneAI : public Scene
 {
 	enum UNIFORM_TYPE
@@ -67,10 +69,18 @@ class SceneAI : public Scene
 		NUM_GEOMETRY,
 	};
 
-	struct s_QUEUE
+	struct s_OBJPOS
 	{
 		Vector3 pos;
 		bool taken;
+		int id;
+
+		s_OBJPOS()
+		{
+			pos = Vector3(0, 0, 0);
+			taken = false;
+			id = -1;
+		}
 	};
 
 public:
@@ -92,6 +102,7 @@ public:
 	void RenderWaitress(CGameObject* go);
 	void RenderCharacter(CGameObject* go);
 
+	void SpawnCustomer();
 	Customer* fetchCustomer(bool getActive = true);
 	Waitress* fetchWaitress();
 	Chef* fetchChef();
@@ -114,7 +125,9 @@ private:
 	float fps;
 
 	//Accomdate 6 queue
-	s_QUEUE queue[6];
+	s_OBJPOS* queue[6];
+	//Accomdate 6 table
+	s_OBJPOS* table[6];
 
 	//Game Asset
 	std::vector<CGameObject*> m_cGOList;

@@ -6,5 +6,7 @@ class CWorldOBJ : public CGameObject
 public:
 	CWorldOBJ();
 	~CWorldOBJ();
+
+	int id;
 };
 

@@ -137,14 +137,6 @@ void SceneAI::Init()
 	bLightEnabled = true;
 
 
-	for (unsigned a = 0; a < 6; ++a)
-	{
-		static int diff = 40;
-		queue[a].taken = false;
-		queue[a].pos.x = 25;
-		queue[a].pos.y = 210 + (a * diff);
-	}
-
 	Waitress* waitress = new Waitress();
 	waitress->setMesh(MeshBuilder::GenerateSphere("Waitress", Color(1, 0, 0), 18, 36));
 	waitress->setPos(Vector3(300, 170, 0));
@@ -161,14 +153,85 @@ void SceneAI::Init()
 	{
 		Customer* customer = new Customer();
 		customer->setScale(Vector3(15, 15, 0));
-		//customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(a / Math::RandFloatMinMax(10, 0), a / Math::RandFloatMinMax(-1, -10), a / Math::RandFloatMinMax(-20, 20)), 18, 36));
 		customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(0, 1, 0), 18, 36));
 		customer->setActive(false);
 		m_cGOList.push_back(customer);
+
+		//Initialize Queue
+		static int diff = 40;
+		queue[a] = new s_OBJPOS();
+		queue[a]->taken = false;
+		queue[a]->pos.x = 25;
+		queue[a]->pos.y = 210 + (a * diff);
 	}
 
 	static float size = 10;
+
+	//===============TABLE=============//
 	CWorldOBJ* newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
+	newObj->setPos(Vector3(200, 300, 0));
+	newObj->setScale(Vector3(60, 60, 10));
+	newObj->id = 1;
+	table[0] = new s_OBJPOS();
+	table[0]->pos = Vector3(200, 300, 0);
+	m_cGOList.push_back(newObj);
+
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
+	newObj->setPos(Vector3(400, 300, 0));
+	newObj->setScale(Vector3(60, 60, 10));
+	newObj->id = 2;
+	table[1] = new s_OBJPOS();
+	table[1]->pos = Vector3(400, 300, 0);
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
+	newObj->setPos(Vector3(600, 300, 0));
+	newObj->setScale(Vector3(60, 60, 10));
+	newObj->id = 3;
+	table[2] = new s_OBJPOS();
+	table[2]->pos = Vector3(600, 300, 0);
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
+	newObj->setPos(Vector3(400, 100, 0));
+	newObj->setScale(Vector3(60, 60, 10));
+	newObj->id = 4;
+	table[3] = new s_OBJPOS();
+	table[3]->pos = Vector3(200, 100, 0);
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
+	newObj->setPos(Vector3(200, 100, 0));
+	newObj->setScale(Vector3(60, 60, 10));
+	newObj->id = 5;
+	table[4] = new s_OBJPOS();
+	table[4]->pos = Vector3(400, 100, 0);
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
+	newObj->setPos(Vector3(600, 100, 0));
+	newObj->setScale(Vector3(60, 60, 10));
+	newObj->id = 6;
+	table[5] = new s_OBJPOS();
+	table[5]->pos = Vector3(600, 100, 0);
+	m_cGOList.push_back(newObj);
+
+
+	//===============BARRIER=============//
+	newObj = new CWorldOBJ();
 	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Floor", Color(1, 1, 1)));
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Barrier.tga");
 	newObj->setPos(Vector3(65, 400, 0));
@@ -266,6 +329,24 @@ Chef* SceneAI::fetchChef()
 	return NULL;
 }
 
+void SceneAI::SpawnCustomer()
+{
+	for (unsigned a = 0; a < 6; ++a)
+	{
+		if (!queue[a]->taken)
+		{
+			Customer* customer = fetchCustomer(false);
+			if (customer != NULL)
+			{
+				queue[a]->taken = true;
+				customer->setActive(true);
+				customer->setPos(queue[a]->pos);
+			}
+			break;
+		}
+	}
+}
+
 void SceneAI::Update(double dt)
 {
 	if(Application::IsKeyPressed('1'))
@@ -298,21 +379,7 @@ void SceneAI::Update(double dt)
 	{
 		if (Application::IsKeyPressed('R'))
 		{
-			for (unsigned a = 0; a < 6; ++a)
-			{
-				if (!queue[a].taken)
-				{
-					Customer* customer = fetchCustomer(false);
-					if (customer != NULL)
-					{
-						queue[a].taken = true;
-						customer->setActive(true);
-						customer->setPos(queue[a].pos);
-					}
-					break;
-				}
-			}
-
+			SpawnCustomer();
 			time = 0.f;
 		}
 	}
@@ -332,14 +399,14 @@ void SceneAI::Update(double dt)
 		{
 			for (int a = 5; a >= 0; a--)
 			{
-				if (queue[a].taken)
+				if (queue[a]->taken)
 				{
 					Customer* customer = fetchCustomer();
 					if (customer != NULL)
 					{
-						if (customer->getPos() == queue[a].pos)
+						if (customer->getPos() == queue[a]->pos)
 						{
-							queue[a].taken = false;
+							queue[a]->taken = false;
 							customer->setActive(false);
 							break;
 						}
@@ -353,7 +420,7 @@ void SceneAI::Update(double dt)
 
 	for (unsigned a = 0; a < 6; ++a)
 	{
-		std::cout << queue[a].taken;
+		std::cout << queue[a]->taken;
 	}
 	std::cout << std::endl;
 
@@ -374,14 +441,14 @@ void SceneAI::Update(double dt)
 		{
 			for (int a = 5; a >= 0; --a)
 			{
-				if (queue[a].taken)
+				if (queue[a]->taken)
 				{
 					Customer* customer = fetchCustomer();
 					if (customer != NULL)
 					{
-						if (customer->getPos() == queue[a].pos)
+						if (customer->getPos() == queue[a]->pos)
 						{
-							queue[a].taken = false;
+							queue[a]->taken = false;
 							customer->setPos(Vector3(customer->getPos().x, 170, 0));
 							waitress->usheringCustomer = true;
 							break;
@@ -622,9 +689,7 @@ void SceneAI::Render()
 		CWorldOBJ* worldObj = dynamic_cast<CWorldOBJ*>(*it);
 		if (worldObj != NULL)
 		{
-			modelStack.PushMatrix();
 			RenderMeshIn2D(worldObj->getMesh(), true, worldObj->getScale().x, worldObj->getScale().y, worldObj->getPos().x, worldObj->getPos().y);
-			modelStack.PopMatrix();
 		}
 	}
 
@@ -638,6 +703,13 @@ void SceneAI::Render()
 	ss1.precision(4);
 	ss1 << "Light(" << lights[0].position.x << ", " << lights[0].position.y << ", " << lights[0].position.z << ")";
 	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 1, 0), 3, 0, 3);
+
+	RenderTextOnScreen(meshList[GEO_TEXT], "1", Color(1, 1, 0), 8, 18, 26.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "2", Color(1, 1, 0), 8, 38, 26.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "3", Color(1, 1, 0), 8, 58, 26.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "4", Color(1, 1, 0), 8, 18, 6.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "5", Color(1, 1, 0), 8, 38, 6.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "6", Color(1, 1, 0), 8, 58, 6.5);
 }
 
 void SceneAI::Exit()
