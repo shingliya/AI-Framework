@@ -111,3 +111,27 @@ void Customer::update(double dt/* waiter obj refrence */)
 	//	break;
 	//}
 }
+
+bool Customer::isQueing()
+{
+	if (state == s_Queing)
+		return true;
+	return false;
+}
+
+bool Customer::isFollowing()
+{
+	if (state == s_follow)
+		return true;
+	return false;
+}
+
+void Customer::setToFollow()
+{
+	state = s_follow;
+}
+
+void Customer::setToSitDown()
+{
+	state = s_SitDown;
+}

@@ -1,5 +1,6 @@
 #include "Waitress.h"
 
+Vector3 Waitress::queuePos = Vector3(66, 170, 0);
 
 
 Waitress::Waitress()
@@ -8,6 +9,7 @@ Waitress::Waitress()
 	currentState = s_Idle;
 	previousState = s_Idle;
 	usheringCustomer = false;
+	CH = NULL;
 }
 
 
@@ -73,4 +75,58 @@ void Waitress::update(const double & dt)
 			break;
 		}
 	}
+}
+
+bool Waitress::isIdle()
+{
+	if (currentState == s_Idle)
+		return true;
+	return false;
+}
+
+bool Waitress::isUsher()
+{
+	if (currentState == s_Usher)
+		return true;
+	return false;
+}
+
+bool Waitress::isTakingOrder()
+{
+	if (currentState == s_TakeOrder)
+		return true;
+	return false;
+}
+
+bool Waitress::isTakingFood()
+{
+	if (currentState == s_TakeFood)
+		return true;
+	return false;
+}
+
+bool Waitress::isDeliveringFood()
+{
+	if (currentState == s_DeliverFood)
+		return true;
+	return false;
+}
+
+bool Waitress::isCleaningTable()
+{
+	if (currentState == s_CleanTable)
+		return true;
+	return false;
+}
+
+bool Waitress::isCleaningFloor()
+{
+	if (currentState == s_CleanFloor)
+		return true;
+	return false;
+}
+
+void Waitress::setToUsher()
+{
+	currentState = s_Usher;
 }

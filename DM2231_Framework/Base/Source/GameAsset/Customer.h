@@ -21,19 +21,11 @@ public:
 
 	void update(double dt/* waiter obj refrence */);
 
-	bool isQueing()
-	{
-		if (state == s_Queing)
-			return true;
-		return false;
-	}
+	bool isQueing();
+	bool isFollowing();
 
-	bool isFollowing()
-	{
-		if (state == s_follow)
-			return true;
-		return false;
-	}
+	void setToFollow();
+	void setToSitDown();
 
 	STATES state;
 	float timmer;

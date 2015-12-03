@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Customer.h"
 
 class Waitress : public CGameObject
 {
@@ -16,13 +17,27 @@ class Waitress : public CGameObject
 	};
 
 public:
+	static Vector3 queuePos;
+
 	Waitress();
 	~Waitress();
+
+	bool isIdle();
+	bool isUsher();
+	bool isTakingOrder();
+	bool isTakingFood();
+	bool isDeliveringFood();
+	bool isCleaningTable();
+	bool isCleaningFloor();
+
+	void setToUsher();
 
 	void update(const double & dt);
 
 	bool usheringCustomer;
-private:
+
+	Customer* CH;
+
 	STATES currentState;
 	STATES previousState;
 };
