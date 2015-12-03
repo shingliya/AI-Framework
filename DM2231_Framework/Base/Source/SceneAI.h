@@ -103,9 +103,12 @@ public:
 	void RenderCharacter(CGameObject* go);
 
 	void SpawnCustomer();
+	void UnspawnCustomer();
 	Customer* fetchCustomer(bool getActive = true);
 	Waitress* fetchWaitress();
 	Chef* fetchChef();
+	s_OBJPOS* fetchQueue(bool getTaken = true);
+	bool isQueueEmpty();
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
