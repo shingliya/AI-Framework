@@ -13,6 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.ss.mobileframework.Text.CText;
+import com.ss.mobileframework.Utility.Vector2;
 
 public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 {
@@ -36,8 +37,18 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
     // 4b) Variable as an index to keep track of the spaceship images
     private short m_SpaceshipIndex = 0;
 
+    //New Location Upon Touch
+    private short mX = 0, mY = 0;
+
+    //Sprite Object
+    private SpriteAnimation stone_anim = new SpriteAnimation(BitmapFactory.decodeResource(getResources(), R.drawable.flystone), 320, 64, 5, 5);
+
     //Text
     CText text = new CText();
+
+    //Ship Width & Height
+    CText m_ShipWidth = new CText();
+    CText m_ShipHeight = new CText();
 
 
     // Variables for FPS
@@ -76,6 +87,14 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         text.setScale(30.f);
         text.setColor(255, 255, 128, 0);
         text.getPos().setPos(0, 50);
+
+        m_ShipWidth.setScale(30.f);
+        m_ShipWidth.setColor(255, 255, 128, 0);
+        m_ShipWidth.getPos().setPos(0, 70);
+
+        m_ShipHeight.setScale(30.f);
+        m_ShipHeight.setColor(255, 255, 128, 0);
+        m_ShipHeight.getPos().setPos(0, 90);
 
         // Create the game loop thread
         myThread = new GameThread(getHolder(), this);
@@ -148,6 +167,12 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
 
                 //Text Update
                 text.setText(Float.toString(FPS));
+
+                m_ShipHeight.setText(Integer.toString(m_Spaceship[m_SpaceshipIndex].getHeight()));
+                m_ShipWidth.setText(Integer.toString(m_Spaceship[m_SpaceshipIndex].getWidth()));
+
+                //Animation Update
+                stone_anim.update(System.currentTimeMillis());
             }
             break;
         }
@@ -174,23 +199,33 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
             return;
         }
         canvas.drawBitmap(m_BackgroundScale, m_Background_x, m_Background_y, null);
-        //canvas.drawBitmap(m_BackgroundScale, m_Background_x + m_screenWidth, m_Background_y, null);
         canvas.drawBitmap(m_BackgroundScale, m_Background_x, m_Background_y - m_screenHeight, null);
 
         // 4d) Draw the spaceships
-        canvas.drawBitmap(m_Spaceship[m_SpaceshipIndex], 100, 100, null);
+        canvas.drawBitmap(m_Spaceship[m_SpaceshipIndex], mX, mY, null);
 
 
         // Bonus) To print FPS on the screen
         canvas.drawText(text.getText(), text.getPos().x, text.getPos().y, text.getPaint()); // Align text to top left
+        canvas.drawText(m_ShipWidth.getText(), m_ShipWidth.getPos().x, m_ShipWidth.getPos().y, m_ShipWidth.getPaint()); // Align text to top left
+        canvas.drawText(m_ShipHeight.getText(), m_ShipHeight.getPos().x, m_ShipHeight.getPos().y, m_ShipHeight.getPaint()); // Align text to top left
+
+        stone_anim.draw(canvas);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-
         // 5) In event of touch on screen, the spaceship will relocate to the point of touch
+        short X = (short)event.getX();
+        short Y = (short)event.getY();
 
+        if(event.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            //New Location
+            mX = (short)(X - m_Spaceship[m_SpaceshipIndex].getWidth() / 2);
+            mY = (short)(Y - m_Spaceship[m_SpaceshipIndex].getHeight() / 2);
+        }
 
         return super.onTouchEvent(event);
     }
