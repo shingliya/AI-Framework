@@ -331,20 +331,66 @@ Chef* SceneAI::fetchChef()
 
 void SceneAI::SpawnCustomer()
 {
+	s_OBJPOS* queue = fetchQueue(false);
+	Customer* customer = fetchCustomer(false);
+	if (queue != NULL && customer != NULL)
+	{
+		queue->taken = true;
+		customer->setActive(true);
+		customer->setPos(queue->pos);
+	}
+}
+
+bool SceneAI::isQueueEmpty()
+{
 	for (unsigned a = 0; a < 6; ++a)
 	{
-		if (!queue[a]->taken)
+		if (queue[a]->taken)
 		{
-			Customer* customer = fetchCustomer(false);
-			if (customer != NULL)
-			{
-				queue[a]->taken = true;
-				customer->setActive(true);
-				customer->setPos(queue[a]->pos);
-			}
-			break;
+			return false;
 		}
 	}
+	return true;
+}
+
+void SceneAI::UnspawnCustomer()
+{
+	s_OBJPOS* queue = fetchQueue();
+	Customer* customer = fetchCustomer();
+	if (queue != NULL && customer != NULL)
+	{
+		if (queue->pos == customer->getPos())
+		{
+			queue->taken = false;
+			customer->setActive(false);
+		}
+	}
+}
+
+SceneAI::s_OBJPOS* SceneAI::fetchQueue(bool getTaken)
+{
+	if (getTaken == false)
+	{
+		for (unsigned a = 0; a < 6; ++a)
+		{
+			if (!queue[a]->taken)
+			{
+				return queue[a];
+			}
+		}
+	}
+	else
+	{
+		for (int a = 5; a >= 0; --a)
+		{
+			if (queue[a]->taken)
+			{
+				return queue[a];
+			}
+		}
+	}
+
+	return NULL;
 }
 
 void SceneAI::Update(double dt)
@@ -397,37 +443,22 @@ void SceneAI::Update(double dt)
 	{
 		if (Application::IsKeyPressed('E'))
 		{
-			for (int a = 5; a >= 0; a--)
-			{
-				if (queue[a]->taken)
-				{
-					Customer* customer = fetchCustomer();
-					if (customer != NULL)
-					{
-						if (customer->getPos() == queue[a]->pos)
-						{
-							queue[a]->taken = false;
-							customer->setActive(false);
-							break;
-						}
-					}
-				}
-			}
-			
+			UnspawnCustomer();
 			time2 = 0.f;
 		}
 	}
 
-	for (unsigned a = 0; a < 6; ++a)
+	/*for (unsigned a = 0; a < 6; ++a)
 	{
 		std::cout << queue[a]->taken;
 	}
-	std::cout << std::endl;
+	std::cout << std::endl;*/
+	std::cout << std::boolalpha << isQueueEmpty() << std::endl;
 
 	Waitress* waitress = fetchWaitress();
 	if (waitress != NULL)
 	{
-		if (Application::IsKeyPressed('A') && waitress->getPos().x > 66)
+		/*if (Application::IsKeyPressed('A') && waitress->getPos().x > 66)
 		{
 			waitress->setPos(waitress->getPos() + Vector3(-1, 0, 0));
 		}
@@ -456,7 +487,7 @@ void SceneAI::Update(double dt)
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	SpriteAnimation *sa = dynamic_cast<SpriteAnimation *> (meshList[GEO_FIRE_SPRITE]);
