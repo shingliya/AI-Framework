@@ -24,6 +24,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Optionspage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <!--Only One launcher, rest use default -->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".Gamepage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

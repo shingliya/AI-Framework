@@ -8,11 +8,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-public class Mainmenu extends Activity implements View.OnClickListener
+public class Optionspage extends Activity implements View.OnClickListener
 {
-    private Button Start_Button;
-    private Button Options_Button;
-    private Button Help_Button;
+    private Button Back_Button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,32 +21,20 @@ public class Mainmenu extends Activity implements View.OnClickListener
         //Hide top bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.mainmenu);
+        setContentView(R.layout.optionspage);
 
-        Start_Button = (Button)findViewById(R.id.Start_Button);
-        Start_Button.setOnClickListener(this);
-
-        Options_Button = (Button)findViewById(R.id.options_Button);
-        Options_Button.setOnClickListener(this);
+        Back_Button = (Button)findViewById(R.id.back_Button);
+        Back_Button.setOnClickListener(this);
     }
 
     public void onClick(View v)
     {
         Intent intent = new Intent();
 
-        if(v == Start_Button)
+        if(v == Back_Button)
         {
-            intent.setClass(this, Gamepage.class);
+            intent.setClass(this, Mainmenu.class);
         }
-        else if(v == Options_Button)
-        {
-            intent.setClass(this, Optionspage.class);
-        }
-        else if (v == Help_Button)
-        {
-            //intent.setClass(this, Helppage.class);
-        }
-
         startActivity(intent);
     }
 

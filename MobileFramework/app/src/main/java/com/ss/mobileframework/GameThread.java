@@ -17,11 +17,11 @@ public class GameThread extends Thread
     private boolean isPause;
 
     // get actual fps
-    int frameCount;
+    int frameCount = 0;
     long lastTime = 0;
     long lastFPSTime = 0;
-    float fps;
-    float dt;
+    float fps = 0;
+    float dt = 0;
 
     // Constructor for this class
     public GameThread(SurfaceHolder holder, GamePanelSurfaceView myView)
