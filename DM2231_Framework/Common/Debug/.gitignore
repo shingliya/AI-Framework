@@ -1,4 +1,4 @@
-/vc120.pdb
+*.pdb
 *.exe
 *.pdb
 *.lib
