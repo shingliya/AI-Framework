@@ -149,6 +149,12 @@ void SceneAI::Init()
 	customer->setScale(Vector3(15, 15, 0));
 	m_cGOList.push_back(customer);*/
 
+	Chef* ptr = new Chef();
+	ptr->setMesh(MeshBuilder::GenerateSphere("Chef", Color(1, 1, 0), 18, 36));
+	ptr->setPos(Vector3(525, 550, 0));
+	ptr->setScale(Vector3(15, 15, 0));
+	m_cGOList.push_back(ptr);
+
 	for (unsigned a = 0; a < 6; ++a)
 	{
 		Customer* customer = new Customer();
@@ -459,6 +465,20 @@ void SceneAI::Update(double dt)
 		}
 	}
 
+	Chef* chef = fetchChef();
+	if (Application::IsKeyPressed('F'))
+	{
+		bool order[6];
+		order[0] = 1;
+		order[1] = 0;
+		order[2] = 0;
+		order[3] = 0;
+		order[4] = 0;
+		order[5] = 0;
+		chef->passOrder(order, 6);
+	}
+	chef->update(dt);
+
 	SpriteAnimation *sa = dynamic_cast<SpriteAnimation *> (meshList[GEO_FIRE_SPRITE]);
 	
 	if(!sa->m_anim->ended)
@@ -690,6 +710,20 @@ void SceneAI::Render()
 		if (worldObj != NULL)
 		{
 			RenderMeshIn2D(worldObj->getMesh(), true, worldObj->getScale().x, worldObj->getScale().y, worldObj->getPos().x, worldObj->getPos().y);
+		}
+
+		Chef* chef = dynamic_cast<Chef*>(*it);
+		if (chef != NULL)
+		{
+			if (chef->getActive())
+			{
+				RenderMeshIn2D(chef->getMesh(), true, chef->getScale().x, chef->getScale().y, chef->getPos().x, chef->getPos().y);
+				for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+				{
+					if (chef->cookedFoodList[i] == true)
+					RenderMeshIn2D(meshList[GEO_FIRE_SPRITE], true, 50, 50, 525, 500);
+				}
+			}
 		}
 	}
 

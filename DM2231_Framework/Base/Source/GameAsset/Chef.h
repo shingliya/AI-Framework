@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+const int MAX_COSTOMER_COUNT = 6;
+
 class Chef : public CGameObject
 {
 public:
@@ -14,9 +16,10 @@ public:
 	~Chef();
 
 	void update(double dt);
+	void passOrder(bool order[], unsigned sizeOfArray);
 
 	STATES state;
 	float timmer;
-	int numOfOrder, numOfCookedFood;
+	bool orderList[MAX_COSTOMER_COUNT], cookedFoodList[MAX_COSTOMER_COUNT];
+	int currentCustomerOrder;
 };
-

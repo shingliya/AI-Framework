@@ -48,6 +48,7 @@ double Application::camera_yaw = 0.0, Application::camera_pitch = 0.0;
 
 Application::Application()
 {
+	Math::InitRNG();
 }
 
 Application::~Application()
