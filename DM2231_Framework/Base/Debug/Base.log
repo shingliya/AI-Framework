@@ -1,18 +1,12 @@
-﻿Build started 12/4/2015 2:44:20 PM.
+﻿Build started 12/4/2015 4:43:08 PM.
      1>Project "C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Base\Base.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/Common/Source" /I"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glew/include" /I"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glfw/include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Application.cpp Source\GameAsset\Waitress.cpp Source\SceneAI.cpp
-         Application.cpp
-         Generating Code...
-         Compiling...
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/Common/Source" /I"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glew/include" /I"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glfw/include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\SceneAI.cpp
          SceneAI.cpp
      1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(166): warning C4244: '=' : conversion from 'unsigned int' to 'float', possible loss of data
      1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(297): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
      1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(315): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(917): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(919): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-         Waitress.cpp
-         Generating Code...
+     1>c:\users\142128g\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(931): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug" /LIBPATH:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glfw/lib-msvc100" /LIBPATH:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\/glew/lib" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\142128G\Desktop\AI-Framework\DM2231_Framework\Debug\Base.lib" /MACHINE:X86 Debug\Application.obj
          Debug\Camera.obj
@@ -39,4 +33,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.78
+Time Elapsed 00:00:01.34

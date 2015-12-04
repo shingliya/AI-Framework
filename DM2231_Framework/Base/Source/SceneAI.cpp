@@ -139,9 +139,9 @@ void SceneAI::Init()
 
 	Waitress* waitress = new Waitress();
 	waitress->setMesh(MeshBuilder::GenerateSphere("Waitress", Color(1, 0, 0), 18, 36));
-	waitress->setPos(Vector3(300, 170, 0));
+	waitress->setPos(Vector3(400, 170, 0));
 	waitress->setScale(Vector3(15, 15, 0));
-	waitress->initPos = Vector3(300, 170, 0);
+	waitress->initPos = Vector3(400, 170, 0);
 	m_cGOList.push_back(waitress);
 
 	/*Customer* customer = new Customer();
@@ -174,9 +174,9 @@ void SceneAI::Init()
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
 	newObj->setPos(Vector3(200, 300, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	newObj->id = 1;
 	table[0] = new s_OBJPOS();
 	table[0]->pos = Vector3(200, 300, 0);
+	table[0]->id = 1;
 	m_cGOList.push_back(newObj);
 
 
@@ -185,9 +185,9 @@ void SceneAI::Init()
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
 	newObj->setPos(Vector3(400, 300, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	newObj->id = 2;
 	table[1] = new s_OBJPOS();
 	table[1]->pos = Vector3(400, 300, 0);
+	table[1]->id = 2;
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
@@ -195,9 +195,9 @@ void SceneAI::Init()
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
 	newObj->setPos(Vector3(600, 300, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	newObj->id = 3;
 	table[2] = new s_OBJPOS();
 	table[2]->pos = Vector3(600, 300, 0);
+	table[2]->id = 3;
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
@@ -205,9 +205,9 @@ void SceneAI::Init()
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
 	newObj->setPos(Vector3(400, 100, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	newObj->id = 4;
 	table[3] = new s_OBJPOS();
 	table[3]->pos = Vector3(200, 100, 0);
+	table[3]->id = 4;
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
@@ -215,9 +215,9 @@ void SceneAI::Init()
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
 	newObj->setPos(Vector3(200, 100, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	newObj->id = 5;
 	table[4] = new s_OBJPOS();
 	table[4]->pos = Vector3(400, 100, 0);
+	table[4]->id = 5;
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
@@ -225,9 +225,9 @@ void SceneAI::Init()
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
 	newObj->setPos(Vector3(600, 100, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	newObj->id = 6;
 	table[5] = new s_OBJPOS();
 	table[5]->pos = Vector3(600, 100, 0);
+	table[5]->id = 6;
 	m_cGOList.push_back(newObj);
 
 
@@ -914,7 +914,19 @@ void SceneAI::WaitressState_Usher(Waitress* waitress)
 	{
 		if (customer->isFollowing())
 		{
-			if (moveToLocation(waitress, tablepos->pos - Vector3(0, tableOffset, 0)))
+			Vector3 tableOffsetPos = tablepos->pos;
+
+			if (tablepos->id <= 3)
+			{
+				tableOffsetPos.y -= 50;
+			}
+			else
+			{
+				tableOffsetPos.y += 50;
+			}
+
+
+			if (moveToLocation(waitress, tableOffsetPos))
 			{
 				customer->pos = tablepos->pos - Vector3(tableOffset, 0, 0);
 				customer->setToSitDown();
