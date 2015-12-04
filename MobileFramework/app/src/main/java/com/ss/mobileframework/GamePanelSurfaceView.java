@@ -39,11 +39,14 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
     //Text
     CText text = new CText();
 
-
     // Variables for FPS
     public float FPS;
     float deltaTime;
     long dt;
+
+    //Variable for location to move to
+    private short mX = 0, mY = 0;
+    private short mx = 0, my = 0;
 
     // Variable for Game State check
     private short GameState;
@@ -148,6 +151,23 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
 
                 //Text Update
                 text.setText(Float.toString(FPS));
+
+                if(mx != mX)
+                {
+                    if(mx < mX)
+                        mx += (mX-mx)/10;
+
+                    if(mx > mX)
+                        mx -= (mx-mX)/10;
+                }
+                if(my != mY)
+                {
+                    if(my < mY)
+                        my += (mY-my)/10;
+
+                    if(my > mY)
+                        my -= (my-mY)/10;
+                }
             }
             break;
         }
@@ -164,7 +184,6 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         }
     }
 
-
     //============ RENDER ============//
     public void RenderGameplay(Canvas canvas)
     {
@@ -178,7 +197,7 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         canvas.drawBitmap(m_BackgroundScale, m_Background_x, m_Background_y - m_screenHeight, null);
 
         // 4d) Draw the spaceships
-        canvas.drawBitmap(m_Spaceship[m_SpaceshipIndex], 100, 100, null);
+        canvas.drawBitmap(m_Spaceship[m_SpaceshipIndex], mx, my, null);
 
 
         // Bonus) To print FPS on the screen
@@ -190,8 +209,15 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
     {
 
         // 5) In event of touch on screen, the spaceship will relocate to the point of touch
+        short X = (short)event.getX();
+        short Y = (short) event.getY();
 
-
+        if(event.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            // New location where the image to land on
+            mX= (short)(X -m_Spaceship[m_SpaceshipIndex].getWidth()/2);
+            mY= (short)(Y -m_Spaceship[m_SpaceshipIndex].getHeight()/2);
+        }
         return super.onTouchEvent(event);
     }
 }
