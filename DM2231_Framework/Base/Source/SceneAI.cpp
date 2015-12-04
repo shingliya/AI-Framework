@@ -646,6 +646,47 @@ void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX, float si
 	projectionStack.PopMatrix();
 }
 
+void SceneAI::RenderMeshIn2Dz(Mesh *mesh, bool enableLight, float sizeX, float sizeY, float x, float y, float z)
+{
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity();
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();
+	modelStack.Translate(x, y, z);
+	modelStack.Scale(sizeX, sizeY, 0);
+
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
+
+	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+	for (unsigned a = 0; a < 2; ++a)
+	{
+		if (mesh->textureArray[a] > 0)
+		{
+			if (mesh->textureArray[a] > 0)
+			{
+				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + a], 1);
+			}
+			else
+			{
+				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + a], 0);
+			}
+			glActiveTexture(GL_TEXTURE0 + a);
+			glBindTexture(GL_TEXTURE_2D, mesh->textureArray[a]);
+			glUniform1i(m_parameters[U_COLOR_TEXTURE + a], a);
+		}
+	}
+	mesh->Render();
+
+	modelStack.PopMatrix();
+	viewStack.PopMatrix();
+	projectionStack.PopMatrix();
+}
 
 void SceneAI::Render()
 {
@@ -704,7 +745,7 @@ void SceneAI::Render()
 				RenderMeshIn2D(customer->getMesh(), true, customer->getScale().x, customer->getScale().y, customer->getPos().x, customer->getPos().y);
 			}
 		}
-
+		
 		//World Object
 		CWorldOBJ* worldObj = dynamic_cast<CWorldOBJ*>(*it);
 		if (worldObj != NULL)
@@ -718,10 +759,22 @@ void SceneAI::Render()
 			if (chef->getActive())
 			{
 				RenderMeshIn2D(chef->getMesh(), true, chef->getScale().x, chef->getScale().y, chef->getPos().x, chef->getPos().y);
-				for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+			}
+		}
+
+	}
+
+	{
+		Chef* chef = fetchChef();
+		if (chef != NULL)
+		{
+			for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+			{
+				if (chef->state == Chef::s_Cook)
 				{
-					if (chef->cookedFoodList[i] == true)
-					RenderMeshIn2D(meshList[GEO_FIRE_SPRITE], true, 50, 50, 525, 500);
+					modelStack.PushMatrix();
+					RenderMeshIn2Dz(meshList[GEO_FIRE_SPRITE], true, 50, 50, 775, 550, 1);
+					modelStack.PopMatrix();
 				}
 			}
 		}

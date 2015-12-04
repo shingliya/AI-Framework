@@ -1,7 +1,8 @@
-﻿Build started 4/12/2015 12:13:50 PM.
+﻿Build started 4/12/2015 3:57:51 PM.
      1>Project "C:\Users\ShingLiya\Desktop\sem 2\AI\AI-Framework\DM2231_Framework\Base\Base.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\ShingLiya\Desktop\sem 2\AI\AI-Framework\DM2231_Framework\/Common/Source" /I"C:\Users\ShingLiya\Desktop\sem 2\AI\AI-Framework\DM2231_Framework\/glew/include" /I"C:\Users\ShingLiya\Desktop\sem 2\AI\AI-Framework\DM2231_Framework\/glfw/include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\SceneAI.cpp
+     1>cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
          SceneAI.cpp
      1>c:\users\shingliya\desktop\sem 2\ai\ai-framework\dm2231_framework\base\source\sceneai.cpp(171): warning C4244: '=' : conversion from 'unsigned int' to 'float', possible loss of data
      1>c:\users\shingliya\desktop\sem 2\ai\ai-framework\dm2231_framework\base\source\sceneai.cpp(382): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
@@ -32,4 +33,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.50
+Time Elapsed 00:00:01.23

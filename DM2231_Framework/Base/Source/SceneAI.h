@@ -94,7 +94,8 @@ public:
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX = 1.0f, float sizeY = 1.f, float x=0.0f, float y=0.0f);
+	void RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX = 1.0f, float sizeY = 1.f, float x = 0.0f, float y = 0.0f);
+	void RenderMeshIn2Dz(Mesh *mesh, bool enableLight, float sizeX = 1.0f, float sizeY = 1.f, float x = 0.0f, float y = 0.0f, float z = 0.0f);
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox();
 	void RenderSkyPlane();
