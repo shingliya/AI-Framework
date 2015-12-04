@@ -106,10 +106,20 @@ public:
 	void SpawnCustomer();
 	void UnspawnCustomer();
 	Customer* fetchCustomer(bool getActive = true);
+	Customer* fetchQueueingCustomer();
 	Waitress* fetchWaitress();
 	Chef* fetchChef();
-	s_OBJPOS* fetchQueue(bool getTaken = true);
+	s_OBJPOS* fetchQueue(bool tekan = true);
+	s_OBJPOS* fetchQueueByPos(Vector3 pos);
+	s_OBJPOS* fetchTable(bool taken = true);
 	bool isQueueEmpty();
+	bool isTableEmpty();
+	bool moveToLocation(CGameObject* obj, Vector3 destination, bool moveByX = true);
+
+	void WaitressUpdate(const double dt);
+	void WaitressState_Usher(Waitress* waitress);
+
+	void CustomerUpdate(const double dt);
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];

@@ -46,7 +46,7 @@ public:
 
 	void setMesh(Mesh* mesh);
 	Mesh* getMesh();
-protected:
+
 	//float
 	static float velSpeed;
 	float rotateAngle;
