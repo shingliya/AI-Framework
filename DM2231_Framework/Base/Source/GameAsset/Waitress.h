@@ -18,6 +18,7 @@ class Waitress : public CGameObject
 
 public:
 	static Vector3 queuePos;
+	Vector3 initPos;
 
 	Waitress();
 	~Waitress();

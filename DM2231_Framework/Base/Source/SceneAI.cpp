@@ -141,6 +141,7 @@ void SceneAI::Init()
 	waitress->setMesh(MeshBuilder::GenerateSphere("Waitress", Color(1, 0, 0), 18, 36));
 	waitress->setPos(Vector3(300, 170, 0));
 	waitress->setScale(Vector3(15, 15, 0));
+	waitress->initPos = Vector3(300, 170, 0);
 	m_cGOList.push_back(waitress);
 
 	/*Customer* customer = new Customer();
@@ -633,12 +634,12 @@ Customer* SceneAI::fetchCustomer(bool getActive)
 
 Customer* SceneAI::fetchQueueingCustomer()
 {
-	for (std::vector<CGameObject*>::reverse_iterator it = m_cGOList.rbegin(); it != m_cGOList.rend(); ++it)
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
 	{
 		Customer* customer = dynamic_cast<Customer*>(*it);
 		if (customer != NULL)
 		{
-			if (!customer->getActive() && customer->isQueing())
+			if (customer->getActive() && customer->isQueing())
 			{
 				return customer;
 			}
@@ -863,135 +864,69 @@ void SceneAI::WaitressUpdate(const double dt)
 
 void SceneAI::WaitressState_Usher(Waitress* waitress)
 {
-	static bool setUp = false;
 	static Customer* customer = NULL;
 	static s_OBJPOS* queuepos = NULL;
 	static s_OBJPOS* tablepos = NULL;
 	static int tableOffset = 50;
 
-	//if (!isQueueEmpty())
+	if (!waitress->usheringCustomer)
 	{
-		if (!setUp)
+		if (!isQueueEmpty())
 		{
-			//customer = fetchCustomer();
-			for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+			if (customer == NULL && queuepos == NULL && tablepos == NULL)
 			{
-				Customer* cus = dynamic_cast<Customer*>(*it);
-				if (cus != NULL)
+				if (moveToLocation(waitress, Waitress::queuePos, false))
 				{
-					if (cus->getActive() && cus->isQueing())
+					Customer* tempCus = fetchQueueingCustomer();
+					s_OBJPOS* tempQueue = fetchQueue();
+					if (tempCus != NULL && tempQueue != NULL)
 					{
-						customer = cus;
-						break;
-					}
-				}
-			}
-			if (customer != NULL)
-			{
-				queuepos = fetchQueue();
-				if (queuepos != NULL)
-				{
-					
-					if (Vector3(queuepos->pos - customer->pos).Length() < 5)
-					{
-						
-						tablepos = fetchTable(false);
-						if (tablepos != NULL)
+						if (tempCus->pos == tempQueue->pos)
 						{
-							setUp = true;
+							s_OBJPOS* tempTable = fetchTable(false);
+							if (tempTable != NULL)
+							{
+								customer = tempCus;
+								queuepos = tempQueue;
+								tablepos = tempTable;
+							}
 						}
 					}
 				}
 			}
-		}
-		else
-		{
-			if (!waitress->usheringCustomer)
-			{
-				if (moveToLocation(waitress, Waitress::queuePos, false))
-				{
-					queuepos->taken = false;
-					customer->pos.y = 170;
-					customer->setToFollow();
-					waitress->usheringCustomer = true;
-				}
-			}
 			else
 			{
-				if (customer->isFollowing())
-				{
-					if (moveToLocation(waitress, tablepos->pos - Vector3(0, tableOffset, 0)))
-					{
-						customer->pos = tablepos->pos - Vector3(tableOffset, 0, 0);
-						customer->setToSitDown();
-						tablepos->taken = true;
-						waitress->usheringCustomer = false;
-
-						setUp = false;
-						customer = NULL;
-						tablepos = NULL;
-						queuepos = NULL;
-					}
-				}
-			}
-		}
-	}
-
-	/*static bool setUp = false;
-	static s_OBJPOS* queuepos = NULL;
-	static s_OBJPOS* tablepos = NULL;
-	static int tableOffset = 50;
-
-	if (!setUp)
-	{
-		if (waitress->CH == NULL)
-		{
-			Customer* customer = fetchQueueingCustomer();
-			if (customer != NULL)
-			{
-				waitress->CH = customer;
-			}
-		}
-		else
-		{
-			queuepos = fetchQueueByPos(waitress->CH->pos);
-			if (queuepos != NULL)
-			{
-				tablepos = fetchTable(false);
-				if (tablepos != NULL)
-					setUp = true;
-			}
-		}
-	}
-	else
-	{
-		if (!waitress->usheringCustomer)
-		{
-			if (moveToLocation(waitress, Waitress::queuePos, false))
-			{
 				queuepos->taken = false;
-				waitress->CH->pos.y = 170;
-				waitress->CH->setToFollow();
+				customer->pos.y = 170;
+				customer->setToFollow();
 				waitress->usheringCustomer = true;
 			}
 		}
 		else
 		{
-			if (waitress->CH->isFollowing())
+			if (moveToLocation(waitress, waitress->initPos, false))
 			{
-				if (moveToLocation(waitress, tablepos->pos - Vector3(0, tableOffset, 0)))
-				{
-					waitress->CH->pos = tablepos->pos - Vector3(tableOffset, 0, 0);
-					waitress->CH->setToSitDown();
-					tablepos->taken = true;
-					waitress->usheringCustomer = false;
-
-					setUp = false;
-					tablepos = queuepos = NULL;
-				}
+				std::cout << "Senpai!" << std::endl;
 			}
 		}
-	}*/
+	}
+	else
+	{
+		if (customer->isFollowing())
+		{
+			if (moveToLocation(waitress, tablepos->pos - Vector3(0, tableOffset, 0)))
+			{
+				customer->pos = tablepos->pos - Vector3(tableOffset, 0, 0);
+				customer->setToSitDown();
+				tablepos->taken = true;
+				waitress->usheringCustomer = false;
+
+				customer = NULL;
+				tablepos = NULL;
+				queuepos = NULL;
+			}
+		}
+	}
 }
 
 void SceneAI::CustomerUpdate(const double dt)
