@@ -13,6 +13,7 @@ Chef::Chef()
 		cookedFoodList[i] = false;
 	}
 	currentCustomerOrder = -1;
+	numOfReadyFood = 0;
 }
 
 
@@ -32,34 +33,50 @@ void Chef::update(double dt)
 			{
 				currentCustomerOrder = i;
 				state = s_Cook;
-				pos.Set(725, 550, 0);
 				break;
 			}
 		}
 		break;
 	case s_Cook:
-		if (timmer == -1)
+		if (pos.x <= 500)
 		{
-			timmer = Math::RandFloatMinMax(5, 15);
+			pos.x += 1;
 		}
 		else
 		{
-			timmer -= dt;
-			if (timmer < 0)
+			if (timmer == -1)
 			{
-				timmer = -1;
-				state = s_placeFood;
+				timmer = Math::RandFloatMinMax(5, 15);
+			}
+			else
+			{
+				timmer -= dt;
+				if (timmer < 0)
+				{
+					timmer = -1;
+					state = s_placeFood;
+				}
 			}
 		}
 		break;
 	case s_placeFood:
-		//move to waypoint and place food
-		//if (reach waypoint)
+		if (pos.x >= 300)
+		{
+			pos.x -= 1;
+		}
+		else
 		{
 			orderList[currentCustomerOrder] = false;
 			cookedFoodList[currentCustomerOrder] = true;
 			currentCustomerOrder = -1;
-			pos.Set(525, 550, 0);
+			numOfReadyFood = 0;
+			for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+			{
+				if (cookedFoodList[i])
+				{
+					numOfReadyFood += 1;
+				}
+			}
 			state = s_Idle;
 		}
 		break;
@@ -69,4 +86,22 @@ void Chef::update(double dt)
 void Chef::passOrder(bool order[], unsigned sizeOfArray)
 {
 	memcpy(orderList, order, sizeof(bool)*sizeOfArray);
+}
+
+bool Chef::takeFood(int slot)
+{
+	if (cookedFoodList[slot])
+	{
+		cookedFoodList[slot] = false;
+		numOfReadyFood = 0;
+		for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+		{
+			if (cookedFoodList[i])
+			{
+				numOfReadyFood += 1;
+			}
+		}
+		return true;
+	}
+	return false;
 }

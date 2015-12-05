@@ -127,6 +127,9 @@ void SceneAI::Init()
 	meshList[GEO_FIRE_SPRITE]->textureArray[0] = LoadTGA("Image//fire.tga");
 	SpriteAnimation *sa = dynamic_cast<SpriteAnimation *> (meshList[GEO_FIRE_SPRITE]);
 	sa->m_anim->Set(0, 7, 0, 1.f);
+	
+	meshList[GEO_RICE] = (MeshBuilder::GenerateQuad("rice", Color(1, 1, 1)));
+	meshList[GEO_RICE]->textureArray[0] = LoadTGA("Image//Diner//rice.tga");
 
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 1000 units
 	Mtx44 perspective;
@@ -154,7 +157,7 @@ void SceneAI::Init()
 
 	Chef* ptr = new Chef();
 	ptr->setMesh(MeshBuilder::GenerateSphere("Chef", Color(1, 1, 0), 18, 36));
-	ptr->setPos(Vector3(525, 550, 0));
+	ptr->setPos(Vector3(300, 550, 2));
 	ptr->setScale(Vector3(15, 15, 0));
 	m_cGOList.push_back(ptr);
 
@@ -274,6 +277,13 @@ void SceneAI::Init()
 	newObj->setPos(Vector3(600, 450, 0));
 	newObj->setScale(Vector3(400, 300, size));
 	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Kitchen", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Kitchen.tga");
+	newObj->setPos(Vector3(400, 535, 1));
+	newObj->setScale(Vector3(325, 325, size));
+	m_cGOList.push_back(newObj);
 }
 
 void SceneAI::Update(double dt)
@@ -359,11 +369,11 @@ void SceneAI::Update(double dt)
 	{
 		bool order[6];
 		order[0] = 1;
-		order[1] = 0;
-		order[2] = 0;
-		order[3] = 0;
-		order[4] = 0;
-		order[5] = 0;
+		order[1] = 1;
+		order[2] = 1;
+		order[3] = 1;
+		order[4] = 1;
+		order[5] = 1;
 		chef->passOrder(order, 6);
 	}
 	chef->update(dt);
@@ -611,18 +621,21 @@ void SceneAI::Render()
 
 	}
 
+	//fire, rice
 	Chef* chef = fetchChef();
 	if (chef != NULL)
 	{
-		for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+		for (int i = 0; i < chef->numOfReadyFood; ++i)
 		{
-			if (chef->state == Chef::s_Cook)
+			RenderMeshIn2D(meshList[GEO_RICE], true, Vector3(30, 30, 0), Vector3(300 + 35 * i, 510, 2));
+		}
+			if (chef->state == Chef::s_Cook && chef->timmer != -1)
 			{
 				modelStack.PushMatrix();
-				RenderMeshIn2D(meshList[GEO_FIRE_SPRITE], true, Vector3(50, 50, 0), Vector3(775, 550, 1));
+				RenderMeshIn2D(meshList[GEO_FIRE_SPRITE], true, Vector3(50, 50, 0), Vector3(485, 590, 2));
 				modelStack.PopMatrix();
 			}
-		}
+		
 	}
 
 	//On screen text

@@ -66,6 +66,7 @@ class SceneAI : public Scene
 		GEO_TEXT,
 		GEO_QUAD,
 		GEO_FIRE_SPRITE,
+		GEO_RICE,
 		NUM_GEOMETRY,
 	};
 
