@@ -10,7 +10,6 @@ public:
 		s_follow,
 		s_SitDown,
 		s_ReadyToOrder,
-		s_Ordering,
 		s_WaitForFood,
 		s_Eating,
 		s_Leave,
@@ -19,6 +18,7 @@ public:
 	Customer();
 	~Customer();
 
+	std::string renderState();
 	void update(double dt/* waiter obj refrence */);
 
 	bool isQueing();

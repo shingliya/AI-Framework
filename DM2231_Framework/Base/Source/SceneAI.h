@@ -74,10 +74,12 @@ class SceneAI : public Scene
 		Vector3 pos;
 		bool taken;
 		int id;
+		Vector3 stateText;
 
 		s_OBJPOS()
 		{
-			pos = Vector3(0, 0, 0);
+			pos.SetZero();
+			stateText.SetZero();
 			taken = false;
 			id = -1;
 		}
@@ -94,8 +96,7 @@ public:
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX = 1.0f, float sizeY = 1.f, float x = 0.0f, float y = 0.0f);
-	void RenderMeshIn2Dz(Mesh *mesh, bool enableLight, float sizeX = 1.0f, float sizeY = 1.f, float x = 0.0f, float y = 0.0f, float z = 0.0f);
+	void RenderMeshIn2D(Mesh *mesh, bool enableLight, Vector3 scale, Vector3 pos);
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox();
 	void RenderSkyPlane();

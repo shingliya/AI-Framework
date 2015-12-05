@@ -13,6 +13,38 @@ Customer::~Customer()
 {
 }
 
+std::string Customer::renderState()
+{
+	switch (state)
+	{
+	case Customer::s_Queing:
+		return "Queing";
+		break;
+	case Customer::s_follow:
+		return "Following";
+		break;
+	case Customer::s_SitDown:
+		return "Sitted";
+		break;
+	case Customer::s_ReadyToOrder:
+		return "Ready To Order";
+		break;
+	case Customer::s_WaitForFood:
+		return "Waiting for Food";
+		break;
+	case Customer::s_Eating:
+		return "Eating";
+		break;
+	case Customer::s_Leave:
+		return "Leaving";
+		break;
+	default:
+		break;
+	}
+
+	return "";
+}
+
 void Customer::update(double dt/* waiter obj refrence */)
 {
 	//switch (state)

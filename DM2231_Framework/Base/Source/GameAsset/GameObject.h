@@ -63,6 +63,7 @@ public:
 	Vector3 direction;
 	Mesh* mesh;
 	GO_TYPE type;
+	Vector3 stateText;
 
 
 	//Map

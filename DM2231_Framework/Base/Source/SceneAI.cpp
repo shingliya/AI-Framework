@@ -183,8 +183,8 @@ void SceneAI::Init()
 	table[0] = new s_OBJPOS();
 	table[0]->pos = Vector3(200, 300, 0);
 	table[0]->id = 1;
+	table[0]->stateText = Vector3(22, 26.5, 0);
 	m_cGOList.push_back(newObj);
-
 
 	newObj = new CWorldOBJ();
 	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
@@ -194,6 +194,7 @@ void SceneAI::Init()
 	table[1] = new s_OBJPOS();
 	table[1]->pos = Vector3(400, 300, 0);
 	table[1]->id = 2;
+	table[1]->stateText = Vector3(42, 26.5, 0);
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
@@ -204,6 +205,7 @@ void SceneAI::Init()
 	table[2] = new s_OBJPOS();
 	table[2]->pos = Vector3(600, 300, 0);
 	table[2]->id = 3;
+	table[2]->stateText = Vector3(62, 26.5, 0);
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
@@ -214,6 +216,7 @@ void SceneAI::Init()
 	table[3] = new s_OBJPOS();
 	table[3]->pos = Vector3(200, 100, 0);
 	table[3]->id = 4;
+	table[3]->stateText = Vector3(22, 6.5, 0);
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
@@ -224,6 +227,7 @@ void SceneAI::Init()
 	table[4] = new s_OBJPOS();
 	table[4]->pos = Vector3(400, 100, 0);
 	table[4]->id = 5;
+	table[4]->stateText = Vector3(42, 6.5, 0);
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
@@ -234,6 +238,7 @@ void SceneAI::Init()
 	table[5] = new s_OBJPOS();
 	table[5]->pos = Vector3(600, 100, 0);
 	table[5]->id = 6;
+	table[5]->stateText = Vector3(62, 6.5, 0);
 	m_cGOList.push_back(newObj);
 
 
@@ -392,7 +397,8 @@ void SceneAI::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, floa
 	
 	glDisable(GL_DEPTH_TEST);
 	Mtx44 ortho;
-	ortho.SetToOrtho(0, 80, 0, 60, -10, 10);
+	//ortho.SetToOrtho(0, 80, 0, 60, -10, 10);
+	ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
 	projectionStack.PushMatrix();
 	projectionStack.LoadMatrix(ortho);
 	viewStack.PushMatrix();
@@ -411,7 +417,7 @@ void SceneAI::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, floa
 	for(unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 1.0f + 0.5f, 0.5f, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 0.4f, 0.5f, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 	
@@ -473,7 +479,7 @@ void SceneAI::RenderMesh(Mesh *mesh, bool enableLight)
 	//}
 }
 
-void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX, float sizeY, float x, float y)
+void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, Vector3 scale, Vector3 pos)
 {
 	Mtx44 ortho;
 	ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
@@ -483,50 +489,8 @@ void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX, float si
 	viewStack.LoadIdentity();
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity();
-	modelStack.Translate(x, y, 0);
-	modelStack.Scale(sizeX, sizeY, 0);
-
-	Mtx44 MVP, modelView, modelView_inverse_transpose;
-
-	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
-	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
-
-	for (unsigned a = 0; a < 2; ++a)
-	{
-		if (mesh->textureArray[a] > 0)
-		{
-			if (mesh->textureArray[a] > 0)
-			{
-				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + a], 1);
-			}
-			else
-			{
-				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + a], 0);
-			}
-			glActiveTexture(GL_TEXTURE0 + a);
-			glBindTexture(GL_TEXTURE_2D, mesh->textureArray[a]);
-			glUniform1i(m_parameters[U_COLOR_TEXTURE + a], a);
-		}
-	}
-	mesh->Render();
-
-	modelStack.PopMatrix();
-	viewStack.PopMatrix();
-	projectionStack.PopMatrix();
-}
-
-void SceneAI::RenderMeshIn2Dz(Mesh *mesh, bool enableLight, float sizeX, float sizeY, float x, float y, float z)
-{
-	Mtx44 ortho;
-	ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
-	projectionStack.PushMatrix();
-	projectionStack.LoadMatrix(ortho);
-	viewStack.PushMatrix();
-	viewStack.LoadIdentity();
-	modelStack.PushMatrix();
-	modelStack.LoadIdentity();
-	modelStack.Translate(x, y, z);
-	modelStack.Scale(sizeX, sizeY, 0);
+	modelStack.Translate(pos.x, pos.y, pos.z);
+	modelStack.Scale(scale.x, scale.y, scale.z);
 
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 
@@ -589,11 +553,6 @@ void SceneAI::Render()
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
 
-	/*modelStack.PushMatrix();
-	modelStack.Rotate(-90, 1, 0, 0);
-	RenderMesh(meshList[GEO_QUAD], false);
-	modelStack.PopMatrix();*/
-
 	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
 	{
 		//Waitress
@@ -601,7 +560,7 @@ void SceneAI::Render()
 		if (waitress != NULL)
 		{
 			modelStack.PushMatrix();
-			RenderMeshIn2D(waitress->getMesh(), true, waitress->getScale().x, waitress->getScale().y, waitress->getPos().x, waitress->getPos().y);
+			RenderMeshIn2D(waitress->getMesh(), true, waitress->getScale(), waitress->getPos());
 			modelStack.PopMatrix();
 		}
 
@@ -611,7 +570,7 @@ void SceneAI::Render()
 		{
 			if (customer->getActive())
 			{
-				RenderMeshIn2D(customer->getMesh(), true, customer->getScale().x, customer->getScale().y, customer->getPos().x, customer->getPos().y);
+				RenderMeshIn2D(customer->getMesh(), true, customer->getScale(), customer->getPos());
 			}
 		}
 		
@@ -619,53 +578,62 @@ void SceneAI::Render()
 		CWorldOBJ* worldObj = dynamic_cast<CWorldOBJ*>(*it);
 		if (worldObj != NULL)
 		{
-			RenderMeshIn2D(worldObj->getMesh(), true, worldObj->getScale().x, worldObj->getScale().y, worldObj->getPos().x, worldObj->getPos().y);
+			RenderMeshIn2D(worldObj->getMesh(), true, worldObj->getScale(), worldObj->getPos());
 		}
 
+		//Chef
 		Chef* chef = dynamic_cast<Chef*>(*it);
 		if (chef != NULL)
 		{
 			if (chef->getActive())
 			{
-				RenderMeshIn2D(chef->getMesh(), true, chef->getScale().x, chef->getScale().y, chef->getPos().x, chef->getPos().y);
+				RenderMeshIn2D(chef->getMesh(), true, chef->getScale(), chef->getPos());
 			}
 		}
 
 	}
 
+	Chef* chef = fetchChef();
+	if (chef != NULL)
 	{
-		Chef* chef = fetchChef();
-		if (chef != NULL)
+		for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
 		{
-			for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+			if (chef->state == Chef::s_Cook)
 			{
-				if (chef->state == Chef::s_Cook)
-				{
-					modelStack.PushMatrix();
-					RenderMeshIn2Dz(meshList[GEO_FIRE_SPRITE], true, 50, 50, 775, 550, 1);
-					modelStack.PopMatrix();
-				}
+				modelStack.PushMatrix();
+				RenderMeshIn2D(meshList[GEO_FIRE_SPRITE], true, Vector3(50, 50, 0), Vector3(775, 550, 1));
+				modelStack.PopMatrix();
 			}
 		}
 	}
 
 	//On screen text
-	std::ostringstream ss;
-	ss.precision(5);
-	ss << "FPS: " << fps;
-	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 1, 0), 3, 0, 6);
-	
-	std::ostringstream ss1;
-	ss1.precision(4);
-	ss1 << "Light(" << lights[0].position.x << ", " << lights[0].position.y << ", " << lights[0].position.z << ")";
-	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 1, 0), 3, 0, 3);
+	//Table Number
+	for (unsigned a = 0; a < 6; ++a)
+	{
+		if (table[a] != NULL)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(table[a]->id), Color(1, 1, 0), 50, table[a]->pos.x + 20, table[a]->pos.y - 20);
+		}
+	}
 
-	RenderTextOnScreen(meshList[GEO_TEXT], "1", Color(1, 1, 0), 8, 18, 26.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "2", Color(1, 1, 0), 8, 38, 26.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "3", Color(1, 1, 0), 8, 58, 26.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "4", Color(1, 1, 0), 8, 18, 6.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "5", Color(1, 1, 0), 8, 38, 6.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "6", Color(1, 1, 0), 8, 58, 6.5);
+	//Render Text
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	{
+		//Waitress State
+		Waitress* waitress = dynamic_cast<Waitress*>(*it);
+		if (waitress != NULL)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], waitress->renderState(), Color(1, 1, 0), 25, waitress->pos.x, waitress->pos.y - 8);
+		}
+
+		Customer* customer = dynamic_cast<Customer*>(*it);
+		if (customer != NULL)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], customer->renderState(), Color(1, 1, 0), 25, customer->pos.x, customer->pos.y - 8);
+		}
+	}
+
 }
 
 void SceneAI::Exit()
@@ -893,17 +861,28 @@ bool SceneAI::moveToLocation(CGameObject* obj1, Vector3 destination, bool moveBy
 			if (obj1->pos.x != destination.x)
 			{
 				if (diff.x > 0)
+				{
 					obj1->pos.x += 1;
+					obj1->stateText.x += 1;
+				}
 				else if (diff.x < 0)
+				{
 					obj1->pos.x -= 1;
+					obj1->stateText.x -= 1;
+				}
 			}
 			else
 			{
 				if (diff.y > 0)
+				{
 					obj1->pos.y += 1;
+					obj1->stateText.y += 1;
+				}
 				else if (diff.y < 0)
+				{
 					obj1->pos.y -= 1;
-
+					obj1->stateText.y -= 1;
+				}
 			}
 		}
 		else
@@ -911,16 +890,28 @@ bool SceneAI::moveToLocation(CGameObject* obj1, Vector3 destination, bool moveBy
 			if (obj1->pos.y != destination.y)
 			{
 				if (diff.y > 0)
+				{
 					obj1->pos.y += 1;
+					obj1->stateText.y += 1;
+				}
 				else if (diff.y < 0)
+				{
 					obj1->pos.y -= 1;
+					obj1->stateText.y -= 1;
+				}
 			}
 			else
 			{
 				if (diff.x > 0)
+				{
 					obj1->pos.x += 1;
+					obj1->stateText.x += 1;
+				}
 				else if (diff.x < 0)
+				{
 					obj1->pos.x -= 1;
+					obj1->stateText.x -= 1;
+				}
 			}
 		}
 		return false;
