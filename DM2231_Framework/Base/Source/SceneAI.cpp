@@ -1041,6 +1041,11 @@ void SceneAI::CustomerUpdate(const double dt)
 					moveToLocation(customer, waitress->pos);
 				}
 			}
+			else if (customer->isLeaving())
+			{
+				moveToLocation(customer, Vector3(750,215,0), false);
+			}
+			customer->update(dt);
 		}
 	}
 }
