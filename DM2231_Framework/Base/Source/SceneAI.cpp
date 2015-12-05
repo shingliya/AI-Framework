@@ -138,7 +138,7 @@ void SceneAI::Init()
 
 	bLightEnabled = true;
 
-
+	//Initialize Waitress
 	Waitress* waitress = new Waitress();
 	waitress->setMesh(MeshBuilder::GenerateSphere("Waitress", Color(1, 0, 0), 18, 36));
 	waitress->setPos(Vector3(400, 170, 0));
@@ -146,20 +146,16 @@ void SceneAI::Init()
 	waitress->initPos = Vector3(400, 170, 0);
 	m_cGOList.push_back(waitress);
 
-	/*Customer* customer = new Customer();
-	customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(0, 1, 0), 18, 36));
-	customer->setPos(Vector3(25, 210, 0));
-	customer->setScale(Vector3(15, 15, 0));
-	m_cGOList.push_back(customer);*/
-
-	Chef* ptr = new Chef();
-	ptr->setMesh(MeshBuilder::GenerateSphere("Chef", Color(1, 1, 0), 18, 36));
-	ptr->setPos(Vector3(300, 550, 2));
-	ptr->setScale(Vector3(15, 15, 0));
-	m_cGOList.push_back(ptr);
+	//Initialize Chef
+	Chef* chef = new Chef();
+	chef->setMesh(MeshBuilder::GenerateSphere("Chef", Color(1, 1, 0), 18, 36));
+	chef->setPos(Vector3(300, 550, 2));
+	chef->setScale(Vector3(15, 15, 0));
+	m_cGOList.push_back(chef);
 
 	for (unsigned a = 0; a < 6; ++a)
 	{
+		//Initialize Customer
 		Customer* customer = new Customer();
 		customer->setScale(Vector3(15, 15, 0));
 		customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(0, 1, 0), 18, 36));
@@ -174,8 +170,27 @@ void SceneAI::Init()
 		queue[a]->pos.y = 210 + (a * diff);
 	}
 
-	static float size = 10;
+	//Initialize Table
+	table[0] = new s_OBJPOS();
+	table[0]->pos = Vector3(200, 275, 0);
+	table[0]->id = 1;
+	table[1] = new s_OBJPOS();
+	table[1]->pos = Vector3(200, 75, 0);
+	table[1]->id = 2;
+	table[2] = new s_OBJPOS();
+	table[2]->pos = Vector3(400, 275, 0);
+	table[2]->id = 3;
+	table[3] = new s_OBJPOS();
+	table[3]->pos = Vector3(400, 75, 0);
+	table[3]->id = 4;
+	table[4] = new s_OBJPOS();
+	table[4]->pos = Vector3(600, 275, 0);
+	table[4]->id = 5;
+	table[5] = new s_OBJPOS();
+	table[5]->pos = Vector3(600, 75, 0);
+	table[5]->id = 6;
 
+	static float size = 10;
 	//===============TABLE=============//
 	CWorldOBJ* newObj = new CWorldOBJ();
 	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
@@ -218,26 +233,6 @@ void SceneAI::Init()
 	newObj->setPos(Vector3(600, 75, 0));
 	newObj->setScale(Vector3(60, 60, 10));
 	m_cGOList.push_back(newObj);
-
-
-	table[0] = new s_OBJPOS();
-	table[0]->pos = Vector3(200, 275, 0);
-	table[0]->id = 1;
-	table[1] = new s_OBJPOS();
-	table[1]->pos = Vector3(200, 75, 0);
-	table[1]->id = 2;
-	table[2] = new s_OBJPOS();
-	table[2]->pos = Vector3(400, 275, 0);
-	table[2]->id = 3;
-	table[3] = new s_OBJPOS();
-	table[3]->pos = Vector3(400, 75, 0);
-	table[3]->id = 4;
-	table[4] = new s_OBJPOS();
-	table[4]->pos = Vector3(600, 275, 0);
-	table[4]->id = 5;
-	table[5] = new s_OBJPOS();
-	table[5]->pos = Vector3(600, 75, 0);
-	table[5]->id = 6;
 
 	//===============BARRIER=============//
 	newObj = new CWorldOBJ();
@@ -303,12 +298,11 @@ void SceneAI::Update(double dt)
 		bLightEnabled = false;
 	}
 
-	//Spawn Customer
-	/*if (Application::IsKeyPressed('R'))
+	if (Application::IsKeyPressed('R'))
 	{
 		SpawnCustomer();
 	}
-	std::cout << getActiveCustomer() << std::endl;*/
+	//Spawn Customer
 	if (getActiveCustomer() < 6)
 	{
 		static double respawnTime = 5.0;
@@ -1042,7 +1036,7 @@ void SceneAI::CustomerUpdate(const double dt)
 					//Move the customer to their seats
 					moveToLocation(customer, waitress->pos);
 				}
-				else if (customer->isReadyToOrder())
+				/*else if (customer->isReadyToOrder())
 				{
 					if (customer->timer == -1)
 					{
@@ -1063,9 +1057,20 @@ void SceneAI::CustomerUpdate(const double dt)
 							}
 						}
 					}
-				}
+				}*/
 				else if (customer->isLeaving())
 				{
+					//Reset table
+					if (customer->id != 0)
+					{
+						s_OBJPOS* tablePos = fetchTableById(customer->id);
+						if (tablePos != NULL)
+						{
+							tablePos->taken = false;
+							customer->id = 0;
+						}
+					}
+
 					if (customer->previouState == Customer::s_Queing)
 					{
 						s_OBJPOS* queuePos = fetchQueueByPos(customer->pos);
