@@ -17,9 +17,11 @@ public:
 
 	void update(double dt);
 	void passOrder(bool order[], unsigned sizeOfArray);
+	bool takeFood(int slot);
 
 	STATES state;
 	float timmer;
 	bool orderList[MAX_COSTOMER_COUNT], cookedFoodList[MAX_COSTOMER_COUNT];
 	int currentCustomerOrder;
+	int numOfReadyFood;
 };
