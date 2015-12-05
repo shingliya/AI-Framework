@@ -9,7 +9,7 @@ Waitress::Waitress()
 	currentState = s_Idle;
 	previousState = s_Idle;
 	usheringCustomer = false;
-	CH = NULL;
+	//stateText.Set(39, 18, 0);
 }
 
 
@@ -75,6 +75,49 @@ void Waitress::update(const double & dt)
 			break;
 		}
 	}
+}
+
+std::string Waitress::renderState()
+{
+	switch (currentState)
+	{
+	case s_Idle:
+		return "Idle";
+		break;
+
+	case s_Usher:
+		return "Ushering";
+		break;
+
+	case s_TakeOrder:
+		return "Take Order";
+		break;
+
+	case s_PlaceOrder:
+		return "Place Order";
+		break;
+
+	case s_TakeFood:
+		return "Taking Food";
+		break;
+
+	case s_DeliverFood:
+		return "Deliver Food";
+		break;
+
+	case s_CleanFloor:
+		return "Clean Floor";
+		break;
+
+	case s_CleanTable:
+		return "Clean Table";
+		break;
+
+	default:
+		break;
+	}
+
+	return "";
 }
 
 bool Waitress::isIdle()

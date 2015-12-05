@@ -8,6 +8,8 @@
 #include "LoadTGA.h"
 #include <sstream>
 
+int SceneAI::tableOffset = 50;
+
 SceneAI::SceneAI()
 {
 }
@@ -136,7 +138,7 @@ void SceneAI::Init()
 
 	bLightEnabled = true;
 
-
+	//Initialize Waitress
 	Waitress* waitress = new Waitress();
 	waitress->setMesh(MeshBuilder::GenerateSphere("Waitress", Color(1, 0, 0), 18, 36));
 	waitress->setPos(Vector3(400, 170, 0));
@@ -144,14 +146,16 @@ void SceneAI::Init()
 	waitress->initPos = Vector3(400, 170, 0);
 	m_cGOList.push_back(waitress);
 
-	/*Customer* customer = new Customer();
-	customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(0, 1, 0), 18, 36));
-	customer->setPos(Vector3(25, 210, 0));
-	customer->setScale(Vector3(15, 15, 0));
-	m_cGOList.push_back(customer);*/
+	//Initialize Chef
+	Chef* chef = new Chef();
+	chef->setMesh(MeshBuilder::GenerateSphere("Chef", Color(1, 1, 0), 18, 36));
+	chef->setPos(Vector3(300, 550, 2));
+	chef->setScale(Vector3(15, 15, 0));
+	m_cGOList.push_back(chef);
 
 	for (unsigned a = 0; a < 6; ++a)
 	{
+		//Initialize Customer
 		Customer* customer = new Customer();
 		customer->setScale(Vector3(15, 15, 0));
 		customer->setMesh(MeshBuilder::GenerateSphere("Customer", Color(0, 1, 0), 18, 36));
@@ -166,70 +170,69 @@ void SceneAI::Init()
 		queue[a]->pos.y = 210 + (a * diff);
 	}
 
-	static float size = 10;
+	//Initialize Table
+	table[0] = new s_OBJPOS();
+	table[0]->pos = Vector3(200, 275, 0);
+	table[0]->id = 1;
+	table[1] = new s_OBJPOS();
+	table[1]->pos = Vector3(200, 75, 0);
+	table[1]->id = 2;
+	table[2] = new s_OBJPOS();
+	table[2]->pos = Vector3(400, 275, 0);
+	table[2]->id = 3;
+	table[3] = new s_OBJPOS();
+	table[3]->pos = Vector3(400, 75, 0);
+	table[3]->id = 4;
+	table[4] = new s_OBJPOS();
+	table[4]->pos = Vector3(600, 275, 0);
+	table[4]->id = 5;
+	table[5] = new s_OBJPOS();
+	table[5]->pos = Vector3(600, 75, 0);
+	table[5]->id = 6;
 
+	static float size = 10;
 	//===============TABLE=============//
 	CWorldOBJ* newObj = new CWorldOBJ();
 	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
-	newObj->setPos(Vector3(200, 300, 0));
+	newObj->setPos(Vector3(200, 275, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	table[0] = new s_OBJPOS();
-	table[0]->pos = Vector3(200, 300, 0);
-	table[0]->id = 1;
-	m_cGOList.push_back(newObj);
-
-
-	newObj = new CWorldOBJ();
-	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
-	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
-	newObj->setPos(Vector3(400, 300, 0));
-	newObj->setScale(Vector3(60, 60, 10));
-	table[1] = new s_OBJPOS();
-	table[1]->pos = Vector3(400, 300, 0);
-	table[1]->id = 2;
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
 	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
-	newObj->setPos(Vector3(600, 300, 0));
+	newObj->setPos(Vector3(400, 275, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	table[2] = new s_OBJPOS();
-	table[2]->pos = Vector3(600, 300, 0);
-	table[2]->id = 3;
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
 	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
-	newObj->setPos(Vector3(400, 100, 0));
+	newObj->setPos(Vector3(600, 275, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	table[3] = new s_OBJPOS();
-	table[3]->pos = Vector3(200, 100, 0);
-	table[3]->id = 4;
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
 	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
-	newObj->setPos(Vector3(200, 100, 0));
+	newObj->setPos(Vector3(400, 75, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	table[4] = new s_OBJPOS();
-	table[4]->pos = Vector3(400, 100, 0);
-	table[4]->id = 5;
 	m_cGOList.push_back(newObj);
 
 	newObj = new CWorldOBJ();
 	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
-	newObj->setPos(Vector3(600, 100, 0));
+	newObj->setPos(Vector3(200, 75, 0));
 	newObj->setScale(Vector3(60, 60, 10));
-	table[5] = new s_OBJPOS();
-	table[5]->pos = Vector3(600, 100, 0);
-	table[5]->id = 6;
 	m_cGOList.push_back(newObj);
 
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Diner Table", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Table.tga");
+	newObj->setPos(Vector3(600, 75, 0));
+	newObj->setScale(Vector3(60, 60, 10));
+	m_cGOList.push_back(newObj);
 
 	//===============BARRIER=============//
 	newObj = new CWorldOBJ();
@@ -266,6 +269,13 @@ void SceneAI::Init()
 	newObj->setPos(Vector3(600, 450, 0));
 	newObj->setScale(Vector3(400, 300, size));
 	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Kitchen", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Kitchen.tga");
+	newObj->setPos(Vector3(400, 535, 1));
+	newObj->setScale(Vector3(325, 325, size));
+	m_cGOList.push_back(newObj);
 }
 
 void SceneAI::Update(double dt)
@@ -288,23 +298,32 @@ void SceneAI::Update(double dt)
 		bLightEnabled = false;
 	}
 
-	//Spawn Customer
-	static float time = 0.f;
-	static float timeLimit = 0.5f;
-
-	if (time < timeLimit)
+	if (Application::IsKeyPressed('R'))
 	{
-		time += dt;
+		SpawnCustomer();
 	}
-	else
+	//Spawn Customer
+	if (getActiveCustomer() < 6)
 	{
-		if (Application::IsKeyPressed('R'))
+		static double respawnTime = 5.0;
+		static double timeToRespawn = 0.0;
+		static double probabillity = 75;
+
+		if (timeToRespawn < respawnTime)
 		{
-			SpawnCustomer();
-			time = 0.f;
+			timeToRespawn += dt;
+		}
+		else
+		{
+			int numGenerated = Math::RandFloatMinMax(1, 100);
+			if (numGenerated >= probabillity) //25% to spawn customer
+			{
+				SpawnCustomer();
+			}
+
+			timeToRespawn = 0;
 		}
 	}
-
 
 	//Unspawn Customer
 	static float time2 = 0.f;
@@ -318,10 +337,37 @@ void SceneAI::Update(double dt)
 	{
 		if (Application::IsKeyPressed('E'))
 		{
-			UnspawnCustomer();
+			for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+			{
+				Customer* customer = dynamic_cast<Customer*>(*it);
+				s_OBJPOS* queuePos = fetchQueue();
+				if (customer != NULL && queuePos != NULL)
+				{
+					if (queuePos->pos == customer->pos && customer->isQueing())
+					{
+						queuePos->taken = false;
+						customer->setActive(false);
+						break;
+					}
+				}
+			}
 			time2 = 0.f;
 		}
 	}
+
+	Chef* chef = fetchChef();
+	if (Application::IsKeyPressed('F'))
+	{
+		bool order[6];
+		order[0] = 1;
+		order[1] = 0;
+		order[2] = 0;
+		order[3] = 0;
+		order[4] = 0;
+		order[5] = 0;
+		chef->passOrder(order, 6);
+	}
+	chef->update(dt);
 
 	SpriteAnimation *sa = dynamic_cast<SpriteAnimation *> (meshList[GEO_FIRE_SPRITE]);
 	
@@ -330,8 +376,8 @@ void SceneAI::Update(double dt)
 
 	fps = (float)(1.f / dt);
 
-	WaitressUpdate(dt);
 	CustomerUpdate(dt);
+	WaitressUpdate(dt);
 }
 
 static const float SKYBOXSIZE = 1000.f;
@@ -370,7 +416,8 @@ void SceneAI::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, floa
 	
 	glDisable(GL_DEPTH_TEST);
 	Mtx44 ortho;
-	ortho.SetToOrtho(0, 80, 0, 60, -10, 10);
+	//ortho.SetToOrtho(0, 80, 0, 60, -10, 10);
+	ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
 	projectionStack.PushMatrix();
 	projectionStack.LoadMatrix(ortho);
 	viewStack.PushMatrix();
@@ -389,7 +436,7 @@ void SceneAI::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, floa
 	for(unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 1.0f + 0.5f, 0.5f, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 0.4f, 0.5f, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 	
@@ -451,7 +498,7 @@ void SceneAI::RenderMesh(Mesh *mesh, bool enableLight)
 	//}
 }
 
-void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX, float sizeY, float x, float y)
+void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, Vector3 scale, Vector3 pos)
 {
 	Mtx44 ortho;
 	ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
@@ -461,8 +508,8 @@ void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX, float si
 	viewStack.LoadIdentity();
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity();
-	modelStack.Translate(x, y, 0);
-	modelStack.Scale(sizeX, sizeY, 0);
+	modelStack.Translate(pos.x, pos.y, pos.z);
+	modelStack.Scale(scale.x, scale.y, scale.z);
 
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 
@@ -492,7 +539,6 @@ void SceneAI::RenderMeshIn2D(Mesh *mesh, bool enableLight, float sizeX, float si
 	viewStack.PopMatrix();
 	projectionStack.PopMatrix();
 }
-
 
 void SceneAI::Render()
 {
@@ -526,11 +572,6 @@ void SceneAI::Render()
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
 
-	/*modelStack.PushMatrix();
-	modelStack.Rotate(-90, 1, 0, 0);
-	RenderMesh(meshList[GEO_QUAD], false);
-	modelStack.PopMatrix();*/
-
 	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
 	{
 		//Waitress
@@ -538,7 +579,7 @@ void SceneAI::Render()
 		if (waitress != NULL)
 		{
 			modelStack.PushMatrix();
-			RenderMeshIn2D(waitress->getMesh(), true, waitress->getScale().x, waitress->getScale().y, waitress->getPos().x, waitress->getPos().y);
+			RenderMeshIn2D(waitress->getMesh(), true, waitress->getScale(), waitress->getPos());
 			modelStack.PopMatrix();
 		}
 
@@ -548,35 +589,71 @@ void SceneAI::Render()
 		{
 			if (customer->getActive())
 			{
-				RenderMeshIn2D(customer->getMesh(), true, customer->getScale().x, customer->getScale().y, customer->getPos().x, customer->getPos().y);
+				RenderMeshIn2D(customer->getMesh(), true, customer->getScale(), customer->getPos());
 			}
 		}
-
+		
 		//World Object
 		CWorldOBJ* worldObj = dynamic_cast<CWorldOBJ*>(*it);
 		if (worldObj != NULL)
 		{
-			RenderMeshIn2D(worldObj->getMesh(), true, worldObj->getScale().x, worldObj->getScale().y, worldObj->getPos().x, worldObj->getPos().y);
+			RenderMeshIn2D(worldObj->getMesh(), true, worldObj->getScale(), worldObj->getPos());
+		}
+
+		//Chef
+		Chef* chef = dynamic_cast<Chef*>(*it);
+		if (chef != NULL)
+		{
+			if (chef->getActive())
+			{
+				RenderMeshIn2D(chef->getMesh(), true, chef->getScale(), chef->getPos());
+			}
+		}
+
+	}
+
+	Chef* chef = fetchChef();
+	if (chef != NULL)
+	{
+		for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+		{
+			if (chef->state == Chef::s_Cook)
+			{
+				modelStack.PushMatrix();
+				RenderMeshIn2D(meshList[GEO_FIRE_SPRITE], true, Vector3(50, 50, 0), Vector3(485, 590, 2));
+				modelStack.PopMatrix();
+			}
 		}
 	}
 
 	//On screen text
-	std::ostringstream ss;
-	ss.precision(5);
-	ss << "FPS: " << fps;
-	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 1, 0), 3, 0, 6);
-	
-	std::ostringstream ss1;
-	ss1.precision(4);
-	ss1 << "Light(" << lights[0].position.x << ", " << lights[0].position.y << ", " << lights[0].position.z << ")";
-	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 1, 0), 3, 0, 3);
+	//Table Number
+	for (unsigned a = 0; a < 6; ++a)
+	{
+		if (table[a] != NULL)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(table[a]->id), Color(1, 1, 0), 50, table[a]->pos.x + 20, table[a]->pos.y - 20);
+		}
+	}
 
-	RenderTextOnScreen(meshList[GEO_TEXT], "1", Color(1, 1, 0), 8, 18, 26.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "2", Color(1, 1, 0), 8, 38, 26.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "3", Color(1, 1, 0), 8, 58, 26.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "4", Color(1, 1, 0), 8, 18, 6.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "5", Color(1, 1, 0), 8, 38, 6.5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "6", Color(1, 1, 0), 8, 58, 6.5);
+	//Render Text
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	{
+		//Waitress State
+		Waitress* waitress = dynamic_cast<Waitress*>(*it);
+		if (waitress != NULL)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], waitress->renderState(), Color(1, 1, 0), 25, waitress->pos.x, waitress->pos.y - 8);
+		}
+
+		Customer* customer = dynamic_cast<Customer*>(*it);
+		if (customer != NULL)
+		{
+			if(customer->getActive())
+				RenderTextOnScreen(meshList[GEO_TEXT], customer->renderState(), Color(1, 1, 0), 25, customer->pos.x, customer->pos.y - 8);
+		}
+	}
+
 }
 
 void SceneAI::Exit()
@@ -600,31 +677,14 @@ void SceneAI::Exit()
 
 Customer* SceneAI::fetchCustomer(bool getActive)
 {
-	if (getActive)
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
 	{
-		for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+		Customer* customer = dynamic_cast<Customer*>(*it);
+		if (customer != NULL)
 		{
-			Customer* customer = dynamic_cast<Customer*>(*it);
-			if (customer != NULL)
+			if (customer->getActive() == getActive)
 			{
-				if (customer->getActive())
-				{
-					return customer;
-				}
-			}
-		}
-	}
-	else
-	{
-		for (std::vector<CGameObject*>::reverse_iterator it = m_cGOList.rbegin(); it != m_cGOList.rend(); ++it)
-		{
-			Customer* customer = dynamic_cast<Customer*>(*it);
-			if (customer != NULL)
-			{
-				if (!customer->getActive())
-				{
-					return customer;
-				}
+				return customer;
 			}
 		}
 	}
@@ -681,11 +741,12 @@ void SceneAI::SpawnCustomer()
 {
 	s_OBJPOS* queue = fetchQueue(false);
 	Customer* customer = fetchCustomer(false);
-	if (queue != NULL && customer != NULL)
+	if (customer != NULL)
 	{
 		queue->taken = true;
 		customer->setActive(true);
 		customer->setPos(queue->pos);
+		customer->setToQueueing();
 	}
 }
 
@@ -729,24 +790,11 @@ void SceneAI::UnspawnCustomer()
 
 SceneAI::s_OBJPOS* SceneAI::fetchQueue(bool taken)
 {
-	if (!taken)
+	for (unsigned a = 0; a < 6; ++a)
 	{
-		for (unsigned a = 0; a < 6; ++a)
+		if (queue[a]->taken == taken)
 		{
-			if (!queue[a]->taken)
-			{
-				return queue[a];
-			}
-		}
-	}
-	else
-	{
-		for (int a = 5; a >= 0; --a)
-		{
-			if (queue[a]->taken)
-			{
-				return queue[a];
-			}
+			return queue[a];
 		}
 	}
 
@@ -759,7 +807,8 @@ SceneAI::s_OBJPOS* SceneAI::fetchQueueByPos(Vector3 pos)
 	{
 		if (queue[a]->taken)
 		{
-			if (queue[a]->pos == pos)
+			//if((queue[a]->pos - pos).Length() < 10)
+			if(queue[a]->pos == pos)
 			{
 				return queue[a];
 			}
@@ -771,31 +820,32 @@ SceneAI::s_OBJPOS* SceneAI::fetchQueueByPos(Vector3 pos)
 
 SceneAI::s_OBJPOS* SceneAI::fetchTable(bool taken)
 {
-	if (!taken)
+	for (unsigned a = 0; a < 6; ++a)
 	{
-		for (unsigned a = 0; a < 6; ++a)
+		if (table[a]->taken == taken)
 		{
-			if (!table[a]->taken)
-			{
-				return table[a];
-			}
-		}
-	}
-	else
-	{
-		for (int a = 5; a >= 0; --a)
-		{
-			if (table[a]->taken)
-			{
-				return table[a];
-			}
+			return table[a];
 		}
 	}
 	return NULL;
 }
 
+SceneAI::s_OBJPOS* SceneAI::fetchTableById(int id)
+{
+	for (unsigned a = 0; a < 6; ++a)
+	{
+		if (table[a]->taken && table[a]->id == id)
+		{
+			return table[a];
+		}
+	}
+
+	return NULL;
+}
+
 bool SceneAI::moveToLocation(CGameObject* obj1, Vector3 destination, bool moveByX)
 {
+	static double speed = 1;
 	if (obj1->pos != destination)
 	{
 		Vector3 diff = destination - obj1->pos;
@@ -804,17 +854,24 @@ bool SceneAI::moveToLocation(CGameObject* obj1, Vector3 destination, bool moveBy
 			if (obj1->pos.x != destination.x)
 			{
 				if (diff.x > 0)
-					obj1->pos.x += 1;
+				{
+					obj1->pos.x += speed;
+				}
 				else if (diff.x < 0)
-					obj1->pos.x -= 1;
+				{
+					obj1->pos.x -= speed;
+				}
 			}
 			else
 			{
 				if (diff.y > 0)
-					obj1->pos.y += 1;
+				{
+					obj1->pos.y += speed;
+				}
 				else if (diff.y < 0)
-					obj1->pos.y -= 1;
-
+				{
+					obj1->pos.y -= speed;
+				}
 			}
 		}
 		else
@@ -822,22 +879,47 @@ bool SceneAI::moveToLocation(CGameObject* obj1, Vector3 destination, bool moveBy
 			if (obj1->pos.y != destination.y)
 			{
 				if (diff.y > 0)
-					obj1->pos.y += 1;
+				{
+					obj1->pos.y += speed;
+				}
 				else if (diff.y < 0)
-					obj1->pos.y -= 1;
+				{
+					obj1->pos.y -= speed;
+				}
 			}
 			else
 			{
 				if (diff.x > 0)
-					obj1->pos.x += 1;
+				{
+					obj1->pos.x += speed;
+				}
 				else if (diff.x < 0)
-					obj1->pos.x -= 1;
+				{
+					obj1->pos.x -= speed;
+				}
 			}
 		}
 		return false;
 	}
 
 	return true;
+}
+
+int SceneAI::getActiveCustomer()
+{
+	int a = 0;
+	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
+	{
+		Customer* customer = dynamic_cast<Customer*>(*it);
+		if (customer != NULL)
+		{
+			if (customer->getActive())
+			{
+				a++;
+			}
+		}
+	}
+	return a;
 }
 
 void SceneAI::WaitressUpdate(const double dt)
@@ -867,7 +949,6 @@ void SceneAI::WaitressState_Usher(Waitress* waitress)
 	static Customer* customer = NULL;
 	static s_OBJPOS* queuepos = NULL;
 	static s_OBJPOS* tablepos = NULL;
-	static int tableOffset = 50;
 
 	if (!waitress->usheringCustomer)
 	{
@@ -878,10 +959,10 @@ void SceneAI::WaitressState_Usher(Waitress* waitress)
 				if (moveToLocation(waitress, Waitress::queuePos, false))
 				{
 					Customer* tempCus = fetchQueueingCustomer();
-					s_OBJPOS* tempQueue = fetchQueue();
-					if (tempCus != NULL && tempQueue != NULL)
+					if (tempCus != NULL)
 					{
-						if (tempCus->pos == tempQueue->pos)
+						s_OBJPOS* tempQueue = fetchQueueByPos(tempCus->pos);
+						if (tempQueue != NULL && tempCus->isQueing())
 						{
 							s_OBJPOS* tempTable = fetchTable(false);
 							if (tempTable != NULL)
@@ -906,7 +987,6 @@ void SceneAI::WaitressState_Usher(Waitress* waitress)
 		{
 			if (moveToLocation(waitress, waitress->initPos, false))
 			{
-				std::cout << "Senpai!" << std::endl;
 			}
 		}
 	}
@@ -915,14 +995,13 @@ void SceneAI::WaitressState_Usher(Waitress* waitress)
 		if (customer->isFollowing())
 		{
 			Vector3 tableOffsetPos = tablepos->pos;
-
-			if (tablepos->id <= 3)
+			if (tablepos->id % 2 == 0)
 			{
-				tableOffsetPos.y -= 50;
+				tableOffsetPos.y += 50;
 			}
 			else
 			{
-				tableOffsetPos.y += 50;
+				tableOffsetPos.y -= 50;
 			}
 
 
@@ -930,6 +1009,7 @@ void SceneAI::WaitressState_Usher(Waitress* waitress)
 			{
 				customer->pos = tablepos->pos - Vector3(tableOffset, 0, 0);
 				customer->setToSitDown();
+				customer->id = tablepos->id;
 				tablepos->taken = true;
 				waitress->usheringCustomer = false;
 
@@ -947,19 +1027,68 @@ void SceneAI::CustomerUpdate(const double dt)
 	for (std::vector<CGameObject*>::iterator it = m_cGOList.begin(); it != m_cGOList.end(); ++it)
 	{
 		Customer* customer = dynamic_cast<Customer*>(*it);
-		if (customer != NULL && waitress != NULL)
+		if (customer != NULL)
 		{
-			if (customer->isQueing())
+			if (customer->getActive())
 			{
-
-			}
-			else if (customer->isFollowing())
-			{
-				static int POS_DIFF = 41;
-				if ((customer->pos - waitress->pos).Length() > POS_DIFF)
+				if (customer->isFollowing())
 				{
+					//Move the customer to their seats
 					moveToLocation(customer, waitress->pos);
 				}
+				/*else if (customer->isReadyToOrder())
+				{
+					if (customer->timer == -1)
+					{
+						customer->startTimer(20, 30);
+					}
+					else
+					{
+						if (customer->timerUpdate(dt))
+						{
+							s_OBJPOS* tablePos = fetchTableById(customer->id);
+							if (tablePos != NULL)
+							{
+								tablePos->taken = false;
+								customer->previouState = customer->currentState;
+								customer->setToLeaving();
+								customer->stopTimer();
+								customer->id = 0;
+							}
+						}
+					}
+				}*/
+				else if (customer->isLeaving())
+				{
+					//Reset table
+					if (customer->id != 0)
+					{
+						s_OBJPOS* tablePos = fetchTableById(customer->id);
+						if (tablePos != NULL)
+						{
+							tablePos->taken = false;
+							customer->id = 0;
+						}
+					}
+
+					if (customer->previouState == Customer::s_Queing)
+					{
+						s_OBJPOS* queuePos = fetchQueueByPos(customer->pos);
+						if (queuePos != NULL)
+						{
+							queuePos->taken = false;
+							customer->setActive(false);
+						}
+					}
+					else
+					{
+						if (moveToLocation(customer, Vector3(800, 215, 0), false))
+						{
+							customer->setActive(false);
+						}
+					}
+				}
+				customer->update(dt);
 			}
 		}
 	}
