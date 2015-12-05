@@ -1,7 +1,6 @@
-/vc100.pdb
-/vc120.pdb
-/life-d6ac916c.ipch
 *.sdf
 *.suo
-*.opensdf
-/ipch/
+*.obj
+*.lastbuildstate
+*.log
+Debug/

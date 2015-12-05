@@ -19,23 +19,26 @@ public:
 	Customer();
 	~Customer();
 
+	std::string renderState();
 	void update(double dt/* waiter obj refrence */);
 
-	bool isQueing()
-	{
-		if (state == s_Queing)
-			return true;
-		return false;
-	}
+	bool isQueing();
+	bool isFollowing();
+	bool isReadyToOrder();
+	bool isWaitingForFood();
+	bool isEating();
+	bool isLeaving();
+	bool isSpillWater();
 
-	bool isFollowing()
-	{
-		if (state == s_follow)
-			return true;
-		return false;
-	}
+	void setToFollow();
+	void setToSitDown();
+	void setToOrdering();
+	void setToWaitForFood();
+	void setToEating();
+	void cleanUpWater();
 
 	STATES state;
-	float timmer;
-	int num;
+	float timmer, timmer2;
+	bool spillWater;
+	bool rngAlready;
 };

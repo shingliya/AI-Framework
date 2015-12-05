@@ -19,11 +19,24 @@ public:
 	Waitress();
 	~Waitress();
 
-	void update(const double & dt);
+	bool isIdle();
+	bool isUsher();
+	bool isTakingOrder();
+	bool isTakingFood();
+	bool isDeliveringFood();
+	bool isCleaningTable();
+	bool isCleaningFloor();
 
-	bool usheringCustomer;
-private:
+	void setToUsher();
+
+	void update(const double & dt);
+	std::string renderState();
+
 	STATES currentState;
 	STATES previousState;
+	static Vector3 queuePos;
+	Vector3 initPos;
+	std::string state;
+	bool usheringCustomer;
 };
 
