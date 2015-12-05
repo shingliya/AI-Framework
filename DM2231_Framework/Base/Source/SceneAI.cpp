@@ -154,7 +154,7 @@ void SceneAI::Init()
 
 	Chef* ptr = new Chef();
 	ptr->setMesh(MeshBuilder::GenerateSphere("Chef", Color(1, 1, 0), 18, 36));
-	ptr->setPos(Vector3(525, 550, 0));
+	ptr->setPos(Vector3(300, 550, 2));
 	ptr->setScale(Vector3(15, 15, 0));
 	m_cGOList.push_back(ptr);
 
@@ -273,6 +273,13 @@ void SceneAI::Init()
 	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Floor.tga");
 	newObj->setPos(Vector3(600, 450, 0));
 	newObj->setScale(Vector3(400, 300, size));
+	m_cGOList.push_back(newObj);
+
+	newObj = new CWorldOBJ();
+	newObj->setMesh(MeshBuilder::GenerateQuad("Kitchen", Color(1, 1, 1)));
+	newObj->getMesh()->textureArray[0] = LoadTGA("Image//Diner//Kitchen.tga");
+	newObj->setPos(Vector3(400, 535, 1));
+	newObj->setScale(Vector3(325, 325, size));
 	m_cGOList.push_back(newObj);
 }
 
@@ -619,7 +626,7 @@ void SceneAI::Render()
 			if (chef->state == Chef::s_Cook)
 			{
 				modelStack.PushMatrix();
-				RenderMeshIn2D(meshList[GEO_FIRE_SPRITE], true, Vector3(50, 50, 0), Vector3(775, 550, 1));
+				RenderMeshIn2D(meshList[GEO_FIRE_SPRITE], true, Vector3(50, 50, 0), Vector3(485, 590, 2));
 				modelStack.PopMatrix();
 			}
 		}

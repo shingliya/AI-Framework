@@ -32,7 +32,7 @@ void Chef::update(double dt)
 			{
 				currentCustomerOrder = i;
 				state = s_Cook;
-				pos.Set(725, 550, 0);
+				pos.Set(500, 550, 2);
 				break;
 			}
 		}
@@ -59,7 +59,7 @@ void Chef::update(double dt)
 			orderList[currentCustomerOrder] = false;
 			cookedFoodList[currentCustomerOrder] = true;
 			currentCustomerOrder = -1;
-			pos.Set(525, 550, 0);
+			pos.Set(300, 550, 2);
 			state = s_Idle;
 		}
 		break;
