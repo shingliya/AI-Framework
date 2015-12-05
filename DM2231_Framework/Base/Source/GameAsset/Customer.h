@@ -6,11 +6,12 @@ class Customer : public CGameObject
 public:
 	enum STATES
 	{
+		s_Idle,
 		s_Queing,
 		s_follow,
 		s_SitDown,
 		s_ReadyToOrder,
-		s_Ordering,
+		s_Ordered,
 		s_WaitForFood,
 		s_Eating,
 		s_Leave,
@@ -30,15 +31,25 @@ public:
 	bool isLeaving();
 	bool isSpillWater();
 
+	void setToQueueing();
 	void setToFollow();
 	void setToSitDown();
-	void setToOrdering();
+	void setToReadyToOrder();
+	void setToOrdered();
 	void setToWaitForFood();
 	void setToEating();
+	void setToLeaving();
 	void cleanUpWater();
 
-	STATES state;
-	float timmer, timmer2;
+	void startTimer(float min, float max);
+	void stopTimer();
+	bool timerUpdate(const double dt);
+
+	STATES currentState;
+	STATES previouState;
+	float timer, timer2;
+	float timerLimit;
 	bool spillWater;
 	bool rngAlready;
+	int id;
 };

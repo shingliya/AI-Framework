@@ -4,10 +4,13 @@ Customer::Customer()
 {
 	type = CUSTOMER;
 	active = true;
-	state = s_Queing;
-	timmer = timmer2 = -1;
+	currentState = s_Queing;
+	previouState = s_Idle;
+	timer = 0;
+	timerLimit = -1;
 	spillWater = false;
 	rngAlready = false;
+	id = 0;
 }
 
 
@@ -17,7 +20,7 @@ Customer::~Customer()
 
 std::string Customer::renderState()
 {
-	switch (state)
+	switch (currentState)
 	{
 	case Customer::s_Queing:
 		return "Queing";
@@ -30,6 +33,9 @@ std::string Customer::renderState()
 		break;
 	case Customer::s_ReadyToOrder:
 		return "Ready To Order";
+		break;
+	case Customer::s_Ordered:
+		return "Ordered";
 		break;
 	case Customer::s_WaitForFood:
 		return "Waiting for Food";
@@ -47,109 +53,169 @@ std::string Customer::renderState()
 	return "";
 }
 
-void Customer::update(double dt/* waiter obj refrence */)
+void Customer::update(double dt)
 {
-	switch (state)
+	switch (currentState)
 	{
-	case(s_SitDown) :
-		if (timmer == -1)
+	case s_Queing:
+		if (timerLimit == -1)
 		{
-			timmer = Math::RandFloatMinMax(5, 20);
+			startTimer(30, 60);
 		}
 		else
 		{
-			timmer -= dt;
-			if (timmer < 0)
+			if (timerUpdate(dt))
 			{
-				timmer = -1;
-				state = s_ReadyToOrder;
+				previouState = currentState;
+				setToLeaving();
+				stopTimer();
 			}
 		}
 		break;
 
-	case(s_ReadyToOrder) :
-		if (timmer == -1)
+	case s_SitDown:
+		if (timerLimit == -1)
 		{
-			timmer = Math::RandFloatMinMax(15, 25);
+			startTimer(10, 20);
 		}
 		else
 		{
-			timmer -= dt;
-			if (timmer < 0)
+			if (timerUpdate(dt))
 			{
-				timmer = -1;
-				state = s_Leave;
+				setToReadyToOrder();
+				stopTimer();
 			}
 		}
 		break;
-	case(s_Eating) :
-		if (!spillWater)
+
+	/*case s_ReadyToOrder:
+		if (timerLimit == -1)
 		{
-			if (timmer == -1)
+			startTimer(20, 30);
+		}
+		else
+		{
+			if (timerUpdate(dt))
 			{
-				timmer = Math::RandFloatMinMax(10, 15);
-				timmer2 = Math::RandFloatMinMax(3, 8);
+				previouState = currentState;
+				setToLeaving();
+				stopTimer();
+			}
+		}
+		break;*/
+
+	//case s_Ordering:
+	//	if (timerLimit == -1)
+	//	{
+	//		startTimer(10, 20);
+	//	}
+	//	else
+	//	{
+	//		if(timerUpdate(dt))
+	//		{
+
+	//		}
+	//	}
+	//	break;
+		/*case(s_SitDown) :
+			if (timer == -1)
+			{
+				timer = Math::RandFloatMinMax(5, 20);
 			}
 			else
 			{
-				timmer -= dt;
-				if (!rngAlready && timmer < timmer2)
+				timer -= dt;
+				if (timer < 0)
 				{
-					if (Math::RandIntMinMax(1, 100) < 30)
-					{
-						spillWater = true;
-					}
-					rngAlready = true;
-				}
-				if (timmer < 0)
-				{
-					timmer = -1;
-					state = s_Leave;
+					timer = -1;
+					currentState = s_ReadyToOrder;
 				}
 			}
-		}
-		break;
+			break;
+
+		case(s_ReadyToOrder) :
+			if (timer == -1)
+			{
+				timer = Math::RandFloatMinMax(15, 25);
+			}
+			else
+			{
+				timer -= dt;
+				if (timer < 0)
+				{
+					timer = -1;
+					currentState = s_Leave;
+				}
+			}
+			break;
+		case(s_Eating) :
+			if (!spillWater)
+			{
+				if (timer == -1)
+				{
+					timer = Math::RandFloatMinMax(10, 15);
+					timer2 = Math::RandFloatMinMax(3, 8);
+				}
+				else
+				{
+					timer -= dt;
+					if (!rngAlready && timer < timer2)
+					{
+						if (Math::RandIntMinMax(1, 100) < 30)
+						{
+							spillWater = true;
+						}
+						rngAlready = true;
+					}
+					if (timer < 0)
+					{
+						timer = -1;
+						currentState = s_Leave;
+					}
+				}
+			}
+			break;*/
 	}
 }
 
 bool Customer::isQueing()
 {
-	if (state == s_Queing)
+	if (currentState == s_Queing)
 		return true;
 	return false;
 }
 
 bool Customer::isFollowing()
 {
-	if (state == s_follow)
+	if (currentState == s_follow)
 		return true;
 	return false;
 }
 
 bool Customer::isReadyToOrder()
 {
-	if (state == s_ReadyToOrder)
+	if (currentState == s_ReadyToOrder)
 		return true;
 	return false;
 }
 
 bool Customer::isWaitingForFood()
 {
-	if (state == s_WaitForFood)
+	if (currentState == s_WaitForFood)
 		return true;
 	return false;
 }
 
 bool Customer::isLeaving()
 {
-	if (state == s_Leave)
+	if (currentState == s_Leave)
 		return true;
 	return false;
 }
 
 bool Customer::isEating()
 {
-	if (state == s_Eating)
+	if (currentState == s_Eating)
 		return true;
 	return false;
 }
@@ -159,36 +225,70 @@ bool Customer::isSpillWater()
 	return spillWater;
 }
 
+void Customer::setToQueueing()
+{
+	currentState = s_Queing;
+	previouState = s_Idle;
+}
 
 void Customer::setToFollow()
 {
-	state = s_follow;
+	currentState = s_follow;
 }
 
 void Customer::setToSitDown()
 {
-	state = s_SitDown;
+	currentState = s_SitDown;
 }
 
-void Customer::setToOrdering()
+void Customer::setToReadyToOrder()
 {
-	timmer = -1;
-	state = s_Ordering;
+	currentState = s_ReadyToOrder;
+}
+
+void Customer::setToOrdered()
+{
+	currentState = s_Ordered;
 }
 
 void Customer::setToWaitForFood()
 {
-	timmer = -1;
-	state = s_WaitForFood;
+	currentState = s_WaitForFood;
 }
 
 void Customer::setToEating()
 {
-	timmer = -1;
-	state = s_Eating;
+	currentState = s_Eating;
+}
+
+void Customer::setToLeaving()
+{
+	currentState = s_Leave;
 }
 
 void Customer::cleanUpWater()
 {
 	spillWater = false;
+}
+
+void Customer::startTimer(float min, float max)
+{
+	timerLimit = Math::RandFloatMinMax(min, max);
+	timer = 0;
+}
+
+void Customer::stopTimer()
+{
+	timer = 0;
+	timerLimit = -1;
+}
+
+bool Customer::timerUpdate(const double dt)
+{
+	timer += dt;
+	if (timer > timerLimit)
+	{
+		return true;
+	}
+	return false;
 }

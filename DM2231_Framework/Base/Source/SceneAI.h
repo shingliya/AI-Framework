@@ -113,9 +113,11 @@ public:
 	s_OBJPOS* fetchQueue(bool tekan = true);
 	s_OBJPOS* fetchQueueByPos(Vector3 pos);
 	s_OBJPOS* fetchTable(bool taken = true);
+	s_OBJPOS* fetchTableById(int id);
 	bool isQueueEmpty();
 	bool isTableEmpty();
 	bool moveToLocation(CGameObject* obj, Vector3 destination, bool moveByX = true);
+	int getActiveCustomer();
 
 	void WaitressUpdate(const double dt);
 	void WaitressState_Usher(Waitress* waitress);
@@ -139,6 +141,7 @@ private:
 
 	float fps;
 
+	static int tableOffset;
 	//Accomdate 6 queue
 	s_OBJPOS* queue[6];
 	//Accomdate 6 table
