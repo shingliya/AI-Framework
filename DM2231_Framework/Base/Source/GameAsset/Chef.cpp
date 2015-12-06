@@ -17,6 +17,7 @@ Chef::Chef()
 		cookedFoodList[i] = false;
 	}
 	currentCustomerOrder = -1;
+	numOfReadyFood = 0;
 }
 
 
@@ -90,80 +91,78 @@ void Chef::passOrder(bool order[], unsigned sizeOfArray)
 	memcpy(orderList, order, sizeof(bool)*sizeOfArray);
 }
 
-bool Chef::isIdle()
-{
-	if (state == s_Idle)
-		return true;
-	return false;
-}
-
-bool Chef::isCooking()
-{
-	if (state == s_Cook)
-		return true;
-	return false;
-}
-
-bool Chef::isPlacingFood()
-{
-	if (state == s_placeFood)
-		return true;
-	return false;
-}
-
-void Chef::setToIdle()
-{
-	state = s_Idle;
-}
-
-void Chef::setToCooking()
-{
-	state = s_Cook;
-}
-
-void Chef::setToPlacingFood()
-{
-	state = s_placeFood;
-}
-
-std::string Chef::renderState()
-{
-	switch (state)
-	{
-	case Chef::s_Idle:
-		return "Idle";
+			if (orderList[i] == true)
+			{
+				currentCustomerOrder = i;
+				state = s_Cook;
+				break;
+			}
+		}
 		break;
-	case Chef::s_Cook:
-		return "Cooking";
+	case s_Cook:
+		if (pos.x <= 500)
+		{
+			pos.x += 1;
+		}
+		else
+		{
+			if (timmer == -1)
+			{
+				timmer = Math::RandFloatMinMax(5, 15);
+			}
+			else
+			{
+				timmer -= dt;
+				if (timmer < 0)
+				{
+					timmer = -1;
+					state = s_placeFood;
+				}
+			}
+		}
 		break;
-	case Chef::s_placeFood:
-		return "Placing Food";
-		break;
-
-	default:
+	case s_placeFood:
+		if (pos.x >= 300)
+		{
+			pos.x -= 1;
+		}
+		else
+		{
+			orderList[currentCustomerOrder] = false;
+			cookedFoodList[currentCustomerOrder] = true;
+			currentCustomerOrder = -1;
+			numOfReadyFood = 0;
+			for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+			{
+				if (cookedFoodList[i])
+				{
+					numOfReadyFood += 1;
+				}
+			}
+			state = s_Idle;
+		}
 		break;
 	}
-
-	return "";
 }
 
-void Chef::startTimer(float min, float max)
+void Chef::passOrder(bool order[], unsigned sizeOfArray)
 {
-	timerLimit = Math::RandFloatMinMax(min, max);
-	timer = 0;
+	memcpy(orderList, order, sizeof(bool)*sizeOfArray);
 }
 
-void Chef::stopTimer()
+bool Chef::takeFood(int slot)
 {
-	timer = 0;
-	timerLimit = -1;
-}
-
-bool Chef::timerUpdate(const double dt)
-{
-	timer += dt;
-	if (timer > timerLimit)
+	if (cookedFoodList[slot])
 	{
+		cookedFoodList[slot] = false;
+		numOfReadyFood = 0;
+		for (int i = 0; i < MAX_COSTOMER_COUNT; ++i)
+		{
+			if (cookedFoodList[i])
+			{
+				numOfReadyFood += 1;
+			}
+		}
 		return true;
 	}
 	return false;
