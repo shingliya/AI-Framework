@@ -141,6 +141,13 @@ bool Waitress::isTakingOrder()
 	return false;
 }
 
+bool Waitress::isPlacingOrder()
+{
+	if (currentState == s_PlaceOrder)
+		return true;
+	return false;
+}
+
 bool Waitress::isTakingFood()
 {
 	if (currentState == s_TakeFood)
@@ -169,7 +176,37 @@ bool Waitress::isCleaningFloor()
 	return false;
 }
 
+void Waitress::setToIdle()
+{
+	currentState = s_Idle;
+}
+
 void Waitress::setToUsher()
 {
 	currentState = s_Usher;
+}
+
+void Waitress::setToTakeOrder()
+{
+	currentState = s_TakeOrder;
+}
+
+void Waitress::setToPlaceOrder()
+{
+	currentState = s_PlaceOrder;
+}
+
+void Waitress::setToTakeFood()
+{
+	currentState = s_TakeFood;
+}
+
+void Waitress::setToDeliveryFood()
+{
+	currentState = s_DeliverFood;
+}
+
+void Waitress::setToCleanTable()
+{
+	currentState = s_CleanTable;
 }
