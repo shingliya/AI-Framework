@@ -74,17 +74,58 @@ class SceneAI : public Scene
 		Vector3 pos;
 		bool taken;
 		int id;
-		Vector3 stateText;
 
 		s_OBJPOS()
 		{
 			pos.SetZero();
-			stateText.SetZero();
+			taken = false;
+			id = -1;
+		}
+
+		void CleanUp()
+		{
+			pos.SetZero();
 			taken = false;
 			id = -1;
 		}
 	};
 
+	struct ORDER
+	{
+		//Took Order From Customer
+		bool tookOrder;
+
+		//Place Order With Chef
+		bool placeOrder;
+
+		//Take order from chef
+		bool takenFood;
+
+		bool finishCooking;
+
+		bool finishEating;
+
+		int id;
+
+		Vector3 tablePos;
+		Vector3 counterPos;
+
+		ORDER()
+		{
+			tablePos.SetZero();
+			counterPos.SetZero();
+			id = -1;
+			tookOrder = placeOrder = takenFood = false;
+			finishCooking = false;
+			finishEating = false;
+		}
+
+		void CleanUp()
+		{
+			tablePos.SetZero();
+			tookOrder = placeOrder = takenFood = finishCooking = finishEating = false;
+		}
+	};
 public:
 	SceneAI();
 	~SceneAI();
@@ -103,26 +144,48 @@ public:
 	void RenderTerrain();
 	void RenderWaitress(CGameObject* go);
 	void RenderCharacter(CGameObject* go);
+	void RenderText();
+	void RenderSA_etc();
 
 	void SpawnCustomer();
 	void UnspawnCustomer();
 	Customer* fetchCustomer(bool getActive = true);
 	Customer* fetchQueueingCustomer();
+	Customer* fetchOrderingCustomer();
+	Customer* fetchCustomerbyid(int id);
 	Waitress* fetchWaitress();
 	Chef* fetchChef();
 	s_OBJPOS* fetchQueue(bool tekan = true);
 	s_OBJPOS* fetchQueueByPos(Vector3 pos);
 	s_OBJPOS* fetchTable(bool taken = true);
 	s_OBJPOS* fetchTableById(int id);
-	bool isQueueEmpty();
-	bool isTableEmpty();
+	ORDER* fetchOrderById(int id);
+	ORDER* fetchOrder_FinishEating();
 	bool moveToLocation(CGameObject* obj, Vector3 destination, bool moveByX = true);
 	int getActiveCustomer();
+	int getActiveTable();
+	int getActiveQueue();
+	bool isQueueEmpty();
+
+	//1 to check against tookOrder <-- Variables in struct
+	//2 to check against placeOrder
+	//3 to check against takenFood
+	//4 to check against finishCooking
+	//5 to check against finishEating
+	bool isOrderEmpty(int num);
 
 	void WaitressUpdate(const double dt);
 	void WaitressState_Usher(Waitress* waitress);
+	void WaitressState_OrderFood(Waitress* waitress);
+	void WaitressState_PlaceOrder(Waitress* waitress);
+	void WaitressState_TakeOrder(Waitress* waitress);
+	void WaitressState_DeliveryOrder(Waitress* waitress);
+	void WaitressState_CleanTable(Waitress* waitress);
 
 	void CustomerUpdate(const double dt);
+	void CustomerState_Leaving(Customer* customer);
+
+	void ChefUpdate(const double dt);
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -140,12 +203,15 @@ private:
 	bool bLightEnabled;
 
 	float fps;
+	double elapsedTime;
 
 	static int tableOffset;
 	//Accomdate 6 queue
 	s_OBJPOS* queue[6];
 	//Accomdate 6 table
 	s_OBJPOS* table[6];
+	//Accomdate 6 Order
+	ORDER* order[6];
 
 	//Game Asset
 	std::vector<CGameObject*> m_cGOList;
