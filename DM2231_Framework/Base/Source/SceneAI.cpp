@@ -122,6 +122,7 @@ void SceneAI::Init()
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
 	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1), 100);
 	meshList[GEO_QUAD]->textureID = LoadTGA("Image//Diner//Floor.tga");
+	meshList[GEO_DISHES] = MeshBuilder::GenerateSphere("Dishes", Color(0.5, 0.5, 0.5), 18, 36);
 
 	meshList[GEO_FIRE_SPRITE] = MeshBuilder::GenerateSpriteAnimation("fire", 2, 4);
 	meshList[GEO_FIRE_SPRITE]->textureArray[0] = LoadTGA("Image//fire.tga");
@@ -621,13 +622,13 @@ void SceneAI::Render()
 		//Render Dishes at counter
 		if (order[a]->finishCooking)
 		{
-			RenderMeshIn2D(MeshBuilder::GenerateSphere("Dishes", Color(0.5, 1, 0.5), 18, 36), false, Vector3(10, 10, 0), order[a]->counterPos);
+			RenderMeshIn2D(meshList[GEO_DISHES], false, Vector3(10, 10, 0), order[a]->counterPos);
 		}
 		else
 		{
 			if (!order[a]->tablePos.IsZero())
 			{
-				RenderMeshIn2D(MeshBuilder::GenerateSphere("Dishes", Color(0.5, 1, 0.5), 18, 36), false, Vector3(10, 10, 0), order[a]->tablePos);
+				RenderMeshIn2D(meshList[GEO_DISHES], false, Vector3(10, 10, 0), order[a]->tablePos);
 			}
 		}
 	}
