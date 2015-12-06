@@ -88,7 +88,7 @@ void Customer::update(double dt)
 		}
 		break;
 
-	/*case s_ReadyToOrder:
+	case s_ReadyToOrder:
 		if (timerLimit == -1)
 		{
 			startTimer(20, 30);
@@ -102,7 +102,7 @@ void Customer::update(double dt)
 				stopTimer();
 			}
 		}
-		break;*/
+		break;
 
 	//case s_Ordering:
 	//	if (timerLimit == -1)
