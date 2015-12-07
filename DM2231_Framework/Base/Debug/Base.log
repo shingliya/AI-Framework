@@ -1,35 +1,56 @@
-﻿Build started 2/12/2015 5:50:25 PM.
-     1>Project "C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Base\Base.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/Common/Source" /I"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glew/include" /I"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glfw/include" /I"D:\Visual Leak Detector\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\SceneAI.cpp
-         SceneAI.cpp
-     1>c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(165): warning C4244: '=' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(422): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(440): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug" /LIBPATH:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glfw/lib-msvc100" /LIBPATH:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\/glew/lib" /LIBPATH:"D:\Visual Leak Detector\lib\Win32" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Base.lib" /MACHINE:X86 Debug\Application.obj
-         Debug\Camera.obj
-         Debug\Camera3.obj
-         Debug\Chef.obj
-         Debug\Customer.obj
-         Debug\GameObject.obj
-         Debug\Waitress.obj
-         Debug\WorldOBJ.obj
-         Debug\LoadHmap.obj
-         Debug\LoadOBJ.obj
-         Debug\LoadTGA.obj
-         Debug\main.obj
-         Debug\Mesh.obj
-         Debug\MeshBuilder.obj
-         Debug\SceneAI.obj
-         Debug\shader.obj
-         Debug\SpriteAnimation.obj
-         Debug\Utility.obj
-     1>Application.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
-     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-         Base.vcxproj -> C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Debug\Base.exe
-     1>Done Building Project "C:\Users\Ong\Desktop\AI-Framework\DM2231_Framework\Base\Base.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:02.22
+﻿  SceneAI.cpp
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(125): error C2065: 'GEO_DISHES' : undeclared identifier
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(175): warning C4244: '=' : conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(376): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(392): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(647): error C2065: 'GEO_DISHES' : undeclared identifier
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(653): error C2065: 'GEO_DISHES' : undeclared identifier
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1007): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1011): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1018): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1022): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1032): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1036): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1043): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1047): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1325): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1499): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1685): error C2039: 'startToCook' : is not a member of 'Chef'
+          c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.h(6) : see declaration of 'Chef'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1687): error C2039: 'startToCook' : is not a member of 'Chef'
+          c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.h(6) : see declaration of 'Chef'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\sceneai.cpp(1692): error C2039: 'startToCook' : is not a member of 'Chef'
+          c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.h(6) : see declaration of 'Chef'
+  Chef.cpp
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(11): error C2065: 'timer' : undeclared identifier
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(12): error C2065: 'timerLimit' : undeclared identifier
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(13): error C2065: 'startToCook' : undeclared identifier
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(74): error C2065: 'timerLimit' : undeclared identifier
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(94): error C2059: syntax error : 'if'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(95): error C2143: syntax error : missing ';' before '{'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(95): error C2447: '{' : missing function header (old-style formal list?)
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(100): error C2059: syntax error : '}'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(100): error C2143: syntax error : missing ';' before '}'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(102): error C2059: syntax error : 'case'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(103): error C2059: syntax error : 'if'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(104): error C2143: syntax error : missing ';' before '{'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(104): error C2447: '{' : missing function header (old-style formal list?)
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(107): error C2059: syntax error : 'else'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(108): error C2143: syntax error : missing ';' before '{'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(108): error C2447: '{' : missing function header (old-style formal list?)
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(123): error C2059: syntax error : 'break'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(124): error C2059: syntax error : 'case'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(125): error C2059: syntax error : 'if'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(126): error C2143: syntax error : missing ';' before '{'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(126): error C2447: '{' : missing function header (old-style formal list?)
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(129): error C2059: syntax error : 'else'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(130): error C2143: syntax error : missing ';' before '{'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(130): error C2447: '{' : missing function header (old-style formal list?)
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(144): error C2059: syntax error : 'break'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(145): error C2059: syntax error : '}'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(145): error C2143: syntax error : missing ';' before '}'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(146): error C2143: syntax error : missing ';' before '}'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(146): error C2059: syntax error : '}'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(149): error C2143: syntax error : missing ';' before '{'
+c:\users\ong\desktop\ai-framework\dm2231_framework\base\source\gameasset\chef.cpp(149): error C2447: '{' : missing function header (old-style formal list?)
+  Generating Code...
