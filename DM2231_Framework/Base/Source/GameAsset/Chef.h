@@ -17,7 +17,6 @@ public:
 
 	void update(double dt);
 	void passOrder(bool order[], unsigned sizeOfArray);
-	bool takeFood(int slot);
 
 	bool isIdle();
 	bool isCooking();
@@ -37,5 +36,7 @@ public:
 	float timmer;
 	bool orderList[MAX_COSTOMER_COUNT], cookedFoodList[MAX_COSTOMER_COUNT];
 	int currentCustomerOrder;
-	int numOfReadyFood;
+	float timer, timer2;
+	float timerLimit;
+	bool startToCook;
 };

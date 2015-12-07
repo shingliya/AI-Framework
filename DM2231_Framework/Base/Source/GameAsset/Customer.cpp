@@ -91,7 +91,7 @@ void Customer::update(double dt)
 	case s_ReadyToOrder:
 		if (timerLimit == -1)
 		{
-			startTimer(20, 30);
+			startTimer(10, 20);
 		}
 		else
 		{
@@ -103,6 +103,21 @@ void Customer::update(double dt)
 			}
 		}
 		break;
+
+	case s_Eating:
+		if (timerLimit == -1)
+		{
+			startTimer(10, 20);
+		}
+		else
+		{
+			if (timerUpdate(dt))
+			{
+				previouState = currentState;
+				setToLeaving();
+				stopTimer();
+			}
+		}
 
 	//case s_Ordering:
 	//	if (timerLimit == -1)

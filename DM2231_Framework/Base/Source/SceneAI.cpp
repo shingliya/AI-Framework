@@ -128,9 +128,6 @@ void SceneAI::Init()
 	meshList[GEO_FIRE_SPRITE]->textureArray[0] = LoadTGA("Image//fire.tga");
 	SpriteAnimation *sa = dynamic_cast<SpriteAnimation *> (meshList[GEO_FIRE_SPRITE]);
 	sa->m_anim->Set(0, 7, 0, 1.f);
-	
-	meshList[GEO_RICE] = (MeshBuilder::GenerateQuad("rice", Color(1, 1, 1)));
-	meshList[GEO_RICE]->textureArray[0] = LoadTGA("Image//Diner//rice.tga");
 
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 1000 units
 	Mtx44 perspective;
@@ -412,25 +409,6 @@ void SceneAI::Update(double dt)
 			time2 = 0.f;
 		}
 	}
-
-	Chef* chef = fetchChef();
-	if (Application::IsKeyPressed('F'))
-	{
-		bool order[6];
-		order[0] = 1;
-		order[1] = 1;
-		order[2] = 1;
-		order[3] = 1;
-		order[4] = 1;
-		order[5] = 1;
-		chef->passOrder(order, 6);
-	}
-	chef->update(dt);
-
-	SpriteAnimation *sa = dynamic_cast<SpriteAnimation *> (meshList[GEO_FIRE_SPRITE]);
-	
-	if(!sa->m_anim->ended)
-		sa->Update(dt);
 
 	fps = (float)(1.f / dt);
 	elapsedTime += dt;
@@ -1333,6 +1311,12 @@ void SceneAI::WaitressState_Usher(Waitress* waitress)
 				queuepos = NULL;
 			}
 		}
+		else
+		{
+			customer = NULL;
+			tablepos = NULL;
+			queuepos = NULL;
+		}
 	}
 }
 
@@ -1378,23 +1362,32 @@ void SceneAI::WaitressState_OrderFood(Waitress* waitress)
 	}
 	else
 	{
-		Vector3 tableOffsetPos = tablePos->pos;
-		if (tablePos->id % 2 == 0)
+		if (customer->isReadyToOrder())
 		{
-			tableOffsetPos.y += 50;
+			Vector3 tableOffsetPos = tablePos->pos;
+			if (tablePos->id % 2 == 0)
+			{
+				tableOffsetPos.y += 50;
+			}
+			else
+			{
+				tableOffsetPos.y -= 50;
+			}
+
+
+			if (moveToLocation(waitress, tableOffsetPos))
+			{
+				customer->setToOrdered();
+				order[customer->id - 1]->tookOrder = true;
+				order[customer->id - 1]->id = customer->id;
+
+				customer = NULL;
+				tablePos = NULL;
+				setUp = false;
+			}
 		}
 		else
 		{
-			tableOffsetPos.y -= 50;
-		}
-
-
-		if (moveToLocation(waitress, tableOffsetPos))
-		{
-			customer->setToOrdered();
-			order[customer->id - 1]->tookOrder = true;
-			order[customer->id - 1]->id = customer->id;
-
 			customer = NULL;
 			tablePos = NULL;
 			setUp = false;
