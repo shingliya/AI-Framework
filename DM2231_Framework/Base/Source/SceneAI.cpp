@@ -709,7 +709,7 @@ void SceneAI::Exit()
 void SceneAI::RenderText()
 {
 	//Elapsed Time
-	RenderTextOnScreen(meshList[GEO_TEXT], "Elapsed Time: " + std::to_string(elapsedTime), Color(0.5, 0.5, 0.5), 50, 30, 0);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Elapsed Tim e: " + std::to_string(elapsedTime), Color(1, 0, 1), 50, 30, 0);
 
 	//Table Number
 	for (unsigned a = 0; a < 6; ++a)
@@ -725,7 +725,7 @@ void SceneAI::RenderText()
 		Waitress* waitress = dynamic_cast<Waitress*>(*it);
 		if (waitress != NULL)
 		{
-			RenderTextOnScreen(meshList[GEO_TEXT], waitress->renderState(), Color(1, 1, 0), 25, waitress->pos.x, waitress->pos.y - 8);
+			RenderTextOnScreen(meshList[GEO_TEXT], waitress->renderState(), Color(1, 0, 0), 30, waitress->pos.x, waitress->pos.y + 15);
 		}
 
 		//Customer State
@@ -733,14 +733,14 @@ void SceneAI::RenderText()
 		if (customer != NULL)
 		{
 			if (customer->getActive())
-				RenderTextOnScreen(meshList[GEO_TEXT], customer->renderState(), Color(1, 1, 0), 25, customer->pos.x, customer->pos.y - 8);
+				RenderTextOnScreen(meshList[GEO_TEXT], customer->renderState(), Color(0, 1, 0), 30, customer->pos.x, customer->pos.y - 40);
 		}
 
 		//Chef State
 		Chef* chef = dynamic_cast<Chef*>(*it);
 		if (chef != NULL)
 		{
-			RenderTextOnScreen(meshList[GEO_TEXT], chef->renderState(), Color(1, 1, 0), 25, chef->pos.x, chef->pos.y - 8);
+			RenderTextOnScreen(meshList[GEO_TEXT], chef->renderState(), Color(.2, .2, 1), 30, chef->pos.x, chef->pos.y + 15);
 		}
 	}
 }
