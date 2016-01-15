@@ -1,9 +1,9 @@
 #pragma once
 #include "GameObject.h"
-#include "Customer.h"
 
 class Waitress : public CGameObject
 {
+public:
 	enum STATES
 	{
 		s_Idle,
@@ -16,30 +16,34 @@ class Waitress : public CGameObject
 		s_CleanFloor
 	};
 
-public:
-	static Vector3 queuePos;
-	Vector3 initPos;
-
 	Waitress();
 	~Waitress();
 
 	bool isIdle();
 	bool isUsher();
 	bool isTakingOrder();
+	bool isPlacingOrder();
 	bool isTakingFood();
 	bool isDeliveringFood();
 	bool isCleaningTable();
 	bool isCleaningFloor();
 
+	void setToIdle();
 	void setToUsher();
+	void setToTakeOrder();
+	void setToPlaceOrder();
+	void setToTakeFood();
+	void setToDeliveryFood();
+	void setToCleanTable();
 
 	void update(const double & dt);
-
-	bool usheringCustomer;
-
-	Customer* CH;
+	std::string renderState();
 
 	STATES currentState;
 	STATES previousState;
+	static Vector3 queuePos;
+	Vector3 initPos;
+	std::string state;
+	bool usheringCustomer;
 };
 
