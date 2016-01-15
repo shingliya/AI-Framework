@@ -46,7 +46,7 @@ public:
 
 	void setMesh(Mesh* mesh);
 	Mesh* getMesh();
-protected:
+
 	//float
 	static float velSpeed;
 	float rotateAngle;
@@ -63,6 +63,7 @@ protected:
 	Vector3 direction;
 	Mesh* mesh;
 	GO_TYPE type;
+	Vector3 stateText;
 
 
 	//Map

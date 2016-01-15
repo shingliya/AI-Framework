@@ -3,6 +3,7 @@
 
 class Waitress : public CGameObject
 {
+public:
 	enum STATES
 	{
 		s_Idle,
@@ -15,15 +16,34 @@ class Waitress : public CGameObject
 		s_CleanFloor
 	};
 
-public:
 	Waitress();
 	~Waitress();
 
-	void update(const double & dt);
+	bool isIdle();
+	bool isUsher();
+	bool isTakingOrder();
+	bool isPlacingOrder();
+	bool isTakingFood();
+	bool isDeliveringFood();
+	bool isCleaningTable();
+	bool isCleaningFloor();
 
-	bool usheringCustomer;
-private:
+	void setToIdle();
+	void setToUsher();
+	void setToTakeOrder();
+	void setToPlaceOrder();
+	void setToTakeFood();
+	void setToDeliveryFood();
+	void setToCleanTable();
+
+	void update(const double & dt);
+	std::string renderState();
+
 	STATES currentState;
 	STATES previousState;
+	static Vector3 queuePos;
+	Vector3 initPos;
+	std::string state;
+	bool usheringCustomer;
 };
 

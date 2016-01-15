@@ -4,8 +4,13 @@ Customer::Customer()
 {
 	type = CUSTOMER;
 	active = true;
-	state = s_Queing;
-	timmer = -1;
+	currentState = s_Queing;
+	previouState = s_Idle;
+	timer = 0;
+	timerLimit = -1;
+	spillWater = false;
+	rngAlready = false;
+	id = 0;
 }
 
 
@@ -13,101 +18,292 @@ Customer::~Customer()
 {
 }
 
-void Customer::update(double dt/* waiter obj refrence */)
+std::string Customer::renderState()
 {
-	//switch (state)
-	//{
-	//case(s_Queing) :
-	//	//if (waiter position at que waypoint && waiter state == usher)
-	//	//{
-	//	//	follow waiter
-	//	//}
-	//	//if (position == one of the tables)
-	//	//{
-	//	//	state = s_SitDown;
-	//	//}
-	//	break;
+	switch (currentState)
+	{
+	case Customer::s_Queing:
+		return "Queing";
+		break;
+	case Customer::s_follow:
+		return "Following";
+		break;
+	case Customer::s_SitDown:
+		return "Sitted";
+		break;
+	case Customer::s_ReadyToOrder:
+		return "Ready To Order";
+		break;
+	case Customer::s_Ordered:
+		return "Ordered";
+		break;
+	case Customer::s_WaitForFood:
+		return "Waiting for Food";
+		break;
+	case Customer::s_Eating:
+		return "Eating";
+		break;
+	case Customer::s_Leave:
+		return "Leaving";
+		break;
+	default:
+		break;
+	}
 
-	//case(s_SitDown) :
-	//	if (timmer == -1)
+	return "";
+}
+
+void Customer::update(double dt)
+{
+	switch (currentState)
+	{
+	case s_Queing:
+		if (timerLimit == -1)
+		{
+			startTimer(30, 60);
+		}
+		else
+		{
+			if (timerUpdate(dt))
+			{
+				previouState = currentState;
+				setToLeaving();
+				stopTimer();
+			}
+		}
+		break;
+
+	case s_SitDown:
+		if (timerLimit == -1)
+		{
+			startTimer(10, 20);
+		}
+		else
+		{
+			if (timerUpdate(dt))
+			{
+				setToReadyToOrder();
+				stopTimer();
+			}
+		}
+		break;
+
+	case s_ReadyToOrder:
+		if (timerLimit == -1)
+		{
+			startTimer(10, 20);
+		}
+		else
+		{
+			if (timerUpdate(dt))
+			{
+				previouState = currentState;
+				setToLeaving();
+				stopTimer();
+			}
+		}
+		break;
+
+	case s_Eating:
+		if (timerLimit == -1)
+		{
+			startTimer(10, 20);
+		}
+		else
+		{
+			if (timerUpdate(dt))
+			{
+				previouState = currentState;
+				setToLeaving();
+				stopTimer();
+			}
+		}
+
+	//case s_Ordering:
+	//	if (timerLimit == -1)
 	//	{
-	//		timmer = Math::RandFloatMinMax(5, 10);
+	//		startTimer(10, 20);
 	//	}
 	//	else
 	//	{
-	//		timmer -= dt;
-	//		if (timmer < 0)
+	//		if(timerUpdate(dt))
 	//		{
-	//			timmer = -1;
-	//			state = s_ReadyToOrder;
-	//		}
-	//	}
-	//	break;
 
-	//case(s_ReadyToOrder) :
-	//	if (timmer == -1)
-	//	{
-	//		timmer = Math::RandFloatMinMax(5, 15);
-	//	}
-	//	else
-	//	{
-	//		timmer -= dt;
-	//		if (timmer < 0)
-	//		{
-	//			timmer = -1;
-	//			state = s_Leave;
 	//		}
 	//	}
-	//	//if (waiter position at custormer table waypoint && waiter state == TakeOrder)
-	//	//{
-	//	//	state = s_Ordering;
-	//	//	timmer = -1;
-	//	//}
 	//	break;
+		/*case(s_SitDown) :
+			if (timer == -1)
+			{
+				timer = Math::RandFloatMinMax(5, 20);
+			}
+			else
+			{
+				timer -= dt;
+				if (timer < 0)
+				{
+					timer = -1;
+					currentState = s_ReadyToOrder;
+				}
+			}
+			break;
 
-	//case(s_Ordering) :
-	//	if (timmer == -1)
-	//	{
-	//		timmer = Math::RandFloatMinMax(5, 15);
-	//	}
-	//	else
-	//	{
-	//		timmer -= dt;
-	//		if (timmer < 0)
-	//		{
-	//			timmer = -1;
-	//			state = s_WaitForFood;
-	//		}
-	//	}
-	//	break;
-	//case(s_WaitForFood) :
-	//	//if (waiter position at custormer table waypoint && waiter state == DeliverFood)
-	//	//{
-	//	//	state = s_Eating;
-	//	//}
-	//	break;
-	//case(s_Eating) :
-	//	if (timmer == -1)
-	//	{
-	//		timmer = Math::RandFloatMinMax(10, 15);
-	//	}
-	//	else
-	//	{
-	//		timmer -= dt;
-	//		if (timmer < 0)
-	//		{
-	//			timmer = -1;
-	//			state = s_Leave;
-	//		}
-	//	}
-	//	break;
-	//case(s_Leave) :
-	//	//move to exit
+		case(s_ReadyToOrder) :
+			if (timer == -1)
+			{
+				timer = Math::RandFloatMinMax(15, 25);
+			}
+			else
+			{
+				timer -= dt;
+				if (timer < 0)
+				{
+					timer = -1;
+					currentState = s_Leave;
+				}
+			}
+			break;
+		case(s_Eating) :
+			if (!spillWater)
+			{
+				if (timer == -1)
+				{
+					timer = Math::RandFloatMinMax(10, 15);
+					timer2 = Math::RandFloatMinMax(3, 8);
+				}
+				else
+				{
+					timer -= dt;
+					if (!rngAlready && timer < timer2)
+					{
+						if (Math::RandIntMinMax(1, 100) < 30)
+						{
+							spillWater = true;
+						}
+						rngAlready = true;
+					}
+					if (timer < 0)
+					{
+						timer = -1;
+						currentState = s_Leave;
+					}
+				}
+			}
+			break;*/
+	}
+}
 
-	//	//if (reach exit)
-	//	//{
-	//	//	active = false;
-	//	//}
-	//	break;
-	//}
+bool Customer::isQueing()
+{
+	if (currentState == s_Queing)
+		return true;
+	return false;
+}
+
+bool Customer::isFollowing()
+{
+	if (currentState == s_follow)
+		return true;
+	return false;
+}
+
+bool Customer::isReadyToOrder()
+{
+	if (currentState == s_ReadyToOrder)
+		return true;
+	return false;
+}
+
+bool Customer::isWaitingForFood()
+{
+	if (currentState == s_WaitForFood)
+		return true;
+	return false;
+}
+
+bool Customer::isLeaving()
+{
+	if (currentState == s_Leave)
+		return true;
+	return false;
+}
+
+bool Customer::isEating()
+{
+	if (currentState == s_Eating)
+		return true;
+	return false;
+}
+
+bool Customer::isSpillWater()
+{
+	return spillWater;
+}
+
+void Customer::setToQueueing()
+{
+	currentState = s_Queing;
+	previouState = s_Idle;
+}
+
+void Customer::setToFollow()
+{
+	currentState = s_follow;
+}
+
+void Customer::setToSitDown()
+{
+	currentState = s_SitDown;
+}
+
+void Customer::setToReadyToOrder()
+{
+	currentState = s_ReadyToOrder;
+}
+
+void Customer::setToOrdered()
+{
+	currentState = s_Ordered;
+}
+
+void Customer::setToWaitForFood()
+{
+	currentState = s_WaitForFood;
+}
+
+void Customer::setToEating()
+{
+	currentState = s_Eating;
+}
+
+void Customer::setToLeaving()
+{
+	currentState = s_Leave;
+}
+
+void Customer::cleanUpWater()
+{
+	spillWater = false;
+}
+
+void Customer::startTimer(float min, float max)
+{
+	timerLimit = Math::RandFloatMinMax(min, max);
+	timer = 0;
+}
+
+void Customer::stopTimer()
+{
+	timer = 0;
+	timerLimit = -1;
+}
+
+bool Customer::timerUpdate(const double dt)
+{
+	timer += dt;
+	if (timer > timerLimit)
+	{
+		return true;
+	}
+	return false;
 }
