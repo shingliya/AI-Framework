@@ -1,0 +1,11 @@
+/vc120.pdb
+*.sdf
+*.suo
+*.obj
+*.lastbuildstate
+*.log
+Debug/
+*.opensdf
+*.exe
+*.lib
+/ipch/
