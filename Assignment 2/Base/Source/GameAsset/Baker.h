@@ -3,40 +3,51 @@
 
 const int MAX_COSTOMER_COUNT = 6;
 
-class Chef : public CGameObject
+class Baker : public CGameObject
 {
 public:
 	enum STATES
 	{
-		s_Idle,
-		s_Cook,
-		s_placeFood,
+		s_Baking,
+		s_PlaceFoodAtTable,
+		s_RestockMaterial,
+		s_OutOfMaterial,
+		s_Cashier,
 	};
-	Chef();
-	~Chef();
+	Baker();
+	~Baker();
 
 	void update(double dt);
 	void passOrder(bool order[], unsigned sizeOfArray);
 
-	bool isIdle();
+	/*bool isIdle();
 	bool isCooking();
+*/
+	bool isBaking();
 	bool isPlacingFood();
+	bool isRestocking();
+	bool isOutOfMaterial();
+	bool isCashier();
 	std::string renderState();
 
-	void setToIdle();
+	/*void setToIdle();
 	void setToCooking();
+	void setToPlacingFood();*/
+	void setToBaking();
 	void setToPlacingFood();
+	void setToRestock();
+	void setToInformCashier();
+	void setToCashier();
+
 	void startTimer(float min, float max);
 	void stopTimer();
 	bool timerUpdate(const double dt);
 
 	static Vector3 stovePos;
 	static Vector3 initPos;
+	static Vector3 fridgePos;
+	static Vector3 tablePos;
 	STATES state;
-	float timmer;
-	bool orderList[MAX_COSTOMER_COUNT], cookedFoodList[MAX_COSTOMER_COUNT];
-	int currentCustomerOrder;
-	float timer, timer2;
-	float timerLimit;
+	float currentTime, timeLimit;
 	bool startToCook;
 };

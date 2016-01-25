@@ -6,15 +6,10 @@ class Customer : public CGameObject
 public:
 	enum STATES
 	{
-		s_Idle,
-		s_Queing,
-		s_follow,
-		s_SitDown,
-		s_ReadyToOrder,
-		s_Ordered,
-		s_WaitForFood,
-		s_Eating,
-		s_Leave,
+		s_AtShop,
+		s_BrowseProduct,
+		s_Paying,
+		s_Exit
 	};
 
 	Customer();
@@ -23,7 +18,17 @@ public:
 	std::string renderState();
 	void update(double dt/* waiter obj refrence */);
 
-	bool isQueing();
+	bool isAtShop();
+	bool isBrowsing();
+	bool isPaying();
+	bool isExiting();
+
+	void setToAtShop();
+	void setToBrowsing();
+	void setToPaying();
+	void setToExit();
+
+	/*bool isQueing();
 	bool isFollowing();
 	bool isReadyToOrder();
 	bool isWaitingForFood();
@@ -39,7 +44,7 @@ public:
 	void setToWaitForFood();
 	void setToEating();
 	void setToLeaving();
-	void cleanUpWater();
+	void cleanUpWater();*/
 
 	void startTimer(float min, float max);
 	void stopTimer();
@@ -52,4 +57,5 @@ public:
 	bool spillWater;
 	bool rngAlready;
 	int id;
+	Color color[4];
 };

@@ -66,10 +66,10 @@
     <ClCompile Include="Source\GameAsset\Customer.cpp">
       <Filter>Game Asset</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameAsset\Waitress.cpp">
+    <ClCompile Include="Source\GameAsset\Baker.cpp">
       <Filter>Game Asset</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameAsset\Chef.cpp">
+    <ClCompile Include="Source\GameAsset\Cashier.cpp">
       <Filter>Game Asset</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,10 +134,10 @@
     <ClInclude Include="Source\GameAsset\Customer.h">
       <Filter>Game Asset</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameAsset\Waitress.h">
+    <ClInclude Include="Source\GameAsset\Baker.h">
       <Filter>Game Asset</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameAsset\Chef.h">
+    <ClInclude Include="Source\GameAsset\Cashier.h">
       <Filter>Game Asset</Filter>
     </ClInclude>
   </ItemGroup>

@@ -104,6 +104,12 @@ void Application::Init()
 	}
 }
 
+bool Application::IsMousePressed(unsigned short key) //0 - Left, 1 - Right, 2 - Middle
+{
+	return glfwGetMouseButton(m_window, key) != 0;
+}
+
+
 void Application::Run()
 {
 	//Main Loop
@@ -113,7 +119,7 @@ void Application::Run()
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
-		//GetMouseUpdate();
+		GetMouseUpdate();
 		scene->Update(m_timer.getElapsedTime());
 		scene->Render();
 		//Swap buffers
@@ -145,7 +151,7 @@ bool Application::GetMouseUpdate()
 	camera_yaw = (float) mouse_diff_x * 0.0174555555555556f;// * 3.142f / 180.0f;
 	camera_pitch = mouse_diff_y * 0.0174555555555556f;// 3.142f / 180.0f );
 	// Do a wraparound if the mouse cursor has gone out of the deadzone
-	if ((mouse_current_x < m_window_deadzone) || (mouse_current_x > m_window_width - m_window_deadzone))
+	/*if ((mouse_current_x < m_window_deadzone) || (mouse_current_x > m_window_width - m_window_deadzone))
 	{
 		mouse_current_x = m_window_width >> 1;
 		glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
@@ -154,7 +160,7 @@ bool Application::GetMouseUpdate()
 	{
 		mouse_current_y = m_window_height >> 1;
 		glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
-	}
+	}*/
 	// Store the current position as the last position
 	mouse_last_x = mouse_current_x;
 	mouse_last_y = mouse_current_y;

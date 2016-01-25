@@ -9,9 +9,9 @@
 #include "Light.h"
 #include "SpriteAnimation.h"
 #include "GameAsset\WorldOBJ.h"
-#include "GameAsset\Waitress.h"
 #include "GameAsset\Customer.h"
-#include "GameAsset\Chef.h"
+#include "GameAsset\Baker.h"
+#include "GameAsset\Cashier.h"
 #include <vector>
 
 #define DEBUGGING true;
@@ -67,7 +67,30 @@ class SceneAI : public Scene
 		GEO_QUAD,
 		GEO_FIRE_SPRITE,
 		GEO_DISHES,
+		GEO_CHAT,
+		GEO_BLUE_BACKGROUND,
+		GEO_DEBUGGING,
 		NUM_GEOMETRY,
+	};
+
+	enum TEXT_STATE
+	{
+		s_DEBUGGING,
+		s_CHAT
+	};
+
+	struct BREAD_SHELF
+	{
+		int id;
+		int breadCount;
+		Vector3 pos;
+
+		BREAD_SHELF()
+		{
+			id = 0;
+			pos = Vector3(0, 0, 0);
+			breadCount = 0;
+		}
 	};
 public:
 	SceneAI();
@@ -92,25 +115,41 @@ public:
 
 	bool moveToLocation(CGameObject* obj, Vector3 destination, bool moveByX = true);
 
-	//1 to check against tookOrder <-- Variables in struct
-	//2 to check against placeOrder
-	//3 to check against takenFood
-	//4 to check against finishCooking
-	//5 to check against finishEating
-	bool isOrderEmpty(int num);
-
-	void WaitressUpdate(const double dt);
+	/*void WaitressUpdate(const double dt);
 	void WaitressState_Usher(Waitress* waitress);
 	void WaitressState_OrderFood(Waitress* waitress);
 	void WaitressState_PlaceOrder(Waitress* waitress);
 	void WaitressState_TakeOrder(Waitress* waitress);
 	void WaitressState_DeliveryOrder(Waitress* waitress);
-	void WaitressState_CleanTable(Waitress* waitress);
+	void WaitressState_CleanTable(Waitress* waitress);*/
 
-	void CustomerUpdate(const double dt);
+	//void CustomerUpdate(const double dt);
 	void CustomerState_Leaving(Customer* customer);
 
 	void ChefUpdate(const double dt);
+
+	Baker* fetchBaker();
+	Cashier* fetchCashier();
+	Customer* fetchActiveCustomer();
+	Customer* fetchInactiveCustomer();
+	Customer* fetchPayingCustomer();
+
+
+	void BakerUpdate(const double dt);
+	void BakerState_Baking(const double dt, Baker* baker);
+	void BakerState_PlacingFood(Baker* baker);
+	void BakerState_Restock(Baker* baker);
+	void BakerState_OutOfMaterial(Baker* baker);
+	void BakerState_Cashier(Baker* baker);
+
+	void CashierUpdate(const double dt);
+	void CashierState_Shopping(Cashier* cashier, const double dt);
+
+	void CustomerUpdate(const double dt);
+	void CustomerState_AtShop(Customer* customer);
+	void CustomerState_Browsing(Customer* customer);
+	void CustomerState_Paying(Customer* customer);
+	void CustomerState_Exit(Customer* customer);
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -126,11 +165,18 @@ private:
 	Light lights[1];
 
 	bool bLightEnabled;
+	bool bakerReadytoInform;
+	bool cashierShopping;
+
+	int availableMaterialCount;
+	int breadCount;
+	int availableBreadCount;
 
 	float fps;
 	double elapsedTime;
 
-	static int tableOffset;
+	TEXT_STATE textState;
+	BREAD_SHELF* shelf[4];
 
 	//Game Asset
 	std::vector<CGameObject*> m_cGOList;
