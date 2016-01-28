@@ -150,6 +150,8 @@ void SceneAI::Init()
 	availableBreadCount = 0;
 	bakerReadytoInform = false;
 	cashierShopping = false;
+	bakerMessageSent = false;
+	cashierMessageSent = false;
 	breadCount = 0;
 
 	textState = TEXT_STATE::s_DEBUGGING;
@@ -668,6 +670,8 @@ void SceneAI::RenderText()
 		RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(shelf[a]->id), Color(1, 1, 0), 60, shelf[a]->pos.x + 20, shelf[a]->pos.y - 30);
 	}
 
+
+
 	if (textState == TEXT_STATE::s_DEBUGGING)
 	{
 		for (int a = 0; a < m_cGOList.size(); ++a)
@@ -712,6 +716,18 @@ void SceneAI::RenderText()
 	}
 	else
 	{
+		int startingY = 40;
+		//ivan
+		for (int i = messageboard.getTotalMassage()-1; i > -1; i--)
+		{
+			string uptext = "From:" + messageboard.getFrom(i) + " " + "To:" + messageboard.getTo(i) + " " + "Completed:" + messageboard.getComplete(i);
+			string downtext = "Message:" + messageboard.getMessage(i);
+
+			RenderTextOnScreen(meshList[GEO_TEXT], uptext, Color(1, 1, 1), 30, 35, startingY + 20);
+			RenderTextOnScreen(meshList[GEO_TEXT], downtext, Color(1, 1, 1), 30, 35, startingY);
+			
+			startingY += 50;
+		}
 	}
 
 }
@@ -870,6 +886,7 @@ void SceneAI::BakerState_PlacingFood(Baker* baker)
 	if (moveToLocation(baker, Baker::tablePos, false))
 	{
 		availableBreadCount += 40;
+		messageboard.setMessage("baker", "cashier", "bread is ready, come take it");
 		baker->setToRestock();
 	}
 }
@@ -896,7 +913,12 @@ void SceneAI::BakerState_OutOfMaterial(Baker* baker)
 
 	if (moveToLocation(baker, Cashier::CounterPos + Vector3(0, 40, 0)))
 	{
-		bakerReadytoInform = true;
+		///bakerReadytoInform = true;
+		if (bakerMessageSent == false)
+		{
+			messageboard.setMessage("baker", "cashier", "no more material, help buy pls");
+			bakerMessageSent = true;
+		}
 	}
 }
 
@@ -916,13 +938,22 @@ void SceneAI::BakerState_Cashier(Baker* baker)
 		static bool setToRestocking = false;
 		Customer* customer = fetchPayingCustomer();
 
-		if (availableBreadCount > 0 && !setToRestocking)
+		if (messageboard.getMessage("cashier") == "ready to purchase" && customer)
+		{
+			if (customer->getPos() == Cashier::CounterPos - Vector3(0, 100, 0))
+			{
+				customer->setToExit();
+				messageboard.setComplete("ready to purchase");
+			}
+		}
+		else if (messageboard.getMessage("cashier") == "bread is ready, come take it" && availableBreadCount > 0 && !setToRestocking)
 		{
 			if (moveToLocation(baker, Baker::tablePos - Vector3(0, 100, 0), false))
 			{
 				breadCount = availableBreadCount;
 				availableBreadCount = 0;
 				setToRestocking = true;
+				messageboard.setComplete("bread is ready, come take it");
 			}
 		}
 		else if (availableBreadCount == 0 && setToRestocking)
@@ -1180,14 +1211,14 @@ void SceneAI::BakerState_Cashier(Baker* baker)
 			}*/
 			}
 		}
-		else if(availableBreadCount == 0 && !setToRestocking && customer)
+		/*else if (messageboard.getMessage("cashier") == "ready to purchase" && availableBreadCount == 0 && !setToRestocking && customer)
 		{
 			if (customer->getPos() == Cashier::CounterPos - Vector3(0, 100, 0))
 			{
 				customer->setToExit();
+				messageboard.setComplete("ready to purchase");
 			}
-		}
-
+		}*/
 	}
 }
 
@@ -1224,13 +1255,36 @@ void SceneAI::CashierUpdate(const double dt)
 
 	if (cashier->isIdle())
 	{
-		if (cashier->previousState == Cashier::s_IDLE)
+		if (messageboard.getMessage("cashier") == "ready to purchase")
 		{
-			if (bakerReadytoInform && baker->getPos() == Cashier::CounterPos + Vector3(0, 40, 0))
+			if (fetchPayingCustomer() != NULL && fetchPayingCustomer()->getPos() == Cashier::CounterPos - Vector3(0, 100, 0))
+				cashier->setToSettlePurchase();
+		}
+		else if (messageboard.getMessage("cashier") == "no more material, help buy pls")
+		{
+			if (baker->getPos() == Cashier::CounterPos + Vector3(0, 40, 0))
 			{
 				cashier->setToShopping();
 				baker->setToCashier();
-				bakerReadytoInform = false;
+				messageboard.setComplete("no more material, help buy pls");
+				bakerMessageSent = false;
+			}
+		}
+		else if (messageboard.getMessage("cashier") == "bread is ready, come take it")
+		{
+			if(availableBreadCount > 0)
+				cashier->setToCheckForBread();
+		}
+		/*if (cashier->previousState == Cashier::s_IDLE)
+		{
+			///if (bakerReadytoInform && baker->getPos() == Cashier::CounterPos + Vector3(0, 40, 0))
+			if (messageboard.getMessage("cashier") == "no more material, help buy pls" && baker->getPos() == Cashier::CounterPos + Vector3(0, 40, 0))
+			{
+				cashier->setToShopping();
+				baker->setToCashier();
+				///bakerReadytoInform = false;
+				messageboard.setComplete("no more material, help buy pls");
+				bakerMessageSent = false;
 			}
 			else
 			{
@@ -1239,7 +1293,7 @@ void SceneAI::CashierUpdate(const double dt)
 		}
 		else if (cashier->previousState == Cashier::s_CHECKFORBREAD)
 		{
-			if (availableBreadCount > 0)
+			if (messageboard.getMessage("cashier") == "bread is ready, come take it" && availableBreadCount > 0)
 			{
 				cashier->setToCheckForBread();
 			}
@@ -1250,7 +1304,7 @@ void SceneAI::CashierUpdate(const double dt)
 		}
 		else if (cashier->previousState == Cashier::s_RESTOCK)
 		{
-			if (fetchPayingCustomer() != NULL && fetchPayingCustomer()->getPos() == Cashier::CounterPos - Vector3(0, 100, 0))
+			if (messageboard.getMessage("cashier") == "ready to purchase" && fetchPayingCustomer() != NULL && fetchPayingCustomer()->getPos() == Cashier::CounterPos - Vector3(0, 100, 0))
 			{
 				cashier->setToSettlePurchase();
 			}
@@ -1262,7 +1316,7 @@ void SceneAI::CashierUpdate(const double dt)
 		else if (cashier->previousState == Cashier::s_SETTLEPURCHASE)
 		{
 			cashier->previousState = Cashier::s_IDLE;
-		}
+		}*/
 	}
 	else
 	{
@@ -1276,6 +1330,7 @@ void SceneAI::CashierUpdate(const double dt)
 			{
 				breadCount = availableBreadCount;
 				availableBreadCount = 0;
+				messageboard.setComplete("bread is ready, come take it");
 				cashier->setToRestocking();
 			}
 		}
@@ -1377,6 +1432,7 @@ void SceneAI::CashierUpdate(const double dt)
 				if (customer->getPos() == Cashier::CounterPos - Vector3(0, 100, 0))
 				{
 					customer->setToExit();
+					messageboard.setComplete("ready to purchase");
 				}
 			}
 
@@ -1439,6 +1495,12 @@ void SceneAI::CashierState_Shopping(Cashier* cashier, const double dt)
 			}
 			else
 			{
+				if (cashierMessageSent == false)
+				{
+					messageboard.setMessage("cashier", "baker", "im back with the materials");
+					cashierMessageSent = true;
+				}
+
 				if (moved3)
 				{
 					if (moveToLocation(cashier, Vector3(cashier->getPos().x, 370, 2)))
@@ -1475,6 +1537,8 @@ void SceneAI::CashierState_Shopping(Cashier* cashier, const double dt)
 							availableMaterialCount = 100;
 							fetchBaker()->setToRestock();
 							cashier->setToIdle();
+							messageboard.setComplete("im back with the materials");
+							cashierMessageSent = false;
 						}
 					}
 				}
@@ -1575,6 +1639,7 @@ void SceneAI::CustomerState_Browsing(Customer* customer)
 		{
 			shelfVariable->breadCount -= 5;
 			shelfVariable = NULL;
+			messageboard.setMessage("customer", "cashier", "ready to purchase");
 			customer->setToPaying();
 		}
 	}

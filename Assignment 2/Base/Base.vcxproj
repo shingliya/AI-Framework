@@ -18,6 +18,7 @@
     <ClCompile Include="Source\GameAsset\Cashier.cpp" />
     <ClCompile Include="Source\GameAsset\Customer.cpp" />
     <ClCompile Include="Source\GameAsset\GameObject.cpp" />
+    <ClCompile Include="Source\GameAsset\Messageboard.cpp" />
     <ClCompile Include="Source\GameAsset\WorldOBJ.cpp" />
     <ClCompile Include="Source\LoadHmap.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="Source\GameAsset\Cashier.h" />
     <ClInclude Include="Source\GameAsset\Customer.h" />
     <ClInclude Include="Source\GameAsset\GameObject.h" />
+    <ClInclude Include="Source\GameAsset\Messageboard.h" />
     <ClInclude Include="Source\GameAsset\WorldOBJ.h" />
     <ClInclude Include="Source\Geometry.h" />
     <ClInclude Include="Source\Light.h" />

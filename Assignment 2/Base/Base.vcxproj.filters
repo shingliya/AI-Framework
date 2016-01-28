@@ -72,6 +72,9 @@
     <ClCompile Include="Source\GameAsset\Cashier.cpp">
       <Filter>Game Asset</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameAsset\Messageboard.cpp">
+      <Filter>Game Asset</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -138,6 +141,9 @@
       <Filter>Game Asset</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameAsset\Cashier.h">
+      <Filter>Game Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameAsset\Messageboard.h">
       <Filter>Game Asset</Filter>
     </ClInclude>
   </ItemGroup>

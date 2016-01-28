@@ -12,6 +12,7 @@
 #include "GameAsset\Customer.h"
 #include "GameAsset\Baker.h"
 #include "GameAsset\Cashier.h"
+#include "GameAsset\Messageboard.h"
 #include <vector>
 
 #define DEBUGGING true;
@@ -168,6 +169,9 @@ private:
 	bool bakerReadytoInform;
 	bool cashierShopping;
 
+	bool bakerMessageSent;
+	bool cashierMessageSent;
+
 	int availableMaterialCount;
 	int breadCount;
 	int availableBreadCount;
@@ -180,6 +184,8 @@ private:
 
 	//Game Asset
 	std::vector<CGameObject*> m_cGOList;
+
+	Messageboard messageboard;
 };
 
 #endif
