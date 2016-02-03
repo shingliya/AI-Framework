@@ -8,22 +8,22 @@ Messageboard::~Messageboard()
 {
 }
 
-string Messageboard::getMessage(string forWho) 
+bool Messageboard::checkMessageAvalible(string message)
 {
 	if (messages.size() == 0) 
 	{
-		return "no msg";
+		return false;
 	}
 	else {
 		for (int i = messages.size() - 1; i > -1; --i)
 		{
-			if (to[i] == forWho && completed[i] == false)
+			if (messages[i] == message && completed[i] == false)
 			{
-				return messages[i];
+				return true;
 			}
 		}
 	}
-	return "no msg";
+	return false;
 }
 
 void Messageboard::setMessage(string from, string to, string message) {

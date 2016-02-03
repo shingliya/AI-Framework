@@ -726,7 +726,7 @@ void SceneAI::RenderText()
 			RenderTextOnScreen(meshList[GEO_TEXT], uptext, Color(1, 1, 1), 30, 35, startingY + 20);
 			RenderTextOnScreen(meshList[GEO_TEXT], downtext, Color(1, 1, 1), 30, 35, startingY);
 			
-			startingY += 50;
+			startingY += 55;
 		}
 	}
 
@@ -911,15 +911,13 @@ void SceneAI::BakerState_OutOfMaterial(Baker* baker)
 {
 	Cashier* cashier = fetchCashier();
 
-	if (moveToLocation(baker, Cashier::CounterPos + Vector3(0, 40, 0)))
+	if (bakerMessageSent == false)
 	{
-		///bakerReadytoInform = true;
-		if (bakerMessageSent == false)
-		{
-			messageboard.setMessage("baker", "cashier", "no more material, help buy pls");
-			bakerMessageSent = true;
-		}
+		messageboard.setMessage("baker", "cashier", "no more material, help buy pls");
+		bakerMessageSent = true;
 	}
+
+	moveToLocation(baker, Cashier::CounterPos + Vector3(0, 40, 0));
 }
 
 void SceneAI::BakerState_Cashier(Baker* baker)
@@ -938,7 +936,7 @@ void SceneAI::BakerState_Cashier(Baker* baker)
 		static bool setToRestocking = false;
 		Customer* customer = fetchPayingCustomer();
 
-		if (messageboard.getMessage("cashier") == "ready to purchase" && customer)
+		if (messageboard.checkMessageAvalible("ready to purchase") && customer && baker->getPos() == Cashier::CounterPos)
 		{
 			if (customer->getPos() == Cashier::CounterPos - Vector3(0, 100, 0))
 			{
@@ -946,7 +944,7 @@ void SceneAI::BakerState_Cashier(Baker* baker)
 				messageboard.setComplete("ready to purchase");
 			}
 		}
-		else if (messageboard.getMessage("cashier") == "bread is ready, come take it" && availableBreadCount > 0 && !setToRestocking)
+		else if (messageboard.checkMessageAvalible("bread is ready, come take it") && availableBreadCount > 0 && !setToRestocking)
 		{
 			if (moveToLocation(baker, Baker::tablePos - Vector3(0, 100, 0), false))
 			{
@@ -1255,12 +1253,12 @@ void SceneAI::CashierUpdate(const double dt)
 
 	if (cashier->isIdle())
 	{
-		if (messageboard.getMessage("cashier") == "ready to purchase")
+		if (messageboard.checkMessageAvalible("ready to purchase"))
 		{
 			if (fetchPayingCustomer() != NULL && fetchPayingCustomer()->getPos() == Cashier::CounterPos - Vector3(0, 100, 0))
 				cashier->setToSettlePurchase();
 		}
-		else if (messageboard.getMessage("cashier") == "no more material, help buy pls")
+		else if (messageboard.checkMessageAvalible("no more material, help buy pls"))
 		{
 			if (baker->getPos() == Cashier::CounterPos + Vector3(0, 40, 0))
 			{
@@ -1270,7 +1268,7 @@ void SceneAI::CashierUpdate(const double dt)
 				bakerMessageSent = false;
 			}
 		}
-		else if (messageboard.getMessage("cashier") == "bread is ready, come take it")
+		else if (messageboard.checkMessageAvalible("bread is ready, come take it"))
 		{
 			if(availableBreadCount > 0)
 				cashier->setToCheckForBread();

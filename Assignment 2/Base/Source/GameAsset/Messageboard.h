@@ -18,7 +18,7 @@ public:
 	Messageboard();
 	~Messageboard();
 
-	string getMessage(string forWho);
+	bool checkMessageAvalible(string message);
 	void setMessage(string from, string to, string message);
 	void setComplete(string message);
 
